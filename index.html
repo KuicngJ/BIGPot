@@ -204,32 +204,55 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 .dl{font-size:11px;color:var(--ink3);margin-top:7px;display:flex;align-items:center;gap:4px}
 
 /* ========================================================
-   QUIZ — upgraded
+   QUIZ — CHAT UI
    ======================================================== */
-.qwrap{max-width:600px;margin:0 auto;padding:44px 20px 80px}
-.q-chat{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;min-height:140px}
-.q-bubble{background:var(--surf);border:1px solid var(--surf3);border-radius:0 18px 18px 18px;padding:18px 22px;max-width:88%;animation:bubbleIn .3s var(--ease);box-shadow:var(--shadow-sm)}
-@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.q-bubble-label{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.q-bubble-label i{font-size:13px}
-.q-text{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.3px;line-height:1.25}
-.q-hint{font-size:13.5px;color:var(--ink3);margin-top:6px}
-.qprog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.qwrap{max-width:560px;margin:0 auto;padding:20px 16px 100px;display:flex;flex-direction:column;height:calc(100vh - 64px)}
+.qprog-row{display:flex;align-items:center;gap:12px;margin-bottom:0;padding:12px 0 16px;flex-shrink:0}
 .qprog{flex:1;height:4px;background:var(--surf3);border-radius:4px;overflow:hidden}
 .qbar{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-m));border-radius:4px;transition:width .4s var(--ease)}
 .qstep{font-size:12px;font-weight:700;color:var(--ink3);white-space:nowrap}
-.qopts{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
-.qopt{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:13px;font-size:14px;font-weight:500;color:var(--ink2);box-shadow:var(--shadow-sm)}
-.qopt:hover{border-color:var(--blue-m);background:var(--blue-l);color:var(--ink);transform:translateX(4px)}
+
+/* Chat scroll area */
+.q-chat-area{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:4px 0 16px;scroll-behavior:smooth}
+.q-chat-area::-webkit-scrollbar{width:0}
+
+/* Bot bubble (kiri) */
+.q-bot-row{display:flex;align-items:flex-end;gap:8px;max-width:88%}
+.q-bot-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(24,71,237,.25)}
+.q-bot-av i{font-size:15px;color:#fff}
+.q-bot-bubble{background:var(--surf);border:1px solid var(--surf3);border-radius:4px 18px 18px 18px;padding:14px 18px;box-shadow:var(--shadow-sm);animation:bubbleIn .3s var(--ease)}
+.q-bot-name{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.q-text{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.3px;line-height:1.3}
+.q-hint{font-size:13px;color:var(--ink3);margin-top:5px;line-height:1.5}
+
+/* Typing indicator */
+.q-typing{display:flex;align-items:flex-end;gap:8px;max-width:88%}
+.q-typing-bubble{background:var(--surf);border:1px solid var(--surf3);border-radius:4px 18px 18px 18px;padding:14px 18px;box-shadow:var(--shadow-sm);display:flex;gap:5px;align-items:center}
+.q-dot{width:7px;height:7px;border-radius:50%;background:var(--ink4);animation:typingDot 1.2s ease infinite}
+.q-dot:nth-child(2){animation-delay:.2s}
+.q-dot:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{transform:translateY(0);background:var(--ink4)}30%{transform:translateY(-5px);background:var(--blue)}}
+
+/* User reply bubble (kanan) */
+.q-user-row{display:flex;justify-content:flex-end;animation:bubbleIn .25s var(--ease)}
+.q-user-bubble{background:var(--blue);color:#fff;border-radius:18px 18px 4px 18px;padding:11px 16px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 2px 10px rgba(24,71,237,.25);max-width:72%}
+.q-user-bubble i{font-size:14px;opacity:.8;flex-shrink:0}
+
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Options at bottom */
+.q-opts-area{flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding-top:4px}
+.qopt{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r);padding:12px 14px;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:500;color:var(--ink2);box-shadow:var(--shadow-sm)}
+.qopt:hover{border-color:var(--blue-m);background:var(--blue-l);color:var(--ink);transform:translateX(3px)}
 .qopt.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d);font-weight:600}
-.qopt-ic{width:36px;height:36px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--dur) var(--ease)}
-.qopt-ic i{font-size:17px;color:var(--ink3);transition:color var(--dur) var(--ease)}
+.qopt-ic{width:32px;height:32px;border-radius:9px;background:var(--surf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--dur) var(--ease)}
+.qopt-ic i{font-size:15px;color:var(--ink3);transition:color var(--dur) var(--ease)}
 .qopt.on .qopt-ic{background:#C5D4FB}
 .qopt.on .qopt-ic i{color:var(--blue)}
-.qnav{display:flex;gap:10px}
-.btn-bk{background:var(--surf);border:1.5px solid var(--surf3);color:var(--ink3);padding:13px 20px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:7px}
+.qnav{display:flex;gap:10px;padding-top:10px;flex-shrink:0}
+.btn-bk{background:var(--surf);border:1.5px solid var(--surf3);color:var(--ink3);padding:12px 18px;border-radius:50px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:7px;flex-shrink:0}
 .btn-bk:hover{border-color:var(--ink4);color:var(--ink)}
-.btn-nx{background:var(--blue);color:#fff;border:none;padding:13px 0;border-radius:50px;font-size:14.5px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);flex:1;letter-spacing:-.1px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(24,71,237,.28)}
+.btn-nx{background:var(--blue);color:#fff;border:none;padding:12px 0;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);flex:1;letter-spacing:-.1px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(24,71,237,.28)}
 .btn-nx:hover{background:var(--blue-d);transform:translateY(-1px)}
 
 /* ========================================================
@@ -464,6 +487,31 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 @keyframes dotPulse{0%,80%,100%{background:var(--surf4)}40%{background:var(--blue)}}
 
 /* ========================================================
+   LOMBA MODAL (bottom sheet)
+   ======================================================== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s var(--ease)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{background:var(--surf);border-radius:24px 24px 0 0;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s var(--ease);padding-bottom:32px}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-sheet::-webkit-scrollbar{width:0}
+.modal-thumb{width:40px;height:4px;border-radius:2px;background:var(--surf4);margin:12px auto 0}
+.modal-img-wrap{position:relative}
+.modal-img{width:100%;height:200px;object-fit:cover;display:block;border-radius:0}
+.modal-img-placeholder{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative}
+.btn-modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.35);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:all var(--dur) var(--ease);z-index:2}
+.btn-modal-close:hover{background:rgba(0,0,0,.55)}
+.modal-body{padding:20px 22px 8px}
+.modal-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.modal-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.4px;line-height:1.2;margin-bottom:10px}
+.modal-desc{font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:20px}
+.modal-desc-empty{font-size:13.5px;color:var(--ink3);font-style:italic;margin-bottom:20px}
+.modal-actions{display:flex;gap:10px;padding:0 22px}
+.btn-modal-link{flex:1;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(24,71,237,.28);transition:all var(--dur) var(--ease);text-decoration:none}
+.btn-modal-link:hover{background:var(--blue-d);transform:translateY(-1px)}
+.btn-modal-wa{background:var(--wa-green);color:#fff;border:none;padding:14px 18px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all var(--dur) var(--ease);text-decoration:none;white-space:nowrap}
+.btn-modal-wa:hover{background:var(--wa-green-d)}
+
+/* ========================================================
    RESPONSIVE
    ======================================================== */
 @media(max-width:520px){
@@ -504,6 +552,20 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 <div id="toast" class="toast"><i class="ti ti-check" aria-hidden="true"></i><span id="toast-msg">Notifikasi</span></div>
 <!-- Confetti -->
 <canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:998;display:none"></canvas>
+
+<!-- LOMBA MODAL -->
+<div class="modal-overlay" id="lomba-modal" onclick="closeModal(event)">
+  <div class="modal-sheet" id="modal-sheet">
+    <div class="modal-thumb"></div>
+    <div class="modal-img-wrap" id="modal-img-wrap"></div>
+    <div class="modal-body">
+      <div class="modal-badge-row" id="modal-badge-row"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div id="modal-desc-wrap"></div>
+    </div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -625,8 +687,8 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
       <div class="qprog"><div class="qbar" id="qbar" style="width:16%"></div></div>
       <div class="qstep" id="qstep">1 / 6</div>
     </div>
-    <div class="q-chat" id="q-chat"></div>
-    <div class="qopts" id="qopts"></div>
+    <div class="q-chat-area" id="q-chat-area"></div>
+    <div class="q-opts-area" id="qopts"></div>
     <div class="qnav">
       <button class="btn-bk" onclick="prevQ()">
         <i class="ti ti-arrow-left" aria-hidden="true"></i>Kembali
@@ -912,36 +974,37 @@ const CATS = [
 ];
 
 /* ===================================================================
-   DATA: EVENTS
+   DATA: LOMBA
+   -------------------------------------------------------------------
+   Tambahkan lomba kamu di sini. Satu baris = satu lomba.
+   Kolom yang tersedia:
+     nama       → nama lomba (string)
+     kategori   → salah satu dari: 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
+     link       → link WhatsApp atau website pendaftaran (string URL)
+     deskripsi  → penjelasan singkat lomba (string, opsional)
+     thumbnail  → URL gambar thumbnail (string URL, opsional — kalau kosong pakai icon kategori)
    =================================================================== */
 const EVS = [
-  { id:'ev1',  ic:'ti-cpu',         ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',  tc:'ch-b', title:'National Olympiad Informatika 2025',       loc:'Online · SMA/SMK',    prize:'Total Rp 50jt',         dl:'30 Jun 2025', badge:'Populer',      bc:'ch-b', cat:'tech'  },
-  { id:'ev2',  ic:'ti-layout',      ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',tc:'ch-o',title:'Lomba Desain Poster Kemerdekaan RI',       loc:'Nasional · SMP–SMA',  prize:'Piala + Sertifikat',    dl:'1 Jul 2025',  badge:'Baru',         bc:'ch-o', cat:'seni'  },
-  { id:'ev3',  ic:'ti-flask',       ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',      tc:'ch-g', title:'Karya Ilmiah Remaja Tingkat Provinsi',      loc:'Offline · SMP–SMA',   prize:'Beasiswa + Medali',     dl:'15 Jul 2025', badge:'Deadline Dekat',bc:'ch-g',cat:'sains' },
-  { id:'ev4',  ic:'ti-book',        ibg:'#F0EEFF', ic2:'#5B21B6', tag:'Menulis',    tc:'ch-p', title:'Cerpen Nasional "Suara Generasi"',           loc:'Online · SMP–SMA',    prize:'Rp 15jt + Diterbitkan', dl:'20 Jul 2025', badge:'Trending',     bc:'ch-p', cat:'tulis' },
-  { id:'ev5',  ic:'ti-music',       ibg:'#FDF0F6', ic2:'#9D174D', tag:'Musik',      tc:'ch-p', title:'Kompetisi Musik Indie Pelajar 2025',         loc:'Hybrid · SMA',        prize:'Kontrak Label + Rp 30jt',dl:'5 Jul 2025', badge:'Hot',          bc:'ch-o', cat:'musik' },
-  { id:'ev6',  ic:'ti-trophy',      ibg:'#FEF9EC', ic2:'#92400E', tag:'Olahraga',   tc:'ch-o', title:'Turnamen Futsal Pelajar Se-Jawa',            loc:'Offline · SMA',       prize:'Piala Gubernur',        dl:'25 Jun 2025', badge:'Segera',       bc:'ch-o', cat:'sport' },
-  { id:'ev7',  ic:'ti-robot',       ibg:'#F0EEFF', ic2:'#4C1D95', tag:'Robotika',   tc:'ch-p', title:'Indonesia Robot Contest (IRC) 2025',         loc:'Offline · Nasional',  prize:'Rp 75jt + Trophy',      dl:'10 Agt 2025', badge:'Prestisius',   bc:'ch-p', cat:'robot' },
-  { id:'ev8',  ic:'ti-camera',      ibg:'#FEF0EC', ic2:'#92400E', tag:'Fotografi',  tc:'ch-o', title:'Lomba Foto Pelajar Tema Alam Nusantara',     loc:'Online · SMP–SMA',    prize:'Kamera DSLR',           dl:'12 Agt 2025', badge:'Populer',      bc:'ch-o', cat:'foto'  },
-  { id:'ev9',  ic:'ti-code-circle', ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',  tc:'ch-b', title:'Hackathon Pelajar Nasional: Build for ID',   loc:'Online · SMA',        prize:'Rp 100jt',              dl:'1 Agt 2025',  badge:'Grand Prize',  bc:'ch-b', cat:'tech'  },
-  { id:'ev11', ic:'ti-atom',        ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',      tc:'ch-g', title:'Olimpiade Sains Nasional (OSN) 2025',        loc:'Nasional · SMP & SMA',prize:'Medali Emas + Trip',     dl:'30 Agt 2025', badge:'OSN',          bc:'ch-g', cat:'sains' },
-  { id:'ev12', ic:'ti-palette',     ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',tc:'ch-o',title:'Young Designer Award 2025 — Kategori Pelajar',loc:'Online · Nasional', prize:'Rp 25jt + Mentorship',  dl:'18 Jul 2025', badge:'Baru',         bc:'ch-o', cat:'seni'  },
+  // Contoh format lengkap:
+   { nama:'Wara Ahza', kategori:'tech', link:'https://wa.me/...', deskripsi:'Wara ahza jago.', thumbnail:'https://cdn-web-2.ruangguru.com/landing-pages/assets/41519658-db94-4846-92ae-4e096f8fe898.jpeg' },
+  // Atau minimal tanpa thumbnail & deskripsi:
+  // { nama:'Nama Lomba', kategori:'seni', link:'https://website.com' },
 ];
 
 /* ===================================================================
    DATA: KOMUNITAS
+   -------------------------------------------------------------------
+   Tambahkan komunitas kamu di sini. Satu baris = satu komunitas.
+   Kolom yang tersedia:
+     nama     → nama komunitas (string)
+     kategori → salah satu dari: 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
+     link     → link WhatsApp grup/channel komunitas (string URL)
    =================================================================== */
 const KOMS = [
-  { id:'k1',  ic:'ti-code',          bg:'#EEF2FD', bgi:'#1239C4', name:'CodeKid Indonesia',     desc:'Komunitas coding untuk pelajar. Weekly hackathon dan mentoring gratis dari engineer profesional.',  mem:'3.240 anggota',  tags:['Coding','Web Dev','AI'],       wa:'https://whatsapp.com/channel/0029VaCodeKid'  },
-  { id:'k2',  ic:'ti-palette',       bg:'#FEF0EC', bgi:'#C43C14', name:'Desainer Muda ID',      desc:'Forum desainer pelajar. Feedback portofolio, design challenge mingguan, dan job board khusus.',    mem:'1.890 anggota',  tags:['UI/UX','Ilustrasi','Branding'], wa:'https://whatsapp.com/channel/0029VaDesainer' },
-  { id:'k3',  ic:'ti-microscope',    bg:'#E5F7F2', bgi:'#006B4C', name:'Saintis Cilik',         desc:'Riset, eksperimen, dan olimpiade sains. Dibimbing mahasiswa ITB, UI, dan UGM.',                   mem:'2.100 anggota',  tags:['KIR','Olimpiade','Biologi'],    wa:'https://whatsapp.com/channel/0029VaSaintis'  },
-  { id:'k4',  ic:'ti-music',         bg:'#FDF0F6', bgi:'#9D174D', name:'Nada & Rima',           desc:'Komunitas musisi muda. Open mic virtual tiap bulan dan workshop produksi musik gratis.',            mem:'1.450 anggota',  tags:['Musik','Produksi','Cover'],     wa:'https://whatsapp.com/channel/0029VaNada'     },
-  { id:'k5',  ic:'ti-pencil',        bg:'#F0EEFF', bgi:'#5B21B6', name:'Pena Muda',             desc:'Menulis cerpen, esai, dan puisi. Majalah digital bulanan bersama penulis Indonesia.',              mem:'980 anggota',    tags:['Cerpen','Puisi','Jurnalis'],    wa:'https://whatsapp.com/channel/0029VaPena'     },
-  { id:'k6',  ic:'ti-ball-football', bg:'#FEF9EC', bgi:'#92400E', name:'Atlet Remaja',          desc:'Network atlet pelajar seluruh Indonesia. Info tryout, beasiswa, dan kalender turnamen.',            mem:'4.120 anggota',  tags:['Futsal','Renang','Badminton'],  wa:'https://whatsapp.com/channel/0029VaAtlet'    },
-  { id:'k7',  ic:'ti-robot',         bg:'#F0EEFF', bgi:'#4C1D95', name:'Robotika Pelajar ID',   desc:'Eksplorasi dunia robotika, IoT, dan kecerdasan buatan bersama mentor insinyur nasional.',           mem:'1.320 anggota',  tags:['Robotika','IoT','Arduino'],     wa:'https://whatsapp.com/channel/0029VaRobot'    },
-  { id:'k8',  ic:'ti-camera',        bg:'#FEF0EC', bgi:'#D97706', name:'Lensa Pelajar',         desc:'Komunitas fotografi & videografi pelajar. Photo walk bulanan, workshop editing, dan pameran online.',mem:'870 anggota',    tags:['Fotografi','Video','Editing'],  wa:'https://whatsapp.com/channel/0029VaLensa'    },
-  { id:'k9',  ic:'ti-math-function', bg:'#EEF2FD', bgi:'#1847ED', name:'Olimpiade Math ID',     desc:'Persiapan OSN Matematika, IMO, dan kompetisi internasional. Daily problem set + pembahasan.',       mem:'2.560 anggota',  tags:['Matematika','OSN','Olimpiade'], wa:'https://whatsapp.com/channel/0029VaMath'     },
-  { id:'k10', ic:'ti-world',         bg:'#E5F7F2', bgi:'#006B4C', name:'English Debaters Club', desc:'Latihan debat bahasa Inggris, public speaking, dan persiapan kompetisi internasional.',             mem:'1.150 anggota',  tags:['Bahasa','Debat','Speaking'],    wa:'https://whatsapp.com/channel/0029VaDebate'   },
+  // Contoh format (hapus // di depan untuk mengaktifkan):
+   { nama:'Wara ahza juga', kategori:'tech',  link:'https://wa.me/...' },
+  // { nama:'Nama Komunitas 2', kategori:'seni',  link:'https://chat.whatsapp.com/...' },
+  // { nama:'Nama Komunitas 3', kategori:'sains', link:'https://wa.me/...' },
 ];
 
 /* ===================================================================
@@ -1200,7 +1263,7 @@ function go(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   const pg=document.getElementById('pg-'+id);
   if(pg){pg.classList.add('on');window.scrollTo({top:0,behavior:'instant'})}
-  if(id==='quiz'){qi=0;ans=[];renderQ()}
+  if(id==='quiz'){qi=0;ans=[];chatHistory=[];renderQ()}
   if(id==='bookmark'){renderBookmarks()}
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
@@ -1256,12 +1319,35 @@ function loadDarkPref(){
 function renderCats(){
   const el=document.getElementById('cat-list');
   if(!el)return;
-  el.innerHTML=CATS.map(c=>`
+  // Emoji fallback kalau Tabler Icons font gagal load
+  const emoji={'tech':'💻','seni':'🎨','sains':'🔬','tulis':'✍️','musik':'🎵','sport':'⚽','robot':'🤖','foto':'📸'};
+  el.innerHTML=CATS.map(c=>{
+    const count = EVS.filter(e=>(e.kategori||e.cat)===c.id).length;
+    const label = count > 0 ? `${count} lomba` : 'Belum ada lomba';
+    return `
     <div class="ccat" onclick="filterByCat('${c.id}')">
-      <div class="ccat-ic" style="background:${c.bgi}33"><i class="ti ${c.ic}" style="color:${c.ci}"></i></div>
+      <div class="ccat-ic" style="background:${c.bgi}33">
+        <i class="ti ${c.ic}" style="color:${c.ci}"></i>
+        <span class="ccat-emoji" style="color:${c.ci};display:none">${emoji[c.id]||'🏆'}</span>
+      </div>
       <div class="ccat-name">${c.name}</div>
-      <div class="ccat-ct">${c.ct}</div>
-    </div>`).join('');
+      <div class="ccat-ct">${label}</div>
+    </div>`;
+  }).join('');
+
+  // Cek apakah Tabler Icons font sudah load; kalau tidak, tampilkan emoji
+  setTimeout(()=>{
+    const testI = document.createElement('i');
+    testI.className='ti ti-code';
+    testI.style.cssText='position:absolute;visibility:hidden;font-size:20px';
+    document.body.appendChild(testI);
+    const w = testI.offsetWidth;
+    document.body.removeChild(testI);
+    if(w < 5){ // font belum load — pakai emoji
+      document.querySelectorAll('.ccat-ic i').forEach(i=>i.style.display='none');
+      document.querySelectorAll('.ccat-emoji').forEach(s=>s.style.display='inline');
+    }
+  }, 1200);
 }
 
 let activeCat='';
@@ -1274,41 +1360,154 @@ function filterByCat(id){
 }
 
 /* ===================================================================
+   HELPERS: icon & color per kategori
+   =================================================================== */
+const CAT_META = {
+  tech:  { ic:'ti-cpu',          ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',        tc:'ch-b', bc:'ch-b' },
+  seni:  { ic:'ti-palette',      ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',     tc:'ch-o', bc:'ch-o' },
+  sains: { ic:'ti-flask',        ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',             tc:'ch-g', bc:'ch-g' },
+  tulis: { ic:'ti-pencil',       ibg:'#F0EEFF', ic2:'#5B21B6', tag:'Menulis',           tc:'ch-p', bc:'ch-p' },
+  musik: { ic:'ti-music',        ibg:'#FDF0F6', ic2:'#9D174D', tag:'Musik',             tc:'ch-p', bc:'ch-o' },
+  sport: { ic:'ti-ball-football',ibg:'#FEF9EC', ic2:'#92400E', tag:'Olahraga',          tc:'ch-o', bc:'ch-o' },
+  robot: { ic:'ti-robot',        ibg:'#F0EEFF', ic2:'#4C1D95', tag:'Robotika',          tc:'ch-p', bc:'ch-p' },
+  foto:  { ic:'ti-camera',       ibg:'#FEF0EC', ic2:'#92400E', tag:'Fotografi',         tc:'ch-o', bc:'ch-o' },
+};
+
+const KOM_META = {
+  tech:  { ic:'ti-code',          bg:'#EEF2FD', bgi:'#1239C4' },
+  seni:  { ic:'ti-palette',       bg:'#FEF0EC', bgi:'#C43C14' },
+  sains: { ic:'ti-microscope',    bg:'#E5F7F2', bgi:'#006B4C' },
+  tulis: { ic:'ti-pencil',        bg:'#F0EEFF', bgi:'#5B21B6' },
+  musik: { ic:'ti-music',         bg:'#FDF0F6', bgi:'#9D174D' },
+  sport: { ic:'ti-ball-football', bg:'#FEF9EC', bgi:'#92400E' },
+  robot: { ic:'ti-robot',         bg:'#F0EEFF', bgi:'#4C1D95' },
+  foto:  { ic:'ti-camera',        bg:'#FEF0EC', bgi:'#D97706' },
+};
+
+/* ===================================================================
    RENDER EVENTS
    =================================================================== */
-function renderEvCard(e){
-  const saved=bookmarks.lomba.has(e.id);
-  return `<div class="ecard" onclick="toast('${e.title}','ti-trophy')">
-    <div class="ecard-top" style="background:${e.ibg}">
-      <i class="ti ${e.ic}" style="color:${e.ic2}"></i>
-      <span class="ecard-chip ${e.bc}">${e.badge}</span>
-      <button class="ecard-bm${saved?' saved':''}" onclick="event.stopPropagation();toggleBmLomba('${e.id}',this)">
+function normEv(e, idx){
+  if(e.title) return e;
+  const m = CAT_META[e.kategori] || CAT_META['tech'];
+  return {
+    id: 'ev'+idx,
+    ic: m.ic, ibg: m.ibg, ic2: m.ic2,
+    tag: m.tag, tc: m.tc, bc: m.bc,
+    title: e.nama,
+    deskripsi: e.deskripsi || '',
+    thumbnail: e.thumbnail || '',
+    loc: '—', prize: '—', dl: '—',
+    badge: m.tag,
+    cat: e.kategori,
+    link: e.link || null,
+    _raw: e,
+  };
+}
+
+function renderEvCard(e, idx){
+  const ne = normEv(e, idx);
+  const saved = bookmarks.lomba.has(ne.id);
+  const safeTitle = ne.title.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  return `<div class="ecard" onclick="openLombaModal(${idx})">
+    <div class="ecard-top" style="background:${ne.ibg};overflow:hidden;padding:0">
+      ${ne.thumbnail
+        ? `<img src="${ne.thumbnail}" alt="${safeTitle}" style="width:100%;height:106px;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div style="width:100%;height:106px;display:${ne.thumbnail?'none':'flex'};align-items:center;justify-content:center">
+        <i class="ti ${ne.ic}" style="color:${ne.ic2};font-size:38px"></i>
+      </div>
+      <span class="ecard-chip ${ne.bc}" style="position:absolute;top:12px;left:12px">${ne.badge}</span>
+      <button class="ecard-bm${saved?' saved':''}" onclick="event.stopPropagation();toggleBmLomba('${ne.id}',this)">
         <i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>
       </button>
     </div>
     <div class="ecard-body">
-      <div class="ecard-title">${e.title}</div>
-      <div class="ecard-meta"><i class="ti ti-map-pin" style="font-size:12px"></i>${e.loc}</div>
+      <div class="ecard-title">${ne.title}</div>
+      ${ne.deskripsi ? `<div style="font-size:12px;color:var(--ink3);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${ne.deskripsi}</div>` : ''}
       <div class="ecard-foot">
-        <span class="prize"><i class="ti ti-trophy" style="font-size:12px"></i>${e.prize}</span>
-        <span class="chip ${e.tc}">${e.tag}</span>
+        <span class="chip ${ne.tc}">${ne.tag}</span>
+        ${ne.link ? `<span style="font-size:11px;color:var(--blue);font-weight:600;display:flex;align-items:center;gap:3px"><i class="ti ti-external-link" style="font-size:11px"></i>Buka</span>` : ''}
       </div>
-      <div class="dl"><i class="ti ti-calendar" style="font-size:11px"></i>Deadline: ${e.dl}</div>
     </div>
   </div>`;
+}
+
+/* ===================================================================
+   LOMBA MODAL
+   =================================================================== */
+const CAT_EMOJI = {tech:'💻',seni:'🎨',sains:'🔬',tulis:'✍️',musik:'🎵',sport:'⚽',robot:'🤖',foto:'📸'};
+
+function openLombaModal(idx){
+  const e = EVS[idx]; if(!e) return;
+  const ne = normEv(e, idx);
+  const m = CAT_META[ne.cat] || CAT_META['tech'];
+  const isWA = ne.link && (ne.link.includes('wa.me') || ne.link.includes('whatsapp.com'));
+
+  // Thumbnail atau placeholder
+  document.getElementById('modal-img-wrap').innerHTML = ne.thumbnail
+    ? `<img class="modal-img" src="${ne.thumbnail}" alt="${ne.title}"
+         onerror="this.outerHTML='<div class=\\'modal-img-placeholder\\' style=\\'background:${ne.ibg}\\'>${CAT_EMOJI[ne.cat]||'🏆'}<button class=\\'btn-modal-close\\' onclick=\\'closeModal()\\'>✕</button></div>'">
+       <button class="btn-modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>`
+    : `<div class="modal-img-placeholder" style="background:${ne.ibg}">
+         <i class="ti ${ne.ic}" style="color:${ne.ic2};font-size:52px"></i>
+         <button class="btn-modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button>
+       </div>`;
+
+  // Badge
+  document.getElementById('modal-badge-row').innerHTML =
+    `<span class="chip ${ne.bc}">${ne.tag}</span>`;
+
+  // Title
+  document.getElementById('modal-title').textContent = ne.title;
+
+  // Deskripsi
+  document.getElementById('modal-desc-wrap').innerHTML = ne.deskripsi
+    ? `<div class="modal-desc">${ne.deskripsi}</div>`
+    : `<div class="modal-desc-empty">Deskripsi belum ditambahkan.</div>`;
+
+  // Actions
+  let actHTML = '';
+  if(ne.link){
+    if(isWA){
+      actHTML = `<a class="btn-modal-link" href="${ne.link}" target="_blank" rel="noopener">
+        <i class="ti ti-brand-whatsapp"></i>Buka di WhatsApp
+      </a>`;
+    } else {
+      actHTML = `<a class="btn-modal-link" href="${ne.link}" target="_blank" rel="noopener">
+        <i class="ti ti-external-link"></i>Daftar Sekarang
+      </a>`;
+    }
+  }
+  document.getElementById('modal-actions').innerHTML = actHTML;
+
+  document.getElementById('lomba-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e){
+  if(e && e.target !== document.getElementById('lomba-modal') && !e.target.classList.contains('btn-modal-close') && !e.target.closest('.btn-modal-close')) return;
+  document.getElementById('lomba-modal').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 function filterEvs(){
   const q=(document.getElementById('ev-search')?.value||'').toLowerCase();
   const cl=document.getElementById('ev-search-clear');
   if(cl)cl.classList.toggle('vis',q.length>0);
-  const filtered=EVS.filter(e=>{
-    const matchCat=!activeCat||e.cat===activeCat;
-    const matchQ=!q||e.title.toLowerCase().includes(q)||e.tag.toLowerCase().includes(q)||e.loc.toLowerCase().includes(q);
+  if(EVS.length===0){
+    const el=document.getElementById('ev-list');
+    if(el)el.innerHTML='<p style="color:var(--ink3);font-size:14px;grid-column:1/-1;padding:32px 0;text-align:center"><i class="ti ti-trophy" style="display:block;font-size:32px;margin-bottom:8px;opacity:.3"></i>Lomba belum ditambahkan.<br>Isi array EVS di kode untuk menampilkan lomba.</p>';
+    return;
+  }
+  const filtered=EVS.filter((e,i)=>{
+    const ne=normEv(e,i);
+    const matchCat=!activeCat||ne.cat===activeCat;
+    const matchQ=!q||ne.title.toLowerCase().includes(q)||(ne.tag||'').toLowerCase().includes(q);
     return matchCat&&matchQ;
   });
   const el=document.getElementById('ev-list');
-  if(el)el.innerHTML=filtered.length?filtered.map(renderEvCard).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
+  if(el)el.innerHTML=filtered.length?filtered.map((e,i)=>renderEvCard(e,i)).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
 }
 
 function clearEvSearch(){
@@ -1320,26 +1519,48 @@ function clearEvSearch(){
 /* ===================================================================
    RENDER KOMUNITAS
    =================================================================== */
+function normKom(k, idx){
+  if(k.name) return k; // sudah format lama
+  const m = KOM_META[k.kategori] || KOM_META['tech'];
+  return {
+    id: 'k'+idx,
+    ic: m.ic, bg: m.bg, bgi: m.bgi,
+    name: k.nama,
+    desc: '—',
+    mem: '—',
+    tags: [k.kategori],
+    wa: k.link || '#',
+  };
+}
+
 let allKoms=[...KOMS];
 function renderKoms(){
   const q=(document.getElementById('kom-search')?.value||'').toLowerCase();
-  const filtered=allKoms.filter(k=>!q||k.name.toLowerCase().includes(q)||k.tags.some(t=>t.toLowerCase().includes(q)));
   const el=document.getElementById('k-list');
   if(!el)return;
-  el.innerHTML=filtered.map(k=>{
-    const saved=bookmarks.komunitas.has(k.id);
+  if(KOMS.length===0){
+    el.innerHTML='<p style="color:var(--ink3);font-size:14px;grid-column:1/-1;padding:32px 0;text-align:center"><i class="ti ti-users" style="display:block;font-size:32px;margin-bottom:8px;opacity:.3"></i>Komunitas belum ditambahkan.<br>Isi array KOMS di kode untuk menampilkan komunitas.</p>';
+    return;
+  }
+  const filtered=allKoms.filter((k,i)=>{
+    const nk=normKom(k,i);
+    return !q||nk.name.toLowerCase().includes(q)||nk.tags.some(t=>t.toLowerCase().includes(q));
+  });
+  el.innerHTML=filtered.map((k,i)=>{
+    const nk=normKom(k,i);
+    const saved=bookmarks.komunitas.has(nk.id);
     return `<div class="kcard">
-      <div class="kban" style="background:${k.bg}"><i class="ti ${k.ic}" style="color:${k.bgi};font-size:28px"></i>
-        <button class="kcard-bm${saved?' saved':''}" onclick="toggleBmKom('${k.id}',this)"><i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i></button>
+      <div class="kban" style="background:${nk.bg}"><i class="ti ${nk.ic}" style="color:${nk.bgi};font-size:28px"></i>
+        <button class="kcard-bm${saved?' saved':''}" onclick="toggleBmKom('${nk.id}',this)"><i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i></button>
       </div>
       <div class="kbody">
-        <div class="kname">${k.name}</div>
-        <div class="kdesc">${k.desc}</div>
-        <div class="ktags">${k.tags.map(t=>`<span class="chip ch-b">${t}</span>`).join('')}</div>
+        <div class="kname">${nk.name}</div>
+        <div class="kdesc">${nk.desc!=='—'?nk.desc:''}</div>
+        <div class="ktags">${nk.tags.map(t=>`<span class="chip ch-b">${t}</span>`).join('')}</div>
         <div class="kft">
-          <div class="kmem"><i class="ti ti-users"></i>${k.mem}</div>
+          <div class="kmem">${nk.mem!=='—'?`<i class="ti ti-users"></i>${nk.mem}`:''}</div>
           <div class="kft-btns">
-            <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
+            <a class="btn-wa" href="${nk.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
           </div>
         </div>
       </div>
@@ -1405,1847 +1626,126 @@ function renderBookmarks(){
   const el=document.getElementById('bk-content');
   if(!el)return;
   if(bkTab==='komunitas'){
-    const items=KOMS.filter(k=>bookmarks.komunitas.has(k.id));
+    const items=KOMS.map((k,i)=>normKom(k,i)).filter(k=>bookmarks.komunitas.has(k.id));
     el.innerHTML=items.length?items.map(k=>`<div class="kcard">
       <div class="kban" style="background:${k.bg}"><i class="ti ${k.ic}" style="color:${k.bgi};font-size:28px"></i></div>
-      <div class="kbody"><div class="kname">${k.name}</div><div class="kdesc">${k.desc}</div>
-        <div class="kft"><div class="kmem"><i class="ti ti-users"></i>${k.mem}</div>
+      <div class="kbody"><div class="kname">${k.name}</div><div class="kdesc">${k.desc!=='—'?k.desc:''}</div>
+        <div class="kft"><div class="kmem">${k.mem!=='—'?`<i class="ti ti-users"></i>${k.mem}`:''}</div>
           <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
         </div>
       </div></div>`).join(''):`<div class="bk-empty"><i class="ti ti-bookmark"></i><p>Belum ada komunitas tersimpan.<br>Jelajahi dan simpan komunitasmu!</p></div>`;
   } else {
-    const items=EVS.filter(e=>bookmarks.lomba.has(e.id));
-    el.innerHTML=items.length?items.map(renderEvCard).join(''):`<div class="bk-empty"><i class="ti ti-trophy"></i><p>Belum ada lomba tersimpan.<br>Cari lomba sesuai bakatmu!</p></div>`;
+    const items=EVS.map((e,i)=>normEv(e,i)).filter(e=>bookmarks.lomba.has(e.id));
+    el.innerHTML=items.length?items.map((e,i)=>renderEvCard(e,i)).join(''):`<div class="bk-empty"><i class="ti ti-trophy"></i><p>Belum ada lomba tersimpan.<br>Cari lomba sesuai bakatmu!</p></div>`;
   }
 }
 
 /* ===================================================================
-   QUIZ
+   QUIZ — CHAT MODEL
    =================================================================== */
+// Menyimpan riwayat chat yang sudah tampil
+let chatHistory = [];
+
 function renderQ(){
-  const q=QS[qi]; if(!q)return;
-  const barEl=document.getElementById('qbar');
-  const stepEl=document.getElementById('qstep');
-  const chatEl=document.getElementById('q-chat');
-  const optsEl=document.getElementById('qopts');
-  if(barEl)barEl.style.width=`${((qi+1)/QS.length)*100}%`;
-  if(stepEl)stepEl.textContent=`${qi+1} / ${QS.length}`;
-  if(chatEl)chatEl.innerHTML=`<div class="q-bubble">
-    <div class="q-bubble-label"><i class="ti ti-sparkles"></i>LostPotential</div>
-    <div class="q-text">${q.q}</div>
-    <div class="q-hint">${q.h}</div>
-  </div>`;
-  if(optsEl)optsEl.innerHTML=q.opts.map((o,i)=>`
-    <div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this)">
-      <div class="qopt-ic"><i class="ti ${o.ic}"></i></div>
-      <span>${o.t}</span>
-    </div>`).join('');
+  const q = QS[qi]; if(!q) return;
+  const barEl = document.getElementById('qbar');
+  const stepEl = document.getElementById('qstep');
+  const chatArea = document.getElementById('q-chat-area');
+  const optsEl = document.getElementById('qopts');
+  if(barEl) barEl.style.width = `${((qi+1)/QS.length)*100}%`;
+  if(stepEl) stepEl.textContent = `${qi+1} / ${QS.length}`;
+
+  // Rebuild chat history up to current question
+  if(!chatArea) return;
+  chatArea.innerHTML = '';
+
+  // Tampilkan semua pesan sebelumnya (pertanyaan + jawaban)
+  chatHistory.slice(0, qi).forEach(item => {
+    // Bot bubble
+    chatArea.insertAdjacentHTML('beforeend', botBubble(item.q, item.h));
+    // User reply bubble
+    if(item.ans !== undefined){
+      chatArea.insertAdjacentHTML('beforeend', userBubble(item.ansIcon, item.ansText));
+    }
+  });
+
+  // Tampilkan pertanyaan saat ini dengan efek typing
+  showTypingThen(chatArea, q.q, q.h, () => {
+    // Render opsi
+    if(optsEl) optsEl.innerHTML = q.opts.map((o,i) => `
+      <div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this,'${o.ic.replace(/'/g,"\\'")}','${o.t.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+        <div class="qopt-ic"><i class="ti ${o.ic}"></i></div>
+        <span>${o.t}</span>
+      </div>`).join('');
+  });
 }
 
-function selOpt(i,el){
-  document.querySelectorAll('.qopt').forEach(o=>o.classList.remove('on'));
+function botBubble(text, hint){
+  return `<div class="q-bot-row">
+    <div class="q-bot-av"><i class="ti ti-sparkles"></i></div>
+    <div class="q-bot-bubble">
+      <div class="q-bot-name">LostPotential</div>
+      <div class="q-text">${text}</div>
+      ${hint?`<div class="q-hint">${hint}</div>`:''}
+    </div>
+  </div>`;
+}
+
+function userBubble(icon, text){
+  return `<div class="q-user-row">
+    <div class="q-user-bubble">
+      <i class="ti ${icon}"></i>${text}
+    </div>
+  </div>`;
+}
+
+function showTypingThen(chatArea, text, hint, cb){
+  // Tampilkan typing indicator dulu
+  const typingId = 'typing-'+Date.now();
+  chatArea.insertAdjacentHTML('beforeend',
+    `<div class="q-typing" id="${typingId}">
+      <div class="q-bot-av"><i class="ti ti-sparkles"></i></div>
+      <div class="q-typing-bubble">
+        <div class="q-dot"></div><div class="q-dot"></div><div class="q-dot"></div>
+      </div>
+    </div>`);
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  setTimeout(() => {
+    const typingEl = document.getElementById(typingId);
+    if(typingEl) typingEl.remove();
+    chatArea.insertAdjacentHTML('beforeend', botBubble(text, hint));
+    chatArea.scrollTop = chatArea.scrollHeight;
+    if(cb) cb();
+  }, 700);
+}
+
+function selOpt(i, el, icon, text){
+  document.querySelectorAll('.qopt').forEach(o => o.classList.remove('on'));
   el.classList.add('on');
-  ans[qi]=i;
+  ans[qi] = i;
+  // Simpan ke history agar tampil ulang saat kembali
+  if(!chatHistory[qi]) chatHistory[qi] = { q: QS[qi].q, h: QS[qi].h };
+  chatHistory[qi].ans = i;
+  chatHistory[qi].ansIcon = icon;
+  chatHistory[qi].ansText = text;
 }
 
 function nextQ(){
-  if(ans[qi]===undefined){const o=document.querySelector('.qopt');if(o)selOpt(0,o);}
-  if(qi<QS.length-1){qi++;renderQ();}
+  if(ans[qi] === undefined){
+    const o = document.querySelector('.qopt');
+    if(o){
+      const icon = QS[qi].opts[0].ic;
+      const text = QS[qi].opts[0].t;
+      selOpt(0, o, icon, text);
+    }
+  }
+  if(qi < QS.length - 1){ qi++; renderQ(); }
   else showResult();
 }
 
 function prevQ(){
-  if(qi>0){qi--;renderQ();}
-}
-
-/* ===================================================================
-   SHOW RESULT — personal & bermakna
-   =================================================================== */
-function showResult(){
-  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
-  const mp=[
-    ['tech','seni','tulis','sport'],
-    ['seni','seni','tech','tulis'],
-    ['tech','musik','sains','tulis'],
-    ['tech','seni','sport','tulis'],
-    ['tech','foto','sains','sport'],
-    ['tech','sport','seni','sains'],
-  ];
-  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
-  const top=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0][0];
-  const r=RES[top]||RES['tech']; // fallback ke tech jika key tidak ditemukan
-  const rWrap=document.getElementById('rwrap');
-  if(!rWrap)return;
-
-  // 7-day plan HTML
-  const dayColors=['#1847ED','#F04E23','#00966A'];
-  const planHTML=r.plan7.map((d,i)=>`
-    <div class="day-row">
-      <div class="day-badge" style="background:${dayColors[i]||'#636A84'};color:#fff">${d.day}</div>
-      <div class="day-content">
-        <div class="day-title">${d.title}</div>
-        <div class="day-desc">${d.desc}</div>
-        <div class="day-output">${d.output}</div>
-      </div>
-    </div>`).join('');
-
-  // Role models HTML
-  const rolesHTML=r.roles.map(ro=>`
-    <div class="role-row">
-      <div class="role-av" style="background:${ro.color}">${ro.name.charAt(0)}</div>
-      <div>
-        <div class="role-name">${ro.name}</div>
-        <div class="role-desc">${ro.desc}</div>
-      </div>
-    </div>`).join('');
-
-  rWrap.innerHTML=`
-    <!-- HERO RESULT -->
-    <div class="rhero" style="background:${r.bg};color:${r.tc}">
-      <div class="r-ic" style="background:${r.icbg}"><i class="ti ${r.ic}"></i></div>
-      <div class="r-label">Hasil analisis bakatmu</div>
-      <div class="r-title">${r.title}</div>
-      <div class="r-char">${r.char}</div>
-      <div class="r-desc">${r.desc}</div>
-      <div class="r-skills">${r.skills.map(s=>`<span class="r-skill">${s}</span>`).join('')}</div>
-    </div>
-
-    <!-- EMOTIONAL MOTIVATION -->
-    <div class="r-motive">
-      <div class="r-motive-label"><i class="ti ti-heart"></i>Pesan khusus untukmu</div>
-      <div class="r-motive-text">${r.motive}</div>
-      <div class="r-motive-sub">${r.motiveSub}</div>
-    </div>
-
-    <!-- REAL WORLD ROLE MODELS -->
-    <div class="r-rolemodel">
-      <div class="r-rolemodel-hd"><i class="ti ti-award"></i>Orang Indonesia yang memulai sepertimu</div>
-      ${rolesHTML}
-    </div>
-
-    <!-- 7-DAY ACTION PLAN -->
-    <div class="r-7day">
-      <div class="r-7day-hd"><i class="ti ti-calendar-event"></i>7-Day Challenge: Mulai sekarang</div>
-      <div class="r-7day-sub">Ini yang membedakanmu dari yang hanya tahu, tapi tidak bertindak</div>
-      ${planHTML}
-    </div>
-
-    <!-- COMMUNITY & EVENTS -->
-    <div class="rgrid">
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-users"></i>Komunitas untukmu</div>
-        ${r.coms.map((ic,i)=>{
-          const k=KOMS.find(k=>k.ic===ic);
-          return `<div class="com-row">
-            <div class="com-av" style="background:${k?k.bg:'#EEF2FD'}"><i class="ti ${ic}" style="color:${k?k.bgi:'#1239C4'}"></i></div>
-            <div><div class="com-name">${r.comN[i]}</div><div class="com-meta">${r.comM[i]}</div></div>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-trophy"></i>Lomba rekomendasi</div>
-        ${r.evs.map(e=>`<div class="ev-row">
-          <div class="ev-name"><i class="ti ti-trophy"></i>${e}</div>
-          <div class="ev-meta">Pelajar SMP–SMA · Indonesia</div>
-        </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="rcta">
-      <div>
-        <h3>Siap memulai perjalananmu?</h3>
-        <p>Bergabung komunitas dan daftar lomba pertamamu hari ini</p>
-      </div>
-      <button class="btn-w" onclick="go('komunitas');setNav('komunitas')">
-        Gabung sekarang<i class="ti ti-arrow-right"></i>
-      </button>
-    </div>
-    <div style="text-align:center;margin-top:16px">
-      <button onclick="go('quiz');setNav('cari')" style="background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px">
-        <i class="ti ti-refresh"></i>Ulangi tes
-      </button>
-    </div>`;
-
-  go('result');
-  setNav('cari');
-  launchConfetti();
-}
-
-/* ===================================================================
-   CONFETTI
-   =================================================================== */
-function launchConfetti(){
-  const cv=document.getElementById('confetti');if(!cv)return;
-  cv.style.display='block';
-  const ctx=cv.getContext('2d');
-  cv.width=window.innerWidth;cv.height=window.innerHeight;
-  const colors=['#1847ED','#F04E23','#00966A','#6D28D9','#D97706','#9D174D','#25D366'];
-  const pts=Array.from({length:120},()=>({
-    x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,
-    r:Math.random()*5+2,c:colors[Math.floor(Math.random()*colors.length)],
-    vx:(Math.random()-.5)*3,vy:Math.random()*4+1.5,
-    rot:Math.random()*360,vr:(Math.random()-.5)*7,op:1
-  }));
-  let fr=0;
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    pts.forEach(p=>{
-      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
-      ctx.globalAlpha=p.op;ctx.fillStyle=p.c;ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();
-      p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
-      if(fr>80)p.op-=0.014;
-    });
-    fr++;
-    if(fr<150)requestAnimationFrame(draw);
-    else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}
-  }
-  draw();
-}
-
-/* ===================================================================
-   AUTH — DEMO MODE (Firebase placeholder)
-   =================================================================== */
-function checkAuthState(){
-  try{
-    const saved=localStorage.getItem('lp_demo_user');
-    if(saved){const u=JSON.parse(saved);onUserLoggedIn({displayName:u.name,phone:u.phone,isDemo:true});}
-    else{onUserLoggedOut();}
-  }catch(e){onUserLoggedOut();}
-  setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),800);
-}
-
-function onUserLoggedIn(user){
-  currentUser=user;
-  const name=user.displayName||'Pengguna';
-  const initials=name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()||'LP';
-  const prAv=document.getElementById('pr-av-initials');
-  const prName=document.getElementById('pr-name-display');
-  const navBtn=document.getElementById('nav-btn-login');
-  const logoutBtn=document.getElementById('logout-btn');
-  const loginCta=document.getElementById('pr-login-cta');
-  if(prAv)prAv.textContent=initials;
-  if(prName)prName.textContent=name;
-  if(navBtn)navBtn.style.display='none';
-  if(logoutBtn)logoutBtn.style.display='flex';
-  if(loginCta)loginCta.style.display='none';
-  loadBookmarks();
-  setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
-}
-
-function onUserLoggedOut(){
-  currentUser=null;
-  const navBtn=document.getElementById('nav-btn-login');
-  const logoutBtn=document.getElementById('logout-btn');
-  const loginCta=document.getElementById('pr-login-cta');
-  if(navBtn)navBtn.style.display='flex';
-  if(logoutBtn)logoutBtn.style.display='none';
-  if(loginCta)loginCta.style.display='block';
-  loadBookmarks();
-  setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
-}
-
-function renderProfile(){
-  if(!currentUser){document.getElementById('pr-school-display').textContent='Belum masuk';return;}
-  try{
-    const saved=localStorage.getItem('lp_demo_user');
-    if(saved){
-      const u=JSON.parse(saved);
-      document.getElementById('pr-school-display').textContent=u.school||'Belum diatur';
-      const waChip=document.getElementById('pr-wa-chip');
-      if(u.phone&&waChip){waChip.style.display='inline-flex';document.getElementById('pr-wa-display').textContent='+62'+u.phone;}
-    }
-  }catch(e){}
-}
-
-function doLogout(){
-  if(firebaseReady&&auth){auth.signOut();}
-  try{localStorage.removeItem('lp_demo_user');}catch(e){}
-  onUserLoggedOut();
-  go('home');setNav('home');
-  toast('Kamu berhasil keluar','ti-logout');
-}
-
-function loginWithGoogle(){toast('Login Google memerlukan Firebase yang dikonfigurasi','ti-info-circle');}
-
-/* ===================================================================
-   PHONE INPUT UTILS
-   =================================================================== */
-function onPhoneInput(inp){
-  inp.value=inp.value.replace(/\D/g,'');
-}
-
-function otpNext(inp,idx,prefix){
-  if(inp.value.length===1){
-    const next=document.getElementById(prefix==='login'?`lotp${idx+1}`:`rotp${idx+1}`);
-    if(next)next.focus();
-  }
-}
-
-function clearOTP(prefix){
-  for(let i=0;i<6;i++){const el=document.getElementById(prefix+i);if(el)el.value='';}
-}
-
-/* ===================================================================
-   LOGIN FLOW (demo)
-   =================================================================== */
-function loginSendOTP(resend=false){
-  const phone=document.getElementById('login-phone')?.value||'';
-  if(phone.length<9){
-    const err=document.getElementById('login-phone-err');
-    if(err){err.style.display='block';setTimeout(()=>err.style.display='none',2000);}
-    return;
-  }
-  document.getElementById('login-phone-panel').style.display='none';
-  document.getElementById('login-otp-panel').style.display='block';
-  document.getElementById('login-phone-display').textContent='+62 '+phone;
-  toast('Kode OTP dikirim (demo: gunakan 123456)','ti-check');
-  startTimer('login');
-}
-
-function loginVerifyOTP(){
-  let code='';
-  for(let i=0;i<6;i++)code+=(document.getElementById('lotp'+i)?.value||'');
-  if(code==='123456'||code.length===6){
-    const phone=document.getElementById('login-phone')?.value||'';
-    try{localStorage.setItem('lp_demo_user',JSON.stringify({name:'Pengguna',phone,school:''}));}catch(e){}
-    onUserLoggedIn({displayName:'Pengguna',phone});
-    go('home');setNav('home');
-    toast('Berhasil masuk!','ti-check');
-  } else {
-    toast('Kode OTP salah. Coba: 123456','ti-alert-circle');
-  }
-}
-
-/* ===================================================================
-   REGISTER FLOW (demo)
-   =================================================================== */
-function goRegStep(n){
-  document.querySelectorAll('.reg-panel').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.reg-step').forEach((s,i)=>{
-    s.classList.toggle('active',i<=n);
-    s.classList.toggle('done',i<n);
-  });
-  document.getElementById('rpanel-'+n)?.classList.add('on');
-}
-
-function regSendOTP(resend=false){
-  const phone=document.getElementById('reg-phone')?.value||'';
-  if(phone.length<9){
-    const err=document.getElementById('reg-phone-err');
-    if(err){err.style.display='block';setTimeout(()=>err.style.display='none',2000);}
-    return;
-  }
-  document.getElementById('reg-phone-display').textContent='+62 '+phone;
-  goRegStep(1);
-  toast('Kode OTP dikirim (demo: gunakan 123456)','ti-check');
-  startTimer('reg');
-}
-
-function regVerifyOTP(){
-  let code='';
-  for(let i=0;i<6;i++)code+=(document.getElementById('rotp'+i)?.value||'');
-  if(code==='123456'||code.length===6){goRegStep(2);toast('OTP terverifikasi!','ti-shield-check');}
-  else{toast('Kode salah. Coba: 123456','ti-alert-circle');}
-}
-
-function regFinish(){
-  const name=document.getElementById('reg-name')?.value||'';
-  if(!name.trim()){
-    const err=document.getElementById('reg-name-err');
-    if(err){err.style.display='block';setTimeout(()=>err.style.display='none',2000);}
-    return;
-  }
-  const school=document.getElementById('reg-school')?.value||'';
-  const phone=document.getElementById('reg-phone')?.value||'';
-  try{localStorage.setItem('lp_demo_user',JSON.stringify({name,school,phone}));}catch(e){}
-  onUserLoggedIn({displayName:name});
-  go('home');setNav('home');
-  toast('Selamat datang, '+name+'! 🎉','ti-confetti');
-}
-
-/* ===================================================================
-   TIMER UTIL
-   =================================================================== */
-function startTimer(prefix){
-  let secs=60;
-  const btn=document.getElementById(prefix+'-resend-btn');
-  const lbl=document.getElementById(prefix+'-resend-lbl');
-  if(btn)btn.disabled=true;
-  const t=setInterval(()=>{
-    secs--;
-    if(lbl)lbl.textContent=`Kirim ulang (${secs}s)`;
-    if(secs<=0){clearInterval(t);if(btn)btn.disabled=false;if(lbl)lbl.textContent='Kirim ulang';}
-  },1000);
-}
-
-/* ===================================================================
-   INIT
-   =================================================================== */
-document.addEventListener('DOMContentLoaded',function(){
-  renderCats();
-  filterEvs();
-  loadDarkPref();
-  loadBookmarks();
-  initFirebase();
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LostPotential — Temukan Arahmu</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
-
-<!-- Firebase v10 CDN -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-<style>
-/* ========================================================
-   ROOT & RESET
-   ======================================================== */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-:root{
-  --ink:#0A0F1E;--ink2:#3D4460;--ink3:#8891AB;--ink4:#C8CEDF;
-  --surf:#FFFFFF;--surf2:#F4F5F9;--surf3:#ECEEF5;--surf4:#E2E5EF;
-  --blue:#1847ED;--blue-d:#1239C4;--blue-l:#EEF2FD;--blue-m:#7BA2F5;
-  --orange:#F04E23;--orange-l:#FEF0EC;--orange-d:#C43C14;
-  --green:#00966A;--green-l:#E5F7F2;--green-d:#006B4C;
-  --purple:#6D28D9;--purple-l:#F0EEFF;
-  --amber:#D97706;--amber-l:#FEF9EC;
-  --wa-green:#25D366;--wa-green-d:#128C7E;--wa-green-l:#E8FAF0;
-  --r:14px;--r-sm:10px;--r-lg:20px;--r-xl:26px;
-  --ease:cubic-bezier(.4,0,.2,1);--dur:.22s;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
-  --shadow-lg:0 12px 40px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.07);
-}
-[data-dark]{
-  --ink:#F0F2FA;--ink2:#A8B0C8;--ink3:#636A84;--ink4:#3A3F55;
-  --surf:#141824;--surf2:#1C2130;--surf3:#242B3E;--surf4:#2E3650;
-  --blue-l:#0F1E4A;--blue-m:#4A72D9;
-  --orange-l:#3A1A0E;--green-l:#0A2E22;--purple-l:#1C1040;--amber-l:#2A1E05;
-  --wa-green-l:#0A2E1C;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.2);
-  --shadow:0 4px 16px rgba(0,0,0,.3);
-  --shadow-lg:0 12px 40px rgba(0,0,0,.4);
-}
-
-html,body{height:100%;overscroll-behavior:none}
-body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);overflow-x:hidden;font-size:15px;line-height:1.6;transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
-h1,h2,h3,h4,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.15}
-a{text-decoration:none;color:inherit}
-input,button,textarea,select{font-family:'DM Sans',sans-serif}
-
-/* ========================================================
-   PAGE TRANSITIONS
-   ======================================================== */
-.page{display:none}
-.page.on{display:block;animation:rise .28s var(--ease)}
-@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-/* ========================================================
-   NAV
-   ======================================================== */
-nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;transition:background var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
-.brand{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.5px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--orange) 0%,#ff6b3d 100%);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(240,78,35,.3)}
-.brand-mark i{color:#fff;font-size:16px}
-.nav-r{display:flex;align-items:center;gap:6px}
-.btn-ghost{background:none;border:1.5px solid var(--surf4);color:var(--ink2);padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:6px}
-.btn-ghost:hover{border-color:var(--ink3);color:var(--ink)}
-.btn-primary{background:var(--ink);color:var(--surf);border:none;padding:9px 18px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:6px;letter-spacing:-.2px}
-.btn-primary:hover{opacity:.82;transform:translateY(-1px)}
-.dark-toggle{width:36px;height:36px;border-radius:50%;background:var(--surf3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);transition:all var(--dur) var(--ease);flex-shrink:0}
-.dark-toggle:hover{background:var(--surf4);color:var(--ink)}
-
-/* ========================================================
-   HERO — upgraded with emotional hook
-   ======================================================== */
-.hero{padding:60px 20px 52px;max-width:1100px;margin:0 auto}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-m);padding:7px 16px;border-radius:50px;font-size:12.5px;font-weight:700;margin-bottom:24px;letter-spacing:.2px}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:livepulse 2s ease infinite;flex-shrink:0}
-@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-.hero h1{font-size:clamp(34px,5.5vw,64px);font-weight:800;color:var(--ink);margin-bottom:20px;letter-spacing:-2px;max-width:780px;line-height:1.08}
-.hero h1 .accent{color:var(--blue)}
-.hero h1 .outline{-webkit-text-stroke:2.5px var(--orange);color:transparent}
-
-/* 🔥 EMOTIONAL HOOK BANNER */
-.hook-banner{
-  background:linear-gradient(135deg,#0A0F1E 0%,#1847ED 100%);
-  border-radius:var(--r-lg);
-  padding:22px 26px;
-  margin-bottom:32px;
-  position:relative;
-  overflow:hidden;
-}
-.hook-banner::before{
-  content:'';position:absolute;top:-40px;right:-40px;
-  width:160px;height:160px;
-  background:rgba(255,255,255,.05);
-  border-radius:50%;
-}
-.hook-icon{
-  width:36px;height:36px;background:rgba(255,255,255,.12);
-  border-radius:10px;display:flex;align-items:center;justify-content:center;
-  margin-bottom:12px;
-}
-.hook-icon i{color:#fff;font-size:18px}
-.hook-quote{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:#fff;line-height:1.4;letter-spacing:-.2px;max-width:500px}
-.hook-sub{font-size:13px;color:rgba(255,255,255,.6);margin-top:8px}
-
-/* Single CTA — clean */
-.hero-cta-wrap{margin-bottom:48px}
-.cta-main{background:var(--blue);color:#fff;border:none;padding:16px 32px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:inline-flex;align-items:center;gap:9px;letter-spacing:-.2px;box-shadow:0 4px 18px rgba(24,71,237,.32)}
-.cta-main:hover{background:var(--blue-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(24,71,237,.4)}
-.cta-trust{font-size:12.5px;color:var(--ink3);margin-top:12px;display:flex;align-items:center;gap:6px}
-.cta-trust i{font-size:14px;color:var(--green)}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:52px}
-.scard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:20px 22px;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
-.scard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.scard-bar{height:3px;border-radius:2px;margin-bottom:12px;width:28px}
-.scard-n{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-1px}
-.scard-l{font-size:12.5px;color:var(--ink3);margin-top:2px}
-
-/* Section headers */
-.sec-hd{margin-bottom:20px}
-.sec-hd h2{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;color:var(--ink)}
-.sec-hd p{font-size:13.5px;color:var(--ink3)}
-
-/* ========================================================
-   JOURNEY STRIP — new "4-tahap" flow bar
-   ======================================================== */
-.journey-strip{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:0;
-  margin-bottom:52px;
-  border:1.5px solid var(--surf3);
-  border-radius:var(--r-lg);
-  overflow:hidden;
-  background:var(--surf);
-  box-shadow:var(--shadow-sm);
-}
-.jstep{
-  padding:18px 16px;
-  border-right:1px solid var(--surf3);
-  cursor:pointer;
-  transition:background var(--dur) var(--ease);
-  position:relative;
-}
-.jstep:last-child{border-right:none}
-.jstep:hover{background:var(--blue-l)}
-.jstep-num{font-size:10px;font-weight:700;color:var(--ink4);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
-.jstep-icon{font-size:20px;color:var(--blue);margin-bottom:6px}
-.jstep-title{font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
-.jstep-sub{font-size:11.5px;color:var(--ink3)}
-
-/* ========================================================
-   CATEGORY CHIPS
-   ======================================================== */
-.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:10px;margin-bottom:52px}
-.ccat{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r-lg);padding:18px 14px 16px;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
-.ccat:hover{border-color:var(--blue-m);transform:translateY(-3px);box-shadow:var(--shadow)}
-.ccat.sel{border-color:var(--blue);background:var(--blue-l)}
-.ccat-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:11px;font-size:19px;transition:all var(--dur) var(--ease)}
-.ccat.sel .ccat-ic{background:var(--blue)!important}
-.ccat.sel .ccat-ic i{color:#fff!important}
-.ccat-name{font-weight:700;font-size:12.5px;color:var(--ink);margin-bottom:3px}
-.ccat.sel .ccat-name{color:var(--blue-d)}
-.ccat-ct{font-size:11.5px;color:var(--ink3)}
-
-/* ========================================================
-   SEARCH
-   ======================================================== */
-.search-wrap{position:relative;margin-bottom:22px}
-.search-wrap i.search-ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:17px;color:var(--ink3);pointer-events:none}
-.search-inp{width:100%;background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:13px 20px 13px 46px;font-size:14px;color:var(--ink);outline:none;transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
-.search-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
-.search-inp::placeholder{color:var(--ink4)}
-.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--surf3);border:none;cursor:pointer;display:none;align-items:center;justify-content:center;color:var(--ink3);font-size:13px;transition:all var(--dur) var(--ease)}
-.search-clear.vis{display:flex}
-
-/* ========================================================
-   EVENT CARDS
-   ======================================================== */
-.evts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:52px}
-.ecard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm);position:relative}
-.ecard:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
-.ecard-top{height:106px;display:flex;align-items:center;justify-content:center;position:relative}
-.ecard-top i{font-size:38px}
-.ecard-chip{position:absolute;top:12px;left:12px;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:50px}
-.ecard-bm{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:15px;transition:all var(--dur) var(--ease)}
-.ecard-bm:hover{background:#fff;color:var(--blue)}
-.ecard-bm.saved{color:var(--blue);background:#fff}
-.ecard-body{padding:14px 16px 16px}
-.ecard-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14.5px;margin-bottom:9px;line-height:1.3;color:var(--ink)}
-.ecard-meta{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink3);margin-bottom:12px}
-.ecard-foot{display:flex;align-items:center;justify-content:space-between}
-.prize{font-size:12.5px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px}
-.chip{display:inline-block;padding:4px 10px;border-radius:50px;font-size:10.5px;font-weight:700}
-.ch-b{background:var(--blue-l);color:#1239C4}
-.ch-o{background:var(--orange-l);color:#C43C14}
-.ch-g{background:var(--green-l);color:#006B4C}
-.ch-p{background:var(--purple-l);color:#5B21B6}
-.ch-a{background:var(--amber-l);color:#92400E}
-.dl{font-size:11px;color:var(--ink3);margin-top:7px;display:flex;align-items:center;gap:4px}
-
-/* ========================================================
-   QUIZ — upgraded
-   ======================================================== */
-.qwrap{max-width:600px;margin:0 auto;padding:44px 20px 80px}
-.q-chat{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;min-height:140px}
-.q-bubble{background:var(--surf);border:1px solid var(--surf3);border-radius:0 18px 18px 18px;padding:18px 22px;max-width:88%;animation:bubbleIn .3s var(--ease);box-shadow:var(--shadow-sm)}
-@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.q-bubble-label{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.q-bubble-label i{font-size:13px}
-.q-text{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.3px;line-height:1.25}
-.q-hint{font-size:13.5px;color:var(--ink3);margin-top:6px}
-.qprog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.qprog{flex:1;height:4px;background:var(--surf3);border-radius:4px;overflow:hidden}
-.qbar{height:100%;background:linear-gradient(90deg,var(--blue),var(--blue-m));border-radius:4px;transition:width .4s var(--ease)}
-.qstep{font-size:12px;font-weight:700;color:var(--ink3);white-space:nowrap}
-.qopts{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
-.qopt{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:13px;font-size:14px;font-weight:500;color:var(--ink2);box-shadow:var(--shadow-sm)}
-.qopt:hover{border-color:var(--blue-m);background:var(--blue-l);color:var(--ink);transform:translateX(4px)}
-.qopt.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d);font-weight:600}
-.qopt-ic{width:36px;height:36px;border-radius:10px;background:var(--surf2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--dur) var(--ease)}
-.qopt-ic i{font-size:17px;color:var(--ink3);transition:color var(--dur) var(--ease)}
-.qopt.on .qopt-ic{background:#C5D4FB}
-.qopt.on .qopt-ic i{color:var(--blue)}
-.qnav{display:flex;gap:10px}
-.btn-bk{background:var(--surf);border:1.5px solid var(--surf3);color:var(--ink3);padding:13px 20px;border-radius:50px;font-size:14px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:7px}
-.btn-bk:hover{border-color:var(--ink4);color:var(--ink)}
-.btn-nx{background:var(--blue);color:#fff;border:none;padding:13px 0;border-radius:50px;font-size:14.5px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);flex:1;letter-spacing:-.1px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(24,71,237,.28)}
-.btn-nx:hover{background:var(--blue-d);transform:translateY(-1px)}
-
-/* ========================================================
-   RESULT PAGE — fully upgraded
-   ======================================================== */
-.rwrap{max-width:680px;margin:0 auto;padding:36px 20px 100px}
-
-/* Hero result */
-.rhero{border-radius:var(--r-xl);padding:38px 32px 32px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden}
-.r-ic{width:68px;height:68px;border-radius:18px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
-.r-ic i{font-size:32px;color:#fff}
-.r-label{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.55;margin-bottom:8px}
-.r-title{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px;letter-spacing:-.5px;line-height:1.1}
-.r-char{font-size:13px;opacity:.7;margin-bottom:14px;font-style:italic}
-.r-desc{font-size:14.5px;line-height:1.7;opacity:.82;max-width:420px;margin:0 auto 20px}
-.r-skills{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
-.r-skill{padding:7px 16px;border-radius:50px;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.14);letter-spacing:.2px}
-
-/* Emotional motivation card */
-.r-motive{
-  background:var(--surf);border:1px solid var(--surf3);
-  border-radius:var(--r-lg);padding:20px 24px;
-  margin-bottom:16px;
-  border-left:4px solid var(--blue);
-  box-shadow:var(--shadow-sm);
-}
-.r-motive-label{font-size:10.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.r-motive-label i{font-size:14px}
-.r-motive-text{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--ink);line-height:1.5;margin-bottom:8px}
-.r-motive-sub{font-size:13px;color:var(--ink3);line-height:1.6}
-
-/* Real-world role models */
-.r-rolemodel{
-  background:var(--surf);border:1px solid var(--surf3);
-  border-radius:var(--r-lg);padding:18px 20px;
-  margin-bottom:16px;box-shadow:var(--shadow-sm);
-}
-.r-rolemodel-hd{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.role-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--surf3)}
-.role-row:last-child{border:none;padding-bottom:0}
-.role-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:800;color:#fff}
-.role-name{font-size:13.5px;font-weight:700;color:var(--ink)}
-.role-desc{font-size:11.5px;color:var(--ink3)}
-
-/* 7-day challenge */
-.r-7day{
-  background:linear-gradient(135deg,var(--ink) 0%,#1a2240 100%);
-  border-radius:var(--r-lg);padding:24px;margin-bottom:16px;
-  box-shadow:var(--shadow-lg);
-}
-.r-7day-hd{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.r-7day-hd i{font-size:18px;color:var(--amber)}
-.r-7day-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px}
-.day-row{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.day-row:last-child{border:none;padding-bottom:0}
-.day-badge{
-  min-width:52px;height:24px;border-radius:50px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;letter-spacing:.3px;flex-shrink:0;margin-top:2px;
-}
-.day-content{flex:1}
-.day-title{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:2px}
-.day-desc{font-size:12px;color:rgba(255,255,255,.55)}
-.day-output{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border-radius:50px;padding:4px 10px;font-size:11px;color:rgba(255,255,255,.7);margin-top:6px}
-
-/* Community & events grid */
-.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px}
-.rcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--shadow-sm)}
-.rcard-hd{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:13px;display:flex;align-items:center;gap:6px}
-.rcard-hd i{font-size:14px}
-.com-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--surf3)}
-.com-row:last-child{border:none;padding-bottom:0}
-.com-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.com-av i{font-size:16px}
-.com-name{font-size:13.5px;font-weight:600;color:var(--ink)}
-.com-meta{font-size:11.5px;color:var(--ink3)}
-.ev-row{padding:9px 0;border-bottom:1px solid var(--surf3)}
-.ev-row:last-child{border:none;padding-bottom:0}
-.ev-name{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:3px;display:flex;align-items:center;gap:6px}
-.ev-name i{font-size:13px;color:var(--amber);flex-shrink:0}
-.ev-meta{font-size:11.5px;color:var(--ink3)}
-
-/* CTA bar */
-.rcta{background:var(--ink);color:var(--surf);border-radius:var(--r-lg);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
-.rcta h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px}
-.rcta p{font-size:12.5px;opacity:.6;margin-top:3px}
-.btn-w{background:var(--surf);color:var(--ink);border:none;padding:11px 20px;border-radius:50px;font-weight:700;font-size:13px;cursor:pointer;transition:all var(--dur) var(--ease);white-space:nowrap;display:flex;align-items:center;gap:6px}
-.btn-w:hover{opacity:.9;transform:translateY(-1px)}
-
-/* ========================================================
-   KOMUNITAS PAGE
-   ======================================================== */
-.kwrap{max-width:980px;margin:0 auto;padding:44px 20px 80px}
-.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.kcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm);position:relative}
-.kcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.kban{height:68px;display:flex;align-items:center;justify-content:center;position:relative}
-.kban i{font-size:30px}
-.kcard-bm{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:14px;transition:all var(--dur) var(--ease)}
-.kcard-bm:hover{background:rgba(255,255,255,.95);color:var(--blue)}
-.kcard-bm.saved{color:var(--blue);background:rgba(255,255,255,.95)}
-.kbody{padding:16px}
-.kname{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;color:var(--ink);margin-bottom:5px}
-.kdesc{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-bottom:11px}
-.ktags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px}
-.kft{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.kmem{font-size:11.5px;color:var(--ink3);font-weight:500;display:flex;align-items:center;gap:4px}
-.kmem i{font-size:12px}
-.kft-btns{display:flex;gap:7px;align-items:center}
-.btn-join{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:50px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:4px}
-.btn-join:hover{background:var(--blue-d)}
-.btn-join.ok{background:var(--green)}
-.btn-wa{background:var(--wa-green);color:#fff;border:none;padding:8px 14px;border-radius:50px;font-size:11.5px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:4px;text-decoration:none}
-.btn-wa:hover{background:var(--wa-green-d);transform:translateY(-1px)}
-.wa-channel-banner{background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;box-shadow:0 6px 24px rgba(37,211,102,.25)}
-.wa-banner-text h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px;margin-bottom:4px}
-.wa-banner-text p{font-size:13px;color:rgba(255,255,255,.8);line-height:1.5}
-.btn-wa-join{background:#fff;color:var(--wa-green-d);border:none;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);white-space:nowrap;display:flex;align-items:center;gap:7px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
-.btn-wa-join:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.18)}
-
-/* ========================================================
-   BOOKMARK PAGE
-   ======================================================== */
-.bkwrap{max-width:860px;margin:0 auto;padding:44px 20px 80px}
-.bk-tabs{display:flex;gap:6px;margin-bottom:24px}
-.bk-tab{background:var(--surf3);border:none;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:600;color:var(--ink3);cursor:pointer;transition:all var(--dur) var(--ease)}
-.bk-tab.on{background:var(--blue);color:#fff}
-.bk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.bk-empty{text-align:center;padding:60px 20px;color:var(--ink3)}
-.bk-empty i{font-size:40px;margin-bottom:12px;opacity:.4;display:block}
-.bk-empty p{font-size:14px}
-
-/* ========================================================
-   LOGIN / REGISTER
-   ======================================================== */
-.lwrap{max-width:420px;margin:0 auto;padding:44px 20px 80px}
-.lcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-xl);padding:36px 28px;box-shadow:var(--shadow-lg)}
-.lhead{text-align:center;margin-bottom:28px}
-.lhead-ic{width:56px;height:56px;background:var(--blue-l);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:var(--blue)}
-.lhead h2{font-size:22px;font-weight:800;margin-bottom:6px}
-.lhead p{font-size:14px;color:var(--ink3)}
-.google-btn{width:100%;background:var(--surf2);border:1.5px solid var(--surf4);padding:13px;border-radius:var(--r);font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
-.google-btn:hover{border-color:var(--ink4);background:var(--surf)}
-.g-logo{width:20px;height:20px;flex-shrink:0}
-.divider{text-align:center;font-size:12px;color:var(--ink3);margin:16px 0;position:relative}
-.divider::before,.divider::after{content:'';position:absolute;top:50%;width:calc(50% - 60px);height:1px;background:var(--surf4)}
-.divider::before{left:0}.divider::after{right:0}
-.fg{margin-bottom:16px}
-.flbl{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:6px}
-.finp{width:100%;background:var(--surf2);border:1.5px solid var(--surf3);border-radius:var(--r-sm);padding:12px 14px;font-size:14px;color:var(--ink);outline:none;transition:all var(--dur) var(--ease)}
-.finp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
-.phone-wrap{display:flex;gap:0;border:1.5px solid var(--surf3);border-radius:var(--r-sm);overflow:hidden;background:var(--surf2);transition:all var(--dur) var(--ease)}
-.phone-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
-.phone-prefix{padding:12px 12px;font-size:13px;font-weight:600;color:var(--ink2);border-right:1px solid var(--surf3);display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0}
-.finp-phone{flex:1;background:transparent;border:none;padding:12px 14px;font-size:14px;color:var(--ink);outline:none}
-.err-msg{font-size:11.5px;color:var(--orange);margin-top:5px;display:none}
-.err-msg.vis{display:block}
-.btn-full{width:100%;background:var(--blue);color:#fff;border:none;padding:14px;border-radius:var(--r-sm);font-size:14.5px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(24,71,237,.28)}
-.btn-full:hover{background:var(--blue-d);transform:translateY(-1px)}
-.btn-full-wa{width:100%;background:var(--wa-green);color:#fff;border:none;padding:14px;border-radius:var(--r-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-full-wa:hover{background:var(--wa-green-d)}
-.otp-wrap{display:flex;gap:8px;justify-content:center;margin:16px 0}
-.otp-inp{width:44px;height:52px;text-align:center;font-size:20px;font-weight:700;background:var(--surf2);border:1.5px solid var(--surf3);border-radius:var(--r-sm);color:var(--ink);outline:none;transition:all var(--dur) var(--ease)}
-.otp-inp:focus{border-color:var(--blue);background:var(--blue-l)}
-.otp-info{text-align:center;font-size:13.5px;color:var(--ink2);line-height:1.6}
-.otp-resend{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;padding:4px 0;transition:opacity var(--dur) var(--ease)}
-.otp-resend:disabled{color:var(--ink3);cursor:not-allowed}
-.form-foot{text-align:center;font-size:13px;color:var(--ink3);margin-top:16px}
-.form-foot a{color:var(--blue);font-weight:600;cursor:pointer}
-.privacy-note{text-align:center;font-size:11.5px;color:var(--ink4);margin-top:10px;line-height:1.5}
-.privacy-note a{color:var(--ink3);cursor:pointer}
-.reg-steps{display:flex;gap:6px;justify-content:center;margin-bottom:28px}
-.reg-step{width:28px;height:4px;border-radius:2px;background:var(--surf4);transition:background .3s var(--ease)}
-.reg-step.active,.reg-step.done{background:var(--blue)}
-.reg-panel{display:none}
-.reg-panel.on{display:block}
-
-/* ========================================================
-   PROFIL PAGE
-   ======================================================== */
-.prwrap{max-width:500px;margin:0 auto;padding:44px 20px 80px}
-.pr-hero{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-xl);padding:32px 24px;text-align:center;margin-bottom:16px;box-shadow:var(--shadow-sm)}
-.pr-av{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:#fff;margin:0 auto 14px}
-.pr-name{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
-.pr-meta{font-size:13px;color:var(--ink3);display:flex;align-items:center;justify-content:center;gap:6px}
-.pr-wa-chip{display:inline-flex;align-items:center;gap:6px;background:var(--wa-green-l);color:var(--wa-green-d);padding:5px 12px;border-radius:50px;font-size:12px;font-weight:600;margin-top:10px}
-.pr-list{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow-sm)}
-.pr-row{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--surf3);cursor:pointer;transition:background var(--dur) var(--ease)}
-.pr-row:last-child{border:none}
-.pr-row:hover{background:var(--surf2)}
-.pr-row-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
-.pr-row-text{flex:1}
-.pr-row-label{font-size:14px;font-weight:600;color:var(--ink)}
-.pr-row-sub{font-size:12px;color:var(--ink3);margin-top:1px}
-.chevron{font-size:16px;color:var(--ink4)}
-.btn-logout{width:100%;background:var(--orange-l);color:var(--orange-d);border:1.5px solid rgba(240,78,35,.2);padding:13px;border-radius:var(--r-sm);font-size:14px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
-.btn-logout:hover{background:var(--orange);color:#fff}
-
-/* ========================================================
-   BOTTOM NAV
-   ======================================================== */
-.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:10px 0 18px;position:sticky;bottom:0;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.05);transition:background var(--dur) var(--ease)}
-.bi{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 12px;border-radius:var(--r-sm);transition:all var(--dur) var(--ease);position:relative;min-width:52px;color:var(--ink3)}
-.bi:hover{background:var(--surf3)}
-.bi.on{color:var(--blue)}
-.bi-ic{font-size:22px}
-.bi-lbl{font-size:10px;font-weight:700;letter-spacing:.2px}
-.bi-badge{position:absolute;top:2px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid var(--surf)}
-
-/* ========================================================
-   TOAST
-   ======================================================== */
-.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--surf);padding:11px 20px;border-radius:50px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap;opacity:0;transition:all .25s var(--ease);z-index:999;pointer-events:none;box-shadow:var(--shadow-lg)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast i{font-size:15px}
-
-/* ========================================================
-   SPLASH
-   ======================================================== */
-#splash{position:fixed;inset:0;background:var(--surf2);display:flex;align-items:center;justify-content:center;z-index:999;transition:opacity .4s var(--ease),visibility .4s}
-#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
-.splash-inner{text-align:center}
-.splash-logo{width:70px;height:70px;background:linear-gradient(135deg,var(--orange) 0%,#ff6b3d 100%);border-radius:20px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(240,78,35,.3);animation:splashBounce .7s var(--ease)}
-@keyframes splashBounce{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-.splash-logo i{color:#fff;font-size:34px}
-.splash-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:8px}
-.splash-sub{font-size:14px;color:var(--ink3)}
-.splash-dots{margin-top:28px;display:flex;gap:6px;justify-content:center}
-.splash-dot{width:6px;height:6px;border-radius:50%;background:var(--surf4);animation:dotPulse 1.2s ease infinite}
-.splash-dot:nth-child(2){animation-delay:.2s}
-.splash-dot:nth-child(3){animation-delay:.4s}
-@keyframes dotPulse{0%,80%,100%{background:var(--surf4)}40%{background:var(--blue)}}
-
-/* ========================================================
-   RESPONSIVE
-   ======================================================== */
-@media(max-width:520px){
-  nav{padding:0 14px}
-  .btn-primary{display:none}
-  .btn-ghost span{display:none}
-  .hero{padding:36px 14px 32px}
-  .stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
-  .scard-n{font-size:22px}
-  .rgrid{grid-template-columns:1fr}
-  .rcta{flex-direction:column;align-items:flex-start}
-  .lcard{padding:28px 18px}
-  .wa-channel-banner{flex-direction:column;align-items:flex-start}
-  .journey-strip{grid-template-columns:1fr 1fr}
-  .jstep:nth-child(2){border-right:none}
-  .jstep:nth-child(3){border-right:1px solid var(--surf3)}
-  .jstep:nth-child(3),.jstep:nth-child(4){border-top:1px solid var(--surf3)}
-}
-</style>
-</head>
-<body>
-
-<!-- Splash -->
-<div id="splash">
-  <div class="splash-inner">
-    <div class="splash-logo"><i class="ti ti-sparkles"></i></div>
-    <div class="splash-brand">LostPotential</div>
-    <div class="splash-sub">Memuat pengalamanmu…</div>
-    <div class="splash-dots">
-      <div class="splash-dot"></div>
-      <div class="splash-dot"></div>
-      <div class="splash-dot"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
-<div id="toast" class="toast"><i class="ti ti-check" aria-hidden="true"></i><span id="toast-msg">Notifikasi</span></div>
-<!-- Confetti -->
-<canvas id="confetti" style="position:fixed;inset:0;pointer-events:none;z-index:998;display:none"></canvas>
-
-<!-- NAV -->
-<nav>
-  <div class="brand" onclick="go('home');setNav('home')">
-    <div class="brand-mark"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
-    LostPotential
-  </div>
-  <div class="nav-r">
-    <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">
-      <i class="ti ti-moon" id="dark-ic" aria-hidden="true"></i>
-    </button>
-    <button class="btn-ghost" id="nav-btn-login" onclick="go('register');setNav('profil')">
-      <i class="ti ti-user" aria-hidden="true"></i><span>Daftar</span>
-    </button>
-    <button class="btn-primary" onclick="go('quiz');setNav('cari')">
-      Mulai Tes Bakat<i class="ti ti-arrow-right" aria-hidden="true"></i>
-    </button>
-  </div>
-</nav>
-
-<!-- ===================== PAGE: HOME ===================== -->
-<div id="pg-home" class="page on">
-  <div class="hero">
-    <div class="hero-tag"><span class="live-dot"></span>12.400+ siswa sudah bergabung</div>
-
-    <h1>Banyak siswa pintar<br><span class="accent">gagal bukan karena</span><br><span class="outline">kurang kemampuan.</span></h1>
-
-    <!-- 🔥 EMOTIONAL HOOK -->
-    <div class="hook-banner">
-      <div class="hook-icon"><i class="ti ti-quote"></i></div>
-      <div class="hook-quote">"Mereka gagal karena tidak pernah menemukan arah mereka. Kamu tidak akan jadi salah satunya."</div>
-      <div class="hook-sub">Ini bukan soal pintar atau tidak. Ini soal kamu akan jadi apa di masa depan.</div>
-    </div>
-
-    <!-- SINGLE CTA -->
-    <div class="hero-cta-wrap">
-      <button class="cta-main" onclick="go('quiz');setNav('cari')">
-        <i class="ti ti-brain" aria-hidden="true"></i>Mulai Tes Bakat — Gratis & 3 Menit
-      </button>
-      <div class="cta-trust"><i class="ti ti-shield-check"></i>Tanpa registrasi. Hasilnya langsung personal untukmu.</div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats">
-      <div class="scard">
-        <div class="scard-bar" style="background:var(--blue)"></div>
-        <div class="scard-n">12.4K</div>
-        <div class="scard-l">Siswa aktif</div>
-      </div>
-      <div class="scard">
-        <div class="scard-bar" style="background:var(--orange)"></div>
-        <div class="scard-n">340+</div>
-        <div class="scard-l">Lomba & event</div>
-      </div>
-      <div class="scard">
-        <div class="scard-bar" style="background:var(--green)"></div>
-        <div class="scard-n">48</div>
-        <div class="scard-l">Komunitas bakat</div>
-      </div>
-    </div>
-
-    <!-- 🧭 JOURNEY STRIP — 4 tahap -->
-    <div class="sec-hd">
-      <h2>Perjalananmu dimulai dari sini</h2>
-      <p>4 langkah dari "tidak tahu" menuju "benar-benar berkembang"</p>
-    </div>
-    <div class="journey-strip">
-      <div class="jstep" onclick="go('quiz');setNav('cari')">
-        <div class="jstep-num">Tahap 1</div>
-        <div class="jstep-icon"><i class="ti ti-brain"></i></div>
-        <div class="jstep-title">Discover</div>
-        <div class="jstep-sub">Tes bakat 3 menit</div>
-      </div>
-      <div class="jstep">
-        <div class="jstep-num">Tahap 2</div>
-        <div class="jstep-icon"><i class="ti ti-chart-pie"></i></div>
-        <div class="jstep-title">Understand</div>
-        <div class="jstep-sub">Pahami karaktermu</div>
-      </div>
-      <div class="jstep" onclick="go('komunitas');setNav('komunitas')">
-        <div class="jstep-num">Tahap 3</div>
-        <div class="jstep-icon"><i class="ti ti-compass"></i></div>
-        <div class="jstep-title">Direction</div>
-        <div class="jstep-sub">Lomba & komunitas</div>
-      </div>
-      <div class="jstep">
-        <div class="jstep-num">Tahap 4</div>
-        <div class="jstep-icon"><i class="ti ti-rocket"></i></div>
-        <div class="jstep-title">Action</div>
-        <div class="jstep-sub">7-day challenge</div>
-      </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="sec-hd">
-      <h2>Eksplor bidang bakat</h2>
-      <p>Klik kategori untuk melihat event dan komunitas yang relevan</p>
-    </div>
-    <div class="cats" id="cat-list"></div>
-
-    <!-- Events -->
-    <div class="sec-hd">
-      <h2>Event &amp; lomba terkini</h2>
-      <p>Dikurasi khusus untuk pelajar Indonesia — nyata, bukan teori</p>
-    </div>
-    <div class="search-wrap">
-      <i class="ti ti-search search-ic" aria-hidden="true"></i>
-      <input class="search-inp" id="ev-search" type="text" placeholder="Cari nama lomba, kategori, atau kota…" oninput="filterEvs()" autocomplete="off"/>
-      <button class="search-clear" id="ev-search-clear" onclick="clearEvSearch()"><i class="ti ti-x" aria-hidden="true"></i></button>
-    </div>
-    <div class="evts" id="ev-list"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: QUIZ ===================== -->
-<div id="pg-quiz" class="page">
-  <div class="qwrap">
-    <div class="qprog-row">
-      <div class="qprog"><div class="qbar" id="qbar" style="width:16%"></div></div>
-      <div class="qstep" id="qstep">1 / 6</div>
-    </div>
-    <div class="q-chat" id="q-chat"></div>
-    <div class="qopts" id="qopts"></div>
-    <div class="qnav">
-      <button class="btn-bk" onclick="prevQ()">
-        <i class="ti ti-arrow-left" aria-hidden="true"></i>Kembali
-      </button>
-      <button class="btn-nx" onclick="nextQ()">
-        Lanjut<i class="ti ti-arrow-right" aria-hidden="true"></i>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: RESULT ===================== -->
-<div id="pg-result" class="page">
-  <div class="rwrap" id="rwrap"></div>
-</div>
-
-<!-- ===================== PAGE: KOMUNITAS ===================== -->
-<div id="pg-komunitas" class="page">
-  <div class="kwrap">
-    <div class="sec-hd">
-      <h2>Komunitas bakat</h2>
-      <p>Bergabung, belajar, dan berkembang bersama teman sevisi — komunitas nyata, bukan teori</p>
-    </div>
-    <div class="wa-channel-banner">
-      <div style="display:flex;align-items:center;gap:14px;flex:1">
-        <div style="width:48px;height:48px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="ti ti-brand-whatsapp" style="font-size:26px;color:#fff"></i>
-        </div>
-        <div class="wa-banner-text">
-          <h3>Saluran WhatsApp Resmi LostPotential</h3>
-          <p>Info lomba terbaru, tips bakat, dan update komunitas langsung di WhatsApp kamu!</p>
-        </div>
-      </div>
-      <a class="btn-wa-join" href="https://whatsapp.com/channel/0029VaWExampleLostPotential" target="_blank" rel="noopener">
-        <i class="ti ti-brand-whatsapp"></i>Ikuti Saluran
-      </a>
-    </div>
-    <div class="search-wrap" style="margin-bottom:20px">
-      <i class="ti ti-search search-ic" aria-hidden="true"></i>
-      <input class="search-inp" id="kom-search" type="text" placeholder="Cari komunitas berdasarkan nama atau bidang…" oninput="filterKoms()" autocomplete="off"/>
-      <button class="search-clear" id="kom-search-clear" onclick="clearKomSearch()"><i class="ti ti-x" aria-hidden="true"></i></button>
-    </div>
-    <div class="kgrid" id="k-list"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: BOOKMARK ===================== -->
-<div id="pg-bookmark" class="page">
-  <div class="bkwrap">
-    <div class="sec-hd">
-      <h2>Tersimpan</h2>
-      <p>Komunitas dan lomba favorit yang kamu simpan</p>
-    </div>
-    <div class="bk-tabs">
-      <button class="bk-tab on" id="bkt-komunitas" onclick="switchBkTab('komunitas')">Komunitas</button>
-      <button class="bk-tab" id="bkt-lomba" onclick="switchBkTab('lomba')">Lomba</button>
-    </div>
-    <div class="bk-grid" id="bk-content"></div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: LOGIN ===================== -->
-<div id="pg-login" class="page">
-  <div class="lwrap">
-    <div class="lcard">
-      <div class="lhead">
-        <div class="lhead-ic"><i class="ti ti-sparkles"></i></div>
-        <h2>Selamat datang kembali</h2>
-        <p>Masuk untuk melanjutkan perjalanan bakatmu</p>
-      </div>
-      <button class="google-btn" onclick="loginWithGoogle()">
-        <svg class="g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Lanjutkan dengan Google
-      </button>
-      <div class="divider">atau masuk dengan WhatsApp</div>
-      <div id="login-phone-panel">
-        <div class="fg">
-          <label class="flbl">Nomor WhatsApp</label>
-          <div class="phone-wrap">
-            <div class="phone-prefix"><span>🇮🇩</span> +62</div>
-            <input class="finp-phone" id="login-phone" type="tel" inputmode="numeric" placeholder="812-3456-7890" maxlength="13" oninput="onPhoneInput(this)"/>
-          </div>
-          <div class="err-msg" id="login-phone-err">Format nomor tidak valid</div>
-        </div>
-        <div id="recaptcha-login"></div>
-        <button class="btn-full-wa" onclick="loginSendOTP()"><i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP</button>
-      </div>
-      <div id="login-otp-panel" style="display:none">
-        <p class="otp-info">Kode OTP 6 digit telah dikirim ke<br><strong id="login-phone-display"></strong></p>
-        <div class="otp-wrap">
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,0,'login')" id="lotp0"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,1,'login')" id="lotp1"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,2,'login')" id="lotp2"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,3,'login')" id="lotp3"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,4,'login')" id="lotp4"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,5,'login')" id="lotp5"/>
-        </div>
-        <button class="btn-full" id="login-verify-btn" onclick="loginVerifyOTP()"><i class="ti ti-login"></i>Verifikasi &amp; Masuk</button>
-        <div style="text-align:center;margin-top:12px">
-          <button class="otp-resend" id="login-resend-btn" onclick="loginSendOTP(true)" disabled>
-            <i class="ti ti-refresh"></i><span id="login-resend-lbl">Kirim ulang (60s)</span>
-          </button>
-        </div>
-      </div>
-      <p class="form-foot">Belum punya akun? <a onclick="go('register');setNav('profil')">Daftar gratis</a></p>
-      <p class="privacy-note">Dengan masuk, kamu menyetujui <a>Syarat &amp; Ketentuan</a> kami.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: REGISTER ===================== -->
-<div id="pg-register" class="page">
-  <div class="lwrap">
-    <div class="lcard">
-      <div class="lhead">
-        <div class="lhead-ic" style="background:var(--wa-green-l)"><i class="ti ti-brand-whatsapp" style="color:var(--wa-green)"></i></div>
-        <h2>Buat akun gratis</h2>
-        <p>Bergabung dengan 12.400+ pelajar Indonesia</p>
-      </div>
-      <div class="reg-steps">
-        <div class="reg-step active" id="rstep-0"></div>
-        <div class="reg-step" id="rstep-1"></div>
-        <div class="reg-step" id="rstep-2"></div>
-      </div>
-      <div class="reg-panel on" id="rpanel-0">
-        <div class="fg">
-          <label class="flbl">Nomor WhatsApp</label>
-          <div class="phone-wrap">
-            <div class="phone-prefix"><span>🇮🇩</span> +62</div>
-            <input class="finp-phone" id="reg-phone" type="tel" inputmode="numeric" placeholder="812-3456-7890" maxlength="13" oninput="onPhoneInput(this)"/>
-          </div>
-          <div class="err-msg" id="reg-phone-err">Format nomor tidak valid</div>
-        </div>
-        <div id="recaptcha-reg"></div>
-        <button class="btn-full-wa" onclick="regSendOTP()"><i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP</button>
-        <div style="margin:16px 0;border-top:1px solid var(--surf3)"></div>
-        <button class="google-btn" onclick="loginWithGoogle()">
-          <svg class="g-logo" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-          Daftar dengan Google — Cepat &amp; mudah
-        </button>
-        <p class="form-foot">Sudah punya akun? <a onclick="go('login');setNav('profil')">Masuk</a></p>
-      </div>
-      <div class="reg-panel" id="rpanel-1">
-        <p class="otp-info">Masukkan kode OTP 6 digit<br><strong id="reg-phone-display">+62 ...</strong></p>
-        <div class="otp-wrap">
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,0,'reg')" id="rotp0"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,1,'reg')" id="rotp1"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,2,'reg')" id="rotp2"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,3,'reg')" id="rotp3"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,4,'reg')" id="rotp4"/>
-          <input class="otp-inp" maxlength="1" inputmode="numeric" oninput="otpNext(this,5,'reg')" id="rotp5"/>
-        </div>
-        <button class="btn-full" id="reg-verify-btn" onclick="regVerifyOTP()"><i class="ti ti-shield-check"></i>Verifikasi OTP</button>
-        <div style="text-align:center;margin-top:12px">
-          <button class="otp-resend" id="reg-resend-btn" onclick="regSendOTP(true)" disabled>
-            <i class="ti ti-refresh"></i><span id="reg-resend-lbl">Kirim ulang (60s)</span>
-          </button>
-        </div>
-      </div>
-      <div class="reg-panel" id="rpanel-2">
-        <div class="fg"><label class="flbl">Nama lengkap</label><input class="finp" id="reg-name" type="text" placeholder="Nama kamu"/><div class="err-msg" id="reg-name-err">Nama harus diisi</div></div>
-        <div class="fg"><label class="flbl">Nama sekolah</label><input class="finp" id="reg-school" type="text" placeholder="Contoh: SMAN 3 Malang"/></div>
-        <div class="fg">
-          <label class="flbl">Tingkat kelas</label>
-          <select class="finp" id="reg-grade">
-            <option value="">Pilih tingkat kelas</option>
-            <option value="SMP 7">SMP Kelas 7</option>
-            <option value="SMP 8">SMP Kelas 8</option>
-            <option value="SMP 9">SMP Kelas 9</option>
-            <option value="SMA 10">SMA Kelas 10</option>
-            <option value="SMA 11">SMA Kelas 11</option>
-            <option value="SMA 12">SMA Kelas 12</option>
-          </select>
-        </div>
-        <button class="btn-full" id="reg-finish-btn" onclick="regFinish()"><i class="ti ti-rocket"></i>Selesai &amp; Mulai Eksplorasi!</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== PAGE: PROFIL ===================== -->
-<div id="pg-profil" class="page">
-  <div class="prwrap">
-    <div class="pr-hero">
-      <div class="pr-av" id="pr-av-initials">LP</div>
-      <div class="pr-name" id="pr-name-display">Tamu</div>
-      <div class="pr-meta"><i class="ti ti-school" style="font-size:14px"></i><span id="pr-school-display">Belum diatur</span></div>
-      <div class="pr-wa-chip" id="pr-wa-chip" style="display:none"><i class="ti ti-brand-whatsapp"></i><span id="pr-wa-display">+62 xxx</span></div>
-    </div>
-    <div class="pr-list">
-      <div class="pr-row" onclick="go('bookmark');setNav('bookmark')">
-        <div class="pr-row-ic" style="background:var(--blue-l);color:var(--blue)"><i class="ti ti-bookmark"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Tersimpan</div><div class="pr-row-sub">Komunitas &amp; lomba favoritmu</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-      <div class="pr-row" onclick="go('quiz');setNav('cari')">
-        <div class="pr-row-ic" style="background:var(--orange-l);color:var(--orange)"><i class="ti ti-brain"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Tes Bakat</div><div class="pr-row-sub">Ulangi atau lihat hasilmu</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-      <div class="pr-row" onclick="toggleDark()">
-        <div class="pr-row-ic" style="background:var(--surf3)"><i class="ti ti-moon" id="pr-dark-ic"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Tema Gelap</div><div class="pr-row-sub" id="pr-dark-sub">Aktifkan dark mode</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-      <div class="pr-row" onclick="toast('Notifikasi akan segera hadir!')">
-        <div class="pr-row-ic" style="background:var(--green-l);color:var(--green)"><i class="ti ti-bell"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Notifikasi</div><div class="pr-row-sub">Atur preferensi notifikasimu</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-    </div>
-    <button class="btn-logout" id="logout-btn" onclick="doLogout()" style="display:none"><i class="ti ti-logout"></i>Keluar dari akun</button>
-    <div id="pr-login-cta" style="margin-top:16px">
-      <button class="btn-full" onclick="go('register');setNav('profil')"><i class="ti ti-user-plus"></i>Daftar / Masuk sekarang</button>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bnav">
-  <div class="bi on" id="nav-home" onclick="go('home');setNav('home')">
-    <div class="bi-ic"><i class="ti ti-home"></i></div>
-    <div class="bi-lbl">Home</div>
-  </div>
-  <div class="bi" id="nav-cari" onclick="go('quiz');setNav('cari')">
-    <div class="bi-ic"><i class="ti ti-brain"></i></div>
-    <div class="bi-lbl">Tes Bakat</div>
-  </div>
-  <div class="bi" id="nav-komunitas" onclick="go('komunitas');setNav('komunitas')">
-    <div class="bi-ic"><i class="ti ti-users"></i></div>
-    <div class="bi-lbl">Komunitas</div>
-    <div class="bi-badge"></div>
-  </div>
-  <div class="bi" id="nav-bookmark" onclick="go('bookmark');setNav('bookmark')">
-    <div class="bi-ic"><i class="ti ti-bookmark"></i></div>
-    <div class="bi-lbl">Tersimpan</div>
-  </div>
-  <div class="bi" id="nav-profil" onclick="go('profil');setNav('profil')">
-    <div class="bi-ic"><i class="ti ti-user-circle"></i></div>
-    <div class="bi-lbl">Profil</div>
-  </div>
-</div>
-
-<script>
-/* ===================================================================
-   FIREBASE CONFIG (ganti dengan config project kamu)
-   =================================================================== */
-const firebaseConfig = {
-  apiKey:"YOUR_API_KEY",
-  authDomain:"YOUR_PROJECT_ID.firebaseapp.com",
-  projectId:"YOUR_PROJECT_ID",
-  storageBucket:"YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId:"YOUR_SENDER_ID",
-  appId:"YOUR_APP_ID"
-};
-
-let app, auth, db, firebaseReady = false;
-
-function initFirebase() {
-  try {
-    if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
-      firebaseReady = false; checkAuthState(); return;
-    }
-    app = firebase.initializeApp(firebaseConfig);
-    auth = firebase.auth(); db = firebase.firestore();
-    firebaseReady = true;
-    auth.onAuthStateChanged(u => u ? onUserLoggedIn(u) : onUserLoggedOut());
-  } catch(e) { firebaseReady = false; checkAuthState(); }
-}
-
-/* ===================================================================
-   DATA: CATEGORIES
-   =================================================================== */
-const CATS = [
-  { ic:'ti-code',       name:'Teknologi & IT',     ct:'38 lomba', bg:'#EEF2FD', bgi:'#C5D4FB', ci:'#1239C4', id:'tech'  },
-  { ic:'ti-palette',   name:'Seni & Desain',       ct:'24 lomba', bg:'#FEF0EC', bgi:'#FBC9B8', ci:'#C43C14', id:'seni'  },
-  { ic:'ti-microscope',name:'Sains & Riset',       ct:'18 lomba', bg:'#E5F7F2', bgi:'#9DE4CE', ci:'#006B4C', id:'sains' },
-  { ic:'ti-pencil',    name:'Menulis & Sastra',    ct:'14 lomba', bg:'#F0EEFF', bgi:'#C4B5FD', ci:'#5B21B6', id:'tulis' },
-  { ic:'ti-music',     name:'Musik & Pertunjukan', ct:'20 lomba', bg:'#FDF0F6', bgi:'#F5B8D8', ci:'#9D174D', id:'musik' },
-  { ic:'ti-ball-football',name:'Olahraga',         ct:'31 lomba', bg:'#FEF9EC', bgi:'#FCD970', ci:'#92400E', id:'sport' },
-  { ic:'ti-robot',     name:'Robotika & AI',       ct:'12 lomba', bg:'#F0EEFF', bgi:'#A78BFA', ci:'#4C1D95', id:'robot' },
-  { ic:'ti-camera',    name:'Fotografi & Film',    ct:'16 lomba', bg:'#FEF0EC', bgi:'#FDE68A', ci:'#92400E', id:'foto'  },
-];
-
-/* ===================================================================
-   DATA: EVENTS
-   =================================================================== */
-const EVS = [
-  { id:'ev1',  ic:'ti-cpu',         ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',  tc:'ch-b', title:'National Olympiad Informatika 2025',       loc:'Online · SMA/SMK',    prize:'Total Rp 50jt',         dl:'30 Jun 2025', badge:'Populer',      bc:'ch-b', cat:'tech'  },
-  { id:'ev2',  ic:'ti-layout',      ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',tc:'ch-o',title:'Lomba Desain Poster Kemerdekaan RI',       loc:'Nasional · SMP–SMA',  prize:'Piala + Sertifikat',    dl:'1 Jul 2025',  badge:'Baru',         bc:'ch-o', cat:'seni'  },
-  { id:'ev3',  ic:'ti-flask',       ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',      tc:'ch-g', title:'Karya Ilmiah Remaja Tingkat Provinsi',      loc:'Offline · SMP–SMA',   prize:'Beasiswa + Medali',     dl:'15 Jul 2025', badge:'Deadline Dekat',bc:'ch-g',cat:'sains' },
-  { id:'ev4',  ic:'ti-book',        ibg:'#F0EEFF', ic2:'#5B21B6', tag:'Menulis',    tc:'ch-p', title:'Cerpen Nasional "Suara Generasi"',           loc:'Online · SMP–SMA',    prize:'Rp 15jt + Diterbitkan', dl:'20 Jul 2025', badge:'Trending',     bc:'ch-p', cat:'tulis' },
-  { id:'ev5',  ic:'ti-music',       ibg:'#FDF0F6', ic2:'#9D174D', tag:'Musik',      tc:'ch-p', title:'Kompetisi Musik Indie Pelajar 2025',         loc:'Hybrid · SMA',        prize:'Kontrak Label + Rp 30jt',dl:'5 Jul 2025', badge:'Hot',          bc:'ch-o', cat:'musik' },
-  { id:'ev6',  ic:'ti-trophy',      ibg:'#FEF9EC', ic2:'#92400E', tag:'Olahraga',   tc:'ch-o', title:'Turnamen Futsal Pelajar Se-Jawa',            loc:'Offline · SMA',       prize:'Piala Gubernur',        dl:'25 Jun 2025', badge:'Segera',       bc:'ch-o', cat:'sport' },
-  { id:'ev7',  ic:'ti-robot',       ibg:'#F0EEFF', ic2:'#4C1D95', tag:'Robotika',   tc:'ch-p', title:'Indonesia Robot Contest (IRC) 2025',         loc:'Offline · Nasional',  prize:'Rp 75jt + Trophy',      dl:'10 Agt 2025', badge:'Prestisius',   bc:'ch-p', cat:'robot' },
-  { id:'ev8',  ic:'ti-camera',      ibg:'#FEF0EC', ic2:'#92400E', tag:'Fotografi',  tc:'ch-o', title:'Lomba Foto Pelajar Tema Alam Nusantara',     loc:'Online · SMP–SMA',    prize:'Kamera DSLR',           dl:'12 Agt 2025', badge:'Populer',      bc:'ch-o', cat:'foto'  },
-  { id:'ev9',  ic:'ti-code-circle', ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',  tc:'ch-b', title:'Hackathon Pelajar Nasional: Build for ID',   loc:'Online · SMA',        prize:'Rp 100jt',              dl:'1 Agt 2025',  badge:'Grand Prize',  bc:'ch-b', cat:'tech'  },
-  { id:'ev11', ic:'ti-atom',        ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',      tc:'ch-g', title:'Olimpiade Sains Nasional (OSN) 2025',        loc:'Nasional · SMP & SMA',prize:'Medali Emas + Trip',     dl:'30 Agt 2025', badge:'OSN',          bc:'ch-g', cat:'sains' },
-  { id:'ev12', ic:'ti-palette',     ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',tc:'ch-o',title:'Young Designer Award 2025 — Kategori Pelajar',loc:'Online · Nasional', prize:'Rp 25jt + Mentorship',  dl:'18 Jul 2025', badge:'Baru',         bc:'ch-o', cat:'seni'  },
-];
-
-/* ===================================================================
-   DATA: KOMUNITAS
-   =================================================================== */
-const KOMS = [
-  { id:'k1',  ic:'ti-code',          bg:'#EEF2FD', bgi:'#1239C4', name:'CodeKid Indonesia',     desc:'Komunitas coding untuk pelajar. Weekly hackathon dan mentoring gratis dari engineer profesional.',  mem:'3.240 anggota',  tags:['Coding','Web Dev','AI'],       wa:'https://whatsapp.com/channel/0029VaCodeKid'  },
-  { id:'k2',  ic:'ti-palette',       bg:'#FEF0EC', bgi:'#C43C14', name:'Desainer Muda ID',      desc:'Forum desainer pelajar. Feedback portofolio, design challenge mingguan, dan job board khusus.',    mem:'1.890 anggota',  tags:['UI/UX','Ilustrasi','Branding'], wa:'https://whatsapp.com/channel/0029VaDesainer' },
-  { id:'k3',  ic:'ti-microscope',    bg:'#E5F7F2', bgi:'#006B4C', name:'Saintis Cilik',         desc:'Riset, eksperimen, dan olimpiade sains. Dibimbing mahasiswa ITB, UI, dan UGM.',                   mem:'2.100 anggota',  tags:['KIR','Olimpiade','Biologi'],    wa:'https://whatsapp.com/channel/0029VaSaintis'  },
-  { id:'k4',  ic:'ti-music',         bg:'#FDF0F6', bgi:'#9D174D', name:'Nada & Rima',           desc:'Komunitas musisi muda. Open mic virtual tiap bulan dan workshop produksi musik gratis.',            mem:'1.450 anggota',  tags:['Musik','Produksi','Cover'],     wa:'https://whatsapp.com/channel/0029VaNada'     },
-  { id:'k5',  ic:'ti-pencil',        bg:'#F0EEFF', bgi:'#5B21B6', name:'Pena Muda',             desc:'Menulis cerpen, esai, dan puisi. Majalah digital bulanan bersama penulis Indonesia.',              mem:'980 anggota',    tags:['Cerpen','Puisi','Jurnalis'],    wa:'https://whatsapp.com/channel/0029VaPena'     },
-  { id:'k6',  ic:'ti-ball-football', bg:'#FEF9EC', bgi:'#92400E', name:'Atlet Remaja',          desc:'Network atlet pelajar seluruh Indonesia. Info tryout, beasiswa, dan kalender turnamen.',            mem:'4.120 anggota',  tags:['Futsal','Renang','Badminton'],  wa:'https://whatsapp.com/channel/0029VaAtlet'    },
-  { id:'k7',  ic:'ti-robot',         bg:'#F0EEFF', bgi:'#4C1D95', name:'Robotika Pelajar ID',   desc:'Eksplorasi dunia robotika, IoT, dan kecerdasan buatan bersama mentor insinyur nasional.',           mem:'1.320 anggota',  tags:['Robotika','IoT','Arduino'],     wa:'https://whatsapp.com/channel/0029VaRobot'    },
-  { id:'k8',  ic:'ti-camera',        bg:'#FEF0EC', bgi:'#D97706', name:'Lensa Pelajar',         desc:'Komunitas fotografi & videografi pelajar. Photo walk bulanan, workshop editing, dan pameran online.',mem:'870 anggota',    tags:['Fotografi','Video','Editing'],  wa:'https://whatsapp.com/channel/0029VaLensa'    },
-  { id:'k9',  ic:'ti-math-function', bg:'#EEF2FD', bgi:'#1847ED', name:'Olimpiade Math ID',     desc:'Persiapan OSN Matematika, IMO, dan kompetisi internasional. Daily problem set + pembahasan.',       mem:'2.560 anggota',  tags:['Matematika','OSN','Olimpiade'], wa:'https://whatsapp.com/channel/0029VaMath'     },
-  { id:'k10', ic:'ti-world',         bg:'#E5F7F2', bgi:'#006B4C', name:'English Debaters Club', desc:'Latihan debat bahasa Inggris, public speaking, dan persiapan kompetisi internasional.',             mem:'1.150 anggota',  tags:['Bahasa','Debat','Speaking'],    wa:'https://whatsapp.com/channel/0029VaDebate'   },
-];
-
-/* ===================================================================
-   DATA: QUIZ QUESTIONS (6 soal)
-   =================================================================== */
-const QS = [
-  {
-    q:'Waktu luang kamu biasanya dihabiskan untuk apa?',
-    h:'Pilih yang paling sering kamu lakukan',
-    opts:[
-      {ic:'ti-device-gamepad', t:'Main game atau coding'},
-      {ic:'ti-brush',          t:'Menggambar atau berkreasi'},
-      {ic:'ti-book-2',         t:'Membaca atau menulis'},
-      {ic:'ti-run',            t:'Olahraga atau aktivitas fisik'}
-    ]
-  },
-  {
-    q:'Dalam proyek kelompok, kamu paling suka jadi…',
-    h:'Pilih peran yang paling bikin kamu nyaman',
-    opts:[
-      {ic:'ti-bulb',              t:'Pemikir dan perencana strategi'},
-      {ic:'ti-microphone',        t:'Presenter dan komunikator'},
-      {ic:'ti-tools',             t:'Eksekutor yang kerja nyata'},
-      {ic:'ti-vector-triangle',   t:'Desainer dan kreatif visual'}
-    ]
-  },
-  {
-    q:'Kalau bisa belajar satu hal baru sekarang, kamu pilih apa?',
-    h:'Satu yang paling bikin kamu penasaran',
-    opts:[
-      {ic:'ti-code',      t:'Membuat aplikasi atau website'},
-      {ic:'ti-music',     t:'Bermain alat musik atau produksi lagu'},
-      {ic:'ti-flask',     t:'Eksperimen sains atau riset'},
-      {ic:'ti-pencil',    t:'Menulis cerita atau konten kreatif'}
-    ]
-  },
-  {
-    q:'Saat kamu merasa "ini gue banget", itu biasanya ketika…',
-    h:'Pilih momen yang paling resonan',
-    opts:[
-      {ic:'ti-cpu',           t:'Berhasil solve problem teknis yang sulit'},
-      {ic:'ti-palette',       t:'Menghasilkan karya visual yang bagus'},
-      {ic:'ti-trophy',        t:'Menang atau tampil di kompetisi'},
-      {ic:'ti-writing-sign',  t:'Tulisanku dibaca dan direspon orang lain'}
-    ]
-  },
-  {
-    q:'Teman-teman sering minta bantuan kamu soal…',
-    h:'Apa yang paling sering mereka tanya ke kamu',
-    opts:[
-      {ic:'ti-device-laptop', t:'Teknologi, komputer, atau gadget'},
-      {ic:'ti-photo',         t:'Desain, foto, atau estetika konten'},
-      {ic:'ti-book',          t:'Pelajaran, analisis, atau eksperimen'},
-      {ic:'ti-ball-football', t:'Olahraga, strategi tim, atau kesehatan'}
-    ]
-  },
-  {
-    q:'Impian terbesarmu di masa depan adalah…',
-    h:'Yang paling bikin jantung kamu berdegup kencang',
-    opts:[
-      {ic:'ti-building-skyscraper', t:'Membangun produk/startup sendiri'},
-      {ic:'ti-medal',              t:'Mewakili Indonesia di kompetisi internasional'},
-      {ic:'ti-star',               t:'Dikenal karena karya kreatifku'},
-      {ic:'ti-microscope',         t:'Menemukan sesuatu yang mengubah dunia'}
-    ]
-  },
-];
-
-/* ===================================================================
-   DATA: RESULTS — upgraded dengan personal insights + role models + 7-day plan
-   =================================================================== */
-const RES = {
-  tech: {
-    ic:'ti-code', icbg:'#1847ED',
-    title:'Tech Innovator',
-    char:'Logika tajam · Problem-solver · Builder',
-    desc:'Otakmu bekerja seperti komputer — sistematis, analitis, dan selalu cari cara yang lebih efisien. Kamu lahir untuk membangun sesuatu yang nyata dari nol.',
-    skills:['Coding','Logika','Problem Solving','Sistem Thinking'],
-    bg:'#060D2E', tc:'#fff',
-    motive:'Kamu tidak harus jadi jenius dulu untuk mulai. Kevin Systrom, co-founder Instagram, belajar coding sendiri. Yang paling penting bukan dari mana kamu mulai — tapi bahwa kamu mulai.',
-    motiveSub:'Ini bukan soal pintar atau tidak. Ini soal siapa yang mau terus membangun.',
-    roles:[
-      {name:'Kevin Systrom', desc:'SMA biasa → co-founder Instagram (dibeli $1 miliar)', color:'#1847ED'},
-      {name:'Nadiem Makarim', desc:'Pelajar Indonesia → founder Gojek → Menteri', color:'#00966A'},
-    ],
-    coms:['ti-code','ti-robot'], comN:['CodeKid Indonesia','Robotika Pelajar ID'], comM:['3.240 anggota','1.320 anggota'],
-    evs:['National Olympiad Informatika 2025','Hackathon Pelajar Nasional: Build for ID'],
-    plan7:[
-      {day:'Hari 1', title:'Install VS Code + buat "Hello World"', desc:'Download VS Code, pilih 1 bahasa (Python atau JS), ikuti 1 tutorial YouTube', output:'📁 File kode pertamamu'},
-      {day:'Hari 2–3', title:'Latihan 30 menit/hari di freeCodeCamp', desc:'Selesaikan 3 challenge dasar — fokus pada logika, bukan hafalan syntax', output:'✅ 3 challenge selesai'},
-      {day:'Hari 4–7', title:'Build kalkulator atau to-do list sederhana', desc:'Proyek kecil nyata yang bisa kamu tunjukkan ke teman atau orang tua', output:'🚀 Proyek pertamamu live'},
-    ]
-  },
-  seni: {
-    ic:'ti-palette', icbg:'#F04E23',
-    title:'Creative Soul',
-    char:'Visual thinker · Ekspresif · Inovatif',
-    desc:'Kamu melihat dunia berbeda. Warna, bentuk, dan estetika adalah bahasa utamamu. Kreativitasmu adalah kekuatan — bukan "bakat sampingan".',
-    skills:['Visual Thinking','Kreativitas','Desain','Storytelling'],
-    bg:'#2A1206', tc:'#fff',
-    motive:'Di era digital, kreator konten Indonesia seperti Rachel Vennya dan Dian Sastro membuktikan bahwa kreativitas adalah bisnis nyata. Bakat visualmu bisa menghasilkan lebih dari sekadar "gambar bagus".',
-    motiveSub:'Ini bukan soal seni atau tidak. Ini soal kamu mampu membuat orang merasakan sesuatu.',
-    roles:[
-      {name:'Rachel Vennya', desc:'Pelajar biasa → influencer → brand owner', color:'#F04E23'},
-      {name:'Diela Maharanie', desc:'Ilustrator Indonesia → kolaborasi brand internasional', color:'#9D174D'},
-    ],
-    coms:['ti-palette','ti-music'], comN:['Desainer Muda ID','Nada & Rima'], comM:['1.890 anggota','1.450 anggota'],
-    evs:['Lomba Desain Poster Kemerdekaan RI','Young Designer Award 2025'],
-    plan7:[
-      {day:'Hari 1', title:'Buat 1 karya dengan tema bebas', desc:'Gunakan alat apa pun yang kamu punya — kertas, Canva, atau Procreate', output:'🎨 Karya pertamamu'},
-      {day:'Hari 2–3', title:'Pelajari 1 teknik baru di YouTube', desc:'Typography, color theory, atau komposisi. Coba langsung terapkan', output:'✍️ Sketsa eksperimen'},
-      {day:'Hari 4–7', title:'Buat portofolio mini di Instagram/Behance', desc:'Upload 3 karya terbaikmu dengan caption yang cerita tentang prosesnya', output:'🌐 Profil portofolio online'},
-    ]
-  },
-  sains: {
-    ic:'ti-microscope', icbg:'#00966A',
-    title:'Young Scientist',
-    char:'Analitis · Rasa ingin tahu tinggi · Teliti',
-    desc:'Rasa ingin tahumu terhadap "mengapa" di balik segalanya luar biasa. Kamu tidak hanya belajar fakta — kamu ingin membuktikannya sendiri.',
-    skills:['Penelitian','Analisis Data','Sains','Critical Thinking'],
-    bg:'#021E14', tc:'#fff',
-    motive:'Yusuf Nugroho, siswa SMA Indonesia, pernah menang medali di olimpiade sains internasional sebelum kuliah. Bukan karena otaknya super — tapi karena dia mulai berlatih lebih awal dan konsisten.',
-    motiveSub:'Ini bukan soal nilai rapor. Ini soal apakah kamu mau terus bertanya dan mencari.',
-    roles:[
-      {name:'Tri Mumpuni', desc:'Ilmuwan Indonesia → Pioneer energi terbarukan desa', color:'#00966A'},
-      {name:'Khoirul Anwar', desc:'Pelajar Indonesia → Penemu teknologi 4G LTE', color:'#1847ED'},
-    ],
-    coms:['ti-microscope','ti-code'], comN:['Saintis Cilik','Olimpiade Math ID'], comM:['2.100 anggota','2.560 anggota'],
-    evs:['Karya Ilmiah Remaja Tingkat Provinsi','Olimpiade Sains Nasional (OSN) 2025'],
-    plan7:[
-      {day:'Hari 1', title:'Pilih 1 topik sains yang paling kamu suka', desc:'Biologi, kimia, fisika, atau matematika. Baca 1 artikel tentangnya', output:'📝 Catatan topik'},
-      {day:'Hari 2–3', title:'Lakukan eksperimen sederhana di rumah', desc:'Contoh: uji pH air berbeda, pertumbuhan tanaman, atau rangkaian listrik sederhana', output:'🔬 Data eksperimen'},
-      {day:'Hari 4–7', title:'Tulis laporan KIR sederhana (3 halaman)', desc:'Latar belakang, metode, hasil, kesimpulan. Ini bisa jadi proposal lombamu!', output:'📄 Draft laporan KIR'},
-    ]
-  },
-  tulis: {
-    ic:'ti-pencil', icbg:'#6D28D9',
-    title:'Storyteller',
-    char:'Empatik · Komunikatif · Penulis alami',
-    desc:'Kata-kata adalah senjatamu. Kemampuan bercerita dan mengekspresikan pikiran secara tertulis adalah bakatmu yang paling langka dan berharga.',
-    skills:['Menulis Kreatif','Komunikasi','Analisis','Empati'],
-    bg:'#160B2A', tc:'#fff',
-    motive:'Dee Lestari menulis Supernova saat kuliah dan hasilnya dibaca jutaan orang. Andrea Hirata menulis Laskar Pelangi tanpa pengalaman sastra formal. Kamu tidak harus sempurna dulu untuk mulai.',
-    motiveSub:'Ini bukan soal kosakata yang kaya. Ini soal apakah kamu punya cerita yang perlu diceritakan.',
-    roles:[
-      {name:'Dee Lestari', desc:'Mahasiswi biasa → Penulis novel terlaris Indonesia', color:'#6D28D9'},
-      {name:'Andrea Hirata', desc:'Menulis Laskar Pelangi → Novel terjemah 40+ bahasa', color:'#9D174D'},
-    ],
-    coms:['ti-pencil','ti-palette'], comN:['Pena Muda','English Debaters Club'], comM:['980 anggota','1.150 anggota'],
-    evs:['Cerpen Nasional "Suara Generasi"','Olimpiade Bahasa Indonesia Tingkat SMA'],
-    plan7:[
-      {day:'Hari 1', title:'Tulis 300 kata tentang pengalamanmu hari ini', desc:'Tidak harus bagus. Yang penting tulis — tanpa menghapus selama 10 menit', output:'📝 Tulisan pertamamu'},
-      {day:'Hari 2–3', title:'Baca 1 cerpen pendek & analisis strukturnya', desc:'Perhatikan cara pengarang membuka cerita dan membuat pembaca penasaran', output:'✍️ Catatan analisis'},
-      {day:'Hari 4–7', title:'Tulis cerpen pendek (500–800 kata)', desc:'Satu tokoh, satu masalah, satu resolusi. Kirim ke teman atau keluarga untuk dibaca', output:'📖 Cerpen pertamamu'},
-    ]
-  },
-  musik: {
-    ic:'ti-music', icbg:'#9D174D',
-    title:'Music Maverick',
-    char:'Kepekaan tinggi · Kreatif · Ekspresif',
-    desc:'Dunia musik mengalir dalam nadimu. Entah memainkan, menciptakan, atau memproduksi — kepekaan artistikmu adalah modal besar yang belum dimaksimalkan.',
-    skills:['Musikal','Kreativitas','Ekspresi','Kolaborasi'],
-    bg:'#240B18', tc:'#fff',
-    motive:'Pamungkas, musisi Indonesia yang go internasional, mulai dari kamar tidurnya dengan laptop dan mikrofon murah. Rich Brian mulai rap dari kamarnya di Jakarta dan kini dirilis label AS. Kamu punya tools yang sama.',
-    motiveSub:'Ini bukan soal punya alat mahal. Ini soal apakah kamu mau mulai dengan apa yang ada.',
-    roles:[
-      {name:'Pamungkas', desc:'Musisi solo Indonesia → masuk chart internasional', color:'#9D174D'},
-      {name:'Rich Brian', desc:'Remaja Jakarta → rapper signed label AS 88rising', color:'#1847ED'},
-    ],
-    coms:['ti-music','ti-pencil'], comN:['Nada & Rima','Pena Muda'], comM:['1.450 anggota','980 anggota'],
-    evs:['Kompetisi Musik Indie Pelajar 2025','FLS2N Bidang Musik'],
-    plan7:[
-      {day:'Hari 1', title:'Rekam 1 menit dirimu bermain/bernyanyi', desc:'Pakai HP saja. Ini bukan untuk orang lain — ini untuk kamu dengar sendiri', output:'🎵 Rekaman pertama'},
-      {day:'Hari 2–3', title:'Cover 1 lagu favoritmu', desc:'Boleh pakai karaoke YouTube. Upload di IG Story atau private dulu kalau belum siap', output:'🎤 Cover lagu'},
-      {day:'Hari 4–7', title:'Coba tulis lirik 1 lagu pendek', desc:'8–16 baris. Tentang perasaan yang kamu alami minggu ini. Tidak harus bersajak', output:'📜 Lirik originalmu'},
-    ]
-  },
-  sport: {
-    ic:'ti-ball-football', icbg:'#D97706',
-    title:'Athlete Spirit',
-    char:'Disiplin · Daya juang tinggi · Leader',
-    desc:'Dedikasi, kerja keras, dan semangat bersaing adalah DNA kamu. Bakatmu butuh ruang — dan ruang itu jauh lebih besar dari yang kamu kira.',
-    skills:['Disiplin','Kerja Tim','Leadership','Mental Kuat'],
-    bg:'#1A1600', tc:'#fff',
-    motive:'Jonatan Christie mulai bulutangkis dari klub kecil di Jakarta. Kevin Sanjaya, peraih emas Olimpiade, pernah ditolak pelatnas. Yang membedakan mereka bukan bakat awal — tapi mereka tidak berhenti.',
-    motiveSub:'Ini bukan soal berbakat atau tidak. Ini soal seberapa keras kamu mau berlatih.',
-    roles:[
-      {name:'Jonatan Christie', desc:'Klub kecil Jakarta → Juara All England', color:'#D97706'},
-      {name:'Greysia Polii', desc:'Pelajar biasa → Medali Emas Olimpiade Tokyo', color:'#00966A'},
-    ],
-    coms:['ti-ball-football','ti-microscope'], comN:['Atlet Remaja','Saintis Cilik'], comM:['4.120 anggota','2.100 anggota'],
-    evs:['Turnamen Futsal Pelajar Se-Jawa','O2SN Tingkat Nasional'],
-    plan7:[
-      {day:'Hari 1', title:'Catat program latihan 7 hari ke depan', desc:'Jam berapa, apa yang dilatih, target spesifik. Buat di buku atau Notes HP', output:'📋 Program latihanmu'},
-      {day:'Hari 2–3', title:'Latihan 45 menit sesuai program + ukur performa', desc:'Catat waktu, jarak, atau repetisi. Ini data pertumbuhan kamu', output:'📊 Data latihan'},
-      {day:'Hari 4–7', title:'Cari 1 turnamen lokal terdekat untuk didaftarkan', desc:'Cek Atlet Remaja atau KONI daerahmu. Daftar adalah langkah nyata pertama', output:'🏆 Pendaftaran pertama'},
-    ]
-  },
-  robot: {
-    ic:'ti-robot', icbg:'#4C1D95',
-    title:'Tech Robotics Builder',
-    char:'Inovatif · Sistematis · Pemecah masalah',
-    desc:'Kamu suka merancang, merakit, dan membuat sesuatu bergerak. Kemampuan berpikir sistem dan kreativitas teknis adalah kombinasi langka yang sangat dibutuhkan dunia.',
-    skills:['Robotika','Pemrograman','Teknik','Kreativitas'],
-    bg:'#0F0520', tc:'#fff',
-    motive:'Pelajar Indonesia sudah pernah menang di World Robot Olympiad. Mereka mulai dari kit robotik sederhana di sekolah — bukan laboratorium canggih. Yang membedakan mereka adalah konsistensi berlatih.',
-    motiveSub:'Ini bukan soal punya peralatan mahal. Ini soal kemauan untuk terus mencoba dan gagal.',
-    roles:[
-      {name:'Tim WRO Indonesia', desc:'Pelajar SMA → Juara World Robot Olympiad', color:'#4C1D95'},
-      {name:'Elon Musk', desc:'Tertarik robotika sejak remaja → founder SpaceX & Tesla', color:'#1847ED'},
-    ],
-    coms:['ti-robot','ti-code'], comN:['Robotika Pelajar ID','CodeKid Indonesia'], comM:['1.320 anggota','3.240 anggota'],
-    evs:['Indonesia Robot Contest (IRC) 2025','National Olympiad Informatika 2025'],
-    plan7:[
-      {day:'Hari 1', title:'Pelajari dasar-dasar Arduino atau Raspberry Pi', desc:'Tonton 1 video YouTube tentang mikrokontroler dan komponen dasar robotika', output:'📝 Catatan konsep dasar'},
-      {day:'Hari 2–3', title:'Buat rangkaian LED sederhana atau sensor', desc:'Gunakan simulator online (Tinkercad) jika belum punya komponen fisik', output:'💡 Rangkaian pertamamu'},
-      {day:'Hari 4–7', title:'Daftar ke komunitas Robotika Pelajar ID', desc:'Ikuti diskusi, tanya senior, dan cari info kit robotik terjangkau untuk pemula', output:'🤖 Proyek mini pertama'},
-    ]
-  },
-  foto: {
-    ic:'ti-camera', icbg:'#D97706',
-    title:'Visual Storyteller',
-    char:'Observan · Kreatif · Berjiwa seni',
-    desc:'Kamu melihat keindahan di tempat yang orang lain lewati begitu saja. Mata dan intuisi visualmu adalah aset — di era konten, bakat ini sangat bernilai tinggi.',
-    skills:['Fotografi','Storytelling Visual','Editing','Kreativitas'],
-    bg:'#1A1000', tc:'#fff',
-    motive:'Fotografer Indonesia seperti Darwis Triadi memulai dari hobi biasa. Di era Instagram dan konten digital, fotografer berbakat bisa menghasilkan dari brand deal, wedding, hingga karya seni murni.',
-    motiveSub:'Ini bukan soal kamera mahal. Ini soal apakah kamu bisa menceritakan sesuatu lewat gambar.',
-    roles:[
-      {name:'Darwis Triadi', desc:'Fotografer Indonesia → Diakui internasional, ratusan klien global', color:'#D97706'},
-      {name:'Agus Leonardi', desc:'Pelajar biasa → Fotografer wildlife internasional', color:'#00966A'},
-    ],
-    coms:['ti-camera','ti-palette'], comN:['Lensa Pelajar','Desainer Muda ID'], comM:['870 anggota','1.890 anggota'],
-    evs:['Lomba Foto Pelajar Tema Alam Nusantara','Young Designer Award 2025 — Kategori Pelajar'],
-    plan7:[
-      {day:'Hari 1', title:'Ambil 20 foto dengan HP di sekitarmu', desc:'Fokus pada cahaya, komposisi, dan momen. Tidak perlu kamera mahal untuk mulai', output:'📸 20 foto pertamamu'},
-      {day:'Hari 2–3', title:'Pelajari rule of thirds dan golden hour', desc:'Tonton tutorial 15 menit lalu praktikkan saat matahari terbit atau terbenam', output:'🌅 Foto dengan komposisi baik'},
-      {day:'Hari 4–7', title:'Buat album mini 5 foto bertema', desc:'Pilih tema: street, alam, potret orang. Post di IG dengan hashtag #LensaPelajar', output:'🖼️ Mini portfolio online'},
-    ]
-  },
-};
-
-/* ===================================================================
-   APP STATE
-   =================================================================== */
-let qi=0, ans=[], dark=false, currentUser=null;
-let bookmarks={komunitas:new Set(), lomba:new Set()};
-let confirmationResult=null;
-let loginResendTimer=null, regResendTimer=null;
-let bkTab='komunitas';
-
-/* ===================================================================
-   NAVIGATION
-   =================================================================== */
-function go(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  const pg=document.getElementById('pg-'+id);
-  if(pg){pg.classList.add('on');window.scrollTo({top:0,behavior:'instant'})}
-  if(id==='quiz'){qi=0;ans=[];renderQ()}
-  if(id==='bookmark'){renderBookmarks()}
-  if(id==='profil'){renderProfile()}
-  if(id==='komunitas'){renderKoms()}
-}
-
-function setNav(k){
-  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
-  const el=document.getElementById('nav-'+k);
-  if(el)el.classList.add('on');
-}
-
-/* ===================================================================
-   TOAST
-   =================================================================== */
-let toastTimer=null;
-function toast(msg,icon='ti-check'){
-  const t=document.getElementById('toast');
-  const ic=t.querySelector('i');
-  const sp=document.getElementById('toast-msg');
-  if(!t||!sp)return;
-  ic.className='ti '+icon;
-  sp.textContent=msg;
-  t.classList.add('show');
-  if(toastTimer)clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-/* ===================================================================
-   DARK MODE
-   =================================================================== */
-function toggleDark(){
-  dark=!dark;
-  document.body.toggleAttribute('data-dark',dark);
-  const ic=document.getElementById('dark-ic');
-  const prIc=document.getElementById('pr-dark-ic');
-  const sub=document.getElementById('pr-dark-sub');
-  if(ic)ic.className=dark?'ti ti-sun':'ti ti-moon';
-  if(prIc)prIc.className=dark?'ti ti-sun':'ti ti-moon';
-  if(sub)sub.textContent=dark?'Nonaktifkan dark mode':'Aktifkan dark mode';
-  try{localStorage.setItem('lp_dark',dark?'1':'')}catch(e){}
-}
-
-function loadDarkPref(){
-  try{
-    if(localStorage.getItem('lp_dark')==='1'){dark=true;document.body.setAttribute('data-dark','');
-    const ic=document.getElementById('dark-ic');if(ic)ic.className='ti ti-sun';}
-  }catch(e){}
-}
-
-/* ===================================================================
-   RENDER CATEGORIES
-   =================================================================== */
-function renderCats(){
-  const el=document.getElementById('cat-list');
-  if(!el)return;
-  el.innerHTML=CATS.map(c=>`
-    <div class="ccat" onclick="filterByCat('${c.id}')">
-      <div class="ccat-ic" style="background:${c.bgi}33"><i class="ti ${c.ic}" style="color:${c.ci}"></i></div>
-      <div class="ccat-name">${c.name}</div>
-      <div class="ccat-ct">${c.ct}</div>
-    </div>`).join('');
-}
-
-let activeCat='';
-function filterByCat(id){
-  activeCat = activeCat===id?'':id;
-  document.querySelectorAll('.ccat').forEach((el,i)=>{
-    el.classList.toggle('sel', CATS[i]&&CATS[i].id===activeCat);
-  });
-  filterEvs();
-}
-
-/* ===================================================================
-   RENDER EVENTS
-   =================================================================== */
-function renderEvCard(e){
-  const saved=bookmarks.lomba.has(e.id);
-  return `<div class="ecard" onclick="toast('${e.title}','ti-trophy')">
-    <div class="ecard-top" style="background:${e.ibg}">
-      <i class="ti ${e.ic}" style="color:${e.ic2}"></i>
-      <span class="ecard-chip ${e.bc}">${e.badge}</span>
-      <button class="ecard-bm${saved?' saved':''}" onclick="event.stopPropagation();toggleBmLomba('${e.id}',this)">
-        <i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i>
-      </button>
-    </div>
-    <div class="ecard-body">
-      <div class="ecard-title">${e.title}</div>
-      <div class="ecard-meta"><i class="ti ti-map-pin" style="font-size:12px"></i>${e.loc}</div>
-      <div class="ecard-foot">
-        <span class="prize"><i class="ti ti-trophy" style="font-size:12px"></i>${e.prize}</span>
-        <span class="chip ${e.tc}">${e.tag}</span>
-      </div>
-      <div class="dl"><i class="ti ti-calendar" style="font-size:11px"></i>Deadline: ${e.dl}</div>
-    </div>
-  </div>`;
-}
-
-function filterEvs(){
-  const q=(document.getElementById('ev-search')?.value||'').toLowerCase();
-  const cl=document.getElementById('ev-search-clear');
-  if(cl)cl.classList.toggle('vis',q.length>0);
-  const filtered=EVS.filter(e=>{
-    const matchCat=!activeCat||e.cat===activeCat;
-    const matchQ=!q||e.title.toLowerCase().includes(q)||e.tag.toLowerCase().includes(q)||e.loc.toLowerCase().includes(q);
-    return matchCat&&matchQ;
-  });
-  const el=document.getElementById('ev-list');
-  if(el)el.innerHTML=filtered.length?filtered.map(renderEvCard).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
-}
-
-function clearEvSearch(){
-  const inp=document.getElementById('ev-search');
-  if(inp)inp.value='';
-  filterEvs();
-}
-
-/* ===================================================================
-   RENDER KOMUNITAS
-   =================================================================== */
-let allKoms=[...KOMS];
-function renderKoms(){
-  const q=(document.getElementById('kom-search')?.value||'').toLowerCase();
-  const filtered=allKoms.filter(k=>!q||k.name.toLowerCase().includes(q)||k.tags.some(t=>t.toLowerCase().includes(q)));
-  const el=document.getElementById('k-list');
-  if(!el)return;
-  el.innerHTML=filtered.map(k=>{
-    const saved=bookmarks.komunitas.has(k.id);
-    return `<div class="kcard">
-      <div class="kban" style="background:${k.bg}"><i class="ti ${k.ic}" style="color:${k.bgi};font-size:28px"></i>
-        <button class="kcard-bm${saved?' saved':''}" onclick="toggleBmKom('${k.id}',this)"><i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i></button>
-      </div>
-      <div class="kbody">
-        <div class="kname">${k.name}</div>
-        <div class="kdesc">${k.desc}</div>
-        <div class="ktags">${k.tags.map(t=>`<span class="chip ch-b">${t}</span>`).join('')}</div>
-        <div class="kft">
-          <div class="kmem"><i class="ti ti-users"></i>${k.mem}</div>
-          <div class="kft-btns">
-            <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function filterKoms(){
-  const cl=document.getElementById('kom-search-clear');
-  const val=document.getElementById('kom-search')?.value||'';
-  if(cl)cl.classList.toggle('vis',val.length>0);
-  renderKoms();
-}
-function clearKomSearch(){
-  const inp=document.getElementById('kom-search');
-  if(inp)inp.value='';
-  renderKoms();
-}
-
-/* ===================================================================
-   BOOKMARKS
-   =================================================================== */
-function toggleBmKom(id,btn){
-  if(bookmarks.komunitas.has(id))bookmarks.komunitas.delete(id);
-  else bookmarks.komunitas.add(id);
-  const saved=bookmarks.komunitas.has(id);
-  btn.classList.toggle('saved',saved);
-  btn.querySelector('i').className='ti '+(saved?'ti-bookmark-filled':'ti-bookmark');
-  toast(saved?'Komunitas disimpan!':'Dihapus dari simpanan','ti-bookmark');
-  saveBookmarks();
-}
-
-function toggleBmLomba(id,btn){
-  if(bookmarks.lomba.has(id))bookmarks.lomba.delete(id);
-  else bookmarks.lomba.add(id);
-  const saved=bookmarks.lomba.has(id);
-  btn.classList.toggle('saved',saved);
-  btn.querySelector('i').className='ti '+(saved?'ti-bookmark-filled':'ti-bookmark');
-  toast(saved?'Lomba disimpan!':'Dihapus dari simpanan','ti-bookmark');
-  saveBookmarks();
-}
-
-function saveBookmarks(){
-  try{localStorage.setItem('lp_bm_k',JSON.stringify([...bookmarks.komunitas]));
-      localStorage.setItem('lp_bm_l',JSON.stringify([...bookmarks.lomba]));}catch(e){}
-}
-function loadBookmarks(){
-  try{
-    const k=JSON.parse(localStorage.getItem('lp_bm_k')||'[]');
-    const l=JSON.parse(localStorage.getItem('lp_bm_l')||'[]');
-    bookmarks.komunitas=new Set(k);
-    bookmarks.lomba=new Set(l);
-  }catch(e){}
-}
-
-function switchBkTab(tab){
-  bkTab=tab;
-  document.querySelectorAll('.bk-tab').forEach(b=>b.classList.remove('on'));
-  document.getElementById('bkt-'+tab)?.classList.add('on');
-  renderBookmarks();
-}
-function renderBookmarks(){
-  const el=document.getElementById('bk-content');
-  if(!el)return;
-  if(bkTab==='komunitas'){
-    const items=KOMS.filter(k=>bookmarks.komunitas.has(k.id));
-    el.innerHTML=items.length?items.map(k=>`<div class="kcard">
-      <div class="kban" style="background:${k.bg}"><i class="ti ${k.ic}" style="color:${k.bgi};font-size:28px"></i></div>
-      <div class="kbody"><div class="kname">${k.name}</div><div class="kdesc">${k.desc}</div>
-        <div class="kft"><div class="kmem"><i class="ti ti-users"></i>${k.mem}</div>
-          <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
-        </div>
-      </div></div>`).join(''):`<div class="bk-empty"><i class="ti ti-bookmark"></i><p>Belum ada komunitas tersimpan.<br>Jelajahi dan simpan komunitasmu!</p></div>`;
-  } else {
-    const items=EVS.filter(e=>bookmarks.lomba.has(e.id));
-    el.innerHTML=items.length?items.map(renderEvCard).join(''):`<div class="bk-empty"><i class="ti ti-trophy"></i><p>Belum ada lomba tersimpan.<br>Cari lomba sesuai bakatmu!</p></div>`;
-  }
-}
-
-/* ===================================================================
-   QUIZ
-   =================================================================== */
-function renderQ(){
-  const q=QS[qi]; if(!q)return;
-  const barEl=document.getElementById('qbar');
-  const stepEl=document.getElementById('qstep');
-  const chatEl=document.getElementById('q-chat');
-  const optsEl=document.getElementById('qopts');
-  if(barEl)barEl.style.width=`${((qi+1)/QS.length)*100}%`;
-  if(stepEl)stepEl.textContent=`${qi+1} / ${QS.length}`;
-  if(chatEl)chatEl.innerHTML=`<div class="q-bubble">
-    <div class="q-bubble-label"><i class="ti ti-sparkles"></i>LostPotential</div>
-    <div class="q-text">${q.q}</div>
-    <div class="q-hint">${q.h}</div>
-  </div>`;
-  if(optsEl)optsEl.innerHTML=q.opts.map((o,i)=>`
-    <div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this)">
-      <div class="qopt-ic"><i class="ti ${o.ic}"></i></div>
-      <span>${o.t}</span>
-    </div>`).join('');
-}
-
-function selOpt(i,el){
-  document.querySelectorAll('.qopt').forEach(o=>o.classList.remove('on'));
-  el.classList.add('on');
-  ans[qi]=i;
-}
-
-function nextQ(){
-  if(ans[qi]===undefined){const o=document.querySelector('.qopt');if(o)selOpt(0,o);}
-  if(qi<QS.length-1){qi++;renderQ();}
-  else showResult();
-}
-
-function prevQ(){
-  if(qi>0){qi--;renderQ();}
+  if(qi > 0){ qi--; renderQ(); }
 }
 
 /* ===================================================================
@@ -3582,7 +2082,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 </body>
 </html>
-
 
 
 
