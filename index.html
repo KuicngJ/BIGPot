@@ -43,7 +43,7 @@
   --shadow-lg:0 12px 40px rgba(0,0,0,.4);
 }
 
-html,body{height:100%;overscroll-behavior:none}
+html,body{min-height:100%;overscroll-behavior:none}
 body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);overflow-x:hidden;font-size:15px;line-height:1.6;transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
 h1,h2,h3,h4,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.15}
 a{text-decoration:none;color:inherit}
@@ -53,7 +53,7 @@ input,button,textarea,select{font-family:'DM Sans',sans-serif}
    PAGE TRANSITIONS
    ======================================================== */
 .page{display:none}
-.page.on{display:block;animation:rise .28s var(--ease)}
+.page.on{display:block;animation:rise .28s var(--ease);height:fit-content}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ========================================================
@@ -345,7 +345,7 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 /* ========================================================
    KOMUNITAS PAGE
    ======================================================== */
-.kwrap{max-width:980px;margin:0 auto;padding:44px 20px 80px}
+.kwrap{max-width:980px;margin:0 auto;padding:20px 20px 80px}
 .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .kcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm);position:relative}
 .kcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
@@ -376,12 +376,12 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 /* ========================================================
    BOOKMARK PAGE
    ======================================================== */
-.bkwrap{max-width:860px;margin:0 auto;padding:44px 20px 80px}
+.bkwrap{max-width:860px;margin:0 auto;padding:20px 20px 80px}
 .bk-tabs{display:flex;gap:6px;margin-bottom:24px}
 .bk-tab{background:var(--surf3);border:none;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:600;color:var(--ink3);cursor:pointer;transition:all var(--dur) var(--ease)}
 .bk-tab.on{background:var(--blue);color:#fff}
 .bk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.bk-empty{text-align:center;padding:60px 20px;color:var(--ink3)}
+.bk-empty{text-align:center;padding:24px 20px;color:var(--ink3)}
 .bk-empty i{font-size:40px;margin-bottom:12px;opacity:.4;display:block}
 .bk-empty p{font-size:14px}
 
@@ -454,7 +454,7 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 /* ========================================================
    BOTTOM NAV
    ======================================================== */
-.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:10px 0 18px;position:sticky;bottom:0;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.05);transition:background var(--dur) var(--ease)}
+.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:10px 0 18px;position:fixed;bottom:0;left:0;right:0;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.05);transition:background var(--dur) var(--ease)}
 .bi{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 12px;border-radius:var(--r-sm);transition:all var(--dur) var(--ease);position:relative;min-width:52px;color:var(--ink3)}
 .bi:hover{background:var(--surf3)}
 .bi.on{color:var(--blue)}
@@ -2082,6 +2082,3 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 </body>
 </html>
-
-
-
