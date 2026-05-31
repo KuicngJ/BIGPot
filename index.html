@@ -3,376 +3,2791 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Lost Potential — Temukan Bakatmu</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
-<title>LostPotential — Temukan Bakat & Lomba Pelajar</title>
+
+<!-- =====================================================================
+     FIREBASE SETUP INSTRUCTIONS
+     ======================================================================
+     1. Buka https://console.firebase.google.com dan buat project baru.
+     2. Aktifkan Authentication → Sign-in method → pilih "Phone" (untuk WhatsApp/nomor HP)
+        Catatan: Firebase Phone Auth menggunakan SMS OTP bawaan.
+        Untuk WhatsApp OTP sejati, gunakan layanan pihak ketiga seperti Twilio Verify
+        atau WATI.io yang dapat dihubungkan ke Firebase via Cloud Functions.
+     3. Aktifkan Firestore Database → Start in production mode → pilih region asia-southeast2 (Jakarta).
+     4. Di Project Settings → General → Your apps → klik </> (Web), daftarkan app.
+     5. Salin firebaseConfig ke bagian script di bawah (ganti placeholder).
+     6. Di Firestore, buat Collection "users" (auto-created saat data pertama masuk).
+     7. Untuk aturan Firestore (Rules), gunakan:
+        rules_version = '2';
+        service cloud.firestore {
+          match /databases/{database}/documents {
+            match /users/{userId} {
+              allow read, write: if request.auth != null && request.auth.uid == userId;
+            }
+            match /bookmarks/{userId} {
+              allow read, write: if request.auth != null && request.auth.uid == userId;
+            }
+          }
+        }
+     8. Tambahkan domain "localhost" di Authentication → Settings → Authorized domains.
+     9. Install Firebase SDK via npm (jika pakai bundler):
+        npm install firebase
+        atau gunakan CDN (sudah di-include di bawah).
+     ===================================================================== -->
+
+<!-- Firebase v10 CDN (compat mode) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+/* ========================================================
+   CSS RESET & ROOT VARIABLES
+   ======================================================== */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{
---ink:#0A0F1E;--ink2:#3D4460;--ink3:#8891AB;--ink4:#C8CEDF;
---surf:#FFFFFF;--surf2:#F4F5F9;--surf3:#ECEEF5;--surf4:#E2E5EF;
---blue:#1847ED;--blue-d:#1239C4;--blue-l:#EEF2FD;--blue-m:#7BA2F5;
---orange:#F04E23;--orange-l:#FEF0EC;--orange-d:#C43C14;
---green:#00966A;--green-l:#E5F7F2;--green-d:#006B4C;
---purple:#6D28D9;--purple-l:#F0EEFF;
---amber:#D97706;--amber-l:#FEF9EC;
---r:14px;--r-sm:10px;--r-lg:20px;--r-xl:26px;
---ease:cubic-bezier(.4,0,.2,1);
---dur:.22s;
+  /* Light mode tokens */
+  --ink:#0A0F1E;--ink2:#3D4460;--ink3:#8891AB;--ink4:#C8CEDF;
+  --surf:#FFFFFF;--surf2:#F4F5F9;--surf3:#ECEEF5;--surf4:#E2E5EF;
+  --blue:#1847ED;--blue-d:#1239C4;--blue-l:#EEF2FD;--blue-m:#7BA2F5;
+  --orange:#F04E23;--orange-l:#FEF0EC;--orange-d:#C43C14;
+  --green:#00966A;--green-l:#E5F7F2;--green-d:#006B4C;
+  --purple:#6D28D9;--purple-l:#F0EEFF;
+  --amber:#D97706;--amber-l:#FEF9EC;
+  --wa-green:#25D366;--wa-green-d:#128C7E;--wa-green-l:#E8FAF0;
+  --r:14px;--r-sm:10px;--r-lg:20px;--r-xl:26px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --dur:.22s;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.07);
 }
 [data-dark]{
---ink:#F0F2FA;--ink2:#A8B0C8;--ink3:#636A84;--ink4:#3A3F55;
---surf:#141824;--surf2:#1C2130;--surf3:#242B3E;--surf4:#2E3650;
---blue-l:#0F1E4A;--blue-m:#4A72D9;
---orange-l:#3A1A0E;--green-l:#0A2E22;--purple-l:#1C1040;--amber-l:#2A1E05;
+  --ink:#F0F2FA;--ink2:#A8B0C8;--ink3:#636A84;--ink4:#3A3F55;
+  --surf:#141824;--surf2:#1C2130;--surf3:#242B3E;--surf4:#2E3650;
+  --blue-l:#0F1E4A;--blue-m:#4A72D9;
+  --orange-l:#3A1A0E;--green-l:#0A2E22;--purple-l:#1C1040;--amber-l:#2A1E05;
+  --wa-green-l:#0A2E1C;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.2);
+  --shadow:0 4px 16px rgba(0,0,0,.3);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.4);
 }
-body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.6;transition:background var(--dur) var(--ease),color var(--dur) var(--ease)}
+
+/* ========================================================
+   BASE BODY
+   ======================================================== */
+html,body{height:100%;overscroll-behavior:none}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--surf2);
+  color:var(--ink);
+  overflow-x:hidden;
+  font-size:15px;
+  line-height:1.6;
+  transition:background var(--dur) var(--ease),color var(--dur) var(--ease)
+}
 h1,h2,h3,h4,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.15}
+a{text-decoration:none;color:inherit}
+input,button,textarea,select{font-family:'DM Sans',sans-serif}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.page{display:none}.page.on{display:block;animation:rise .3s var(--ease)}
+
+/* ========================================================
+   PAGE TRANSITIONS
+   ======================================================== */
+.page{display:none}
+.page.on{display:block;animation:rise .28s var(--ease)}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:200;transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease)}
-.brand{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.5px;display:flex;align-items:center;gap:7px;cursor:pointer}
-.brand-mark{width:28px;height:28px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.brand-mark i{color:#fff;font-size:15px}
-.nav-r{display:flex;align-items:center;gap:8px}
-.btn-ghost{background:none;border:1.5px solid var(--surf4);color:var(--ink2);padding:8px 18px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);font-family:inherit;display:flex;align-items:center;gap:6px}
+/* ========================================================
+   TOP NAVIGATION BAR
+   ======================================================== */
+nav{
+  background:var(--surf);
+  border-bottom:1px solid var(--surf3);
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:200;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+  box-shadow:var(--shadow-sm)
+}
+.brand{
+  font-size:19px;
+  font-weight:800;
+  color:var(--ink);
+  letter-spacing:-.5px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  user-select:none
+}
+.brand-mark{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,var(--orange) 0%,#ff6b3d 100%);
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(240,78,35,.3)
+}
+.brand-mark i{color:#fff;font-size:16px}
+.nav-r{display:flex;align-items:center;gap:6px}
+.btn-ghost{
+  background:none;
+  border:1.5px solid var(--surf4);
+  color:var(--ink2);
+  padding:8px 16px;
+  border-radius:50px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:6px
+}
 .btn-ghost:hover{border-color:var(--ink3);color:var(--ink)}
-.btn-primary{background:var(--ink);color:var(--surf);border:none;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);font-family:inherit;display:flex;align-items:center;gap:6px;letter-spacing:-.2px}
-.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
-.dark-toggle{width:38px;height:38px;border-radius:50%;background:var(--surf3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);transition:all var(--dur) var(--ease);flex-shrink:0}
+.btn-primary{
+  background:var(--ink);
+  color:var(--surf);
+  border:none;
+  padding:9px 18px;
+  border-radius:50px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:6px;
+  letter-spacing:-.2px
+}
+.btn-primary:hover{opacity:.82;transform:translateY(-1px)}
+.dark-toggle{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--surf3);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink3);
+  transition:all var(--dur) var(--ease);
+  flex-shrink:0
+}
 .dark-toggle:hover{background:var(--surf4);color:var(--ink)}
 
-.hero{padding:40px 28px 52px;max-width:1080px;margin:0 auto}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-l);color:var(--blue);border:1px solid var(--blue-m);padding:7px 16px;border-radius:50px;font-size:13px;font-weight:600;margin-bottom:28px}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:livepulse 2s ease infinite;flex-shrink:0}
-@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.75)}}
-.hero h1{font-size:clamp(34px,5vw,60px);font-weight:800;color:var(--ink);margin-bottom:22px;letter-spacing:-2px;max-width:850px;line-height:1.1}
+/* ========================================================
+   HERO SECTION
+   ======================================================== */
+.hero{padding:56px 20px 44px;max-width:1100px;margin:0 auto}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue-l);
+  color:var(--blue);
+  border:1px solid var(--blue-m);
+  padding:7px 16px;
+  border-radius:50px;
+  font-size:12.5px;font-weight:700;
+  margin-bottom:24px;
+  letter-spacing:.2px
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:livepulse 2s ease infinite;flex-shrink:0
+}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.hero h1{
+  font-size:clamp(34px,5.5vw,64px);
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:20px;
+  letter-spacing:-2px;
+  max-width:780px;
+  line-height:1.08
+}
 .hero h1 .accent{color:var(--blue)}
-.hero h1 .outline{-webkit-text-stroke:2px var(--orange);color:transparent}
-.hero-sub{font-size:17px;color:var(--ink2);max-width:550px;line-height:1.72;margin-bottom:40px;font-weight:300}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:60px;align-items:center}
-.cta-main{background:var(--blue);color:#fff;border:none;padding:16px 30px;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);font-family:inherit;display:flex;align-items:center;gap:9px;letter-spacing:-.3px}
-.cta-main:hover{background:var(--blue-d);transform:translateY(-2px)}
-.cta-sec{background:var(--surf);color:var(--ink);border:1.5px solid var(--surf4);padding:16px 28px;border-radius:50px;font-size:15px;font-weight:600;cursor:pointer;transition:all var(--dur) var(--ease);font-family:inherit;display:flex;align-items:center;gap:8px}
+.hero h1 .outline{-webkit-text-stroke:2.5px var(--orange);color:transparent}
+.hero-sub{font-size:16px;color:var(--ink2);max-width:500px;line-height:1.72;margin-bottom:36px;font-weight:300}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:52px;align-items:center}
+.cta-main{
+  background:var(--blue);color:#fff;border:none;
+  padding:15px 28px;border-radius:50px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:9px;
+  letter-spacing:-.2px;
+  box-shadow:0 4px 18px rgba(24,71,237,.32)
+}
+.cta-main:hover{background:var(--blue-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(24,71,237,.4)}
+.cta-sec{
+  background:var(--surf);color:var(--ink);
+  border:1.5px solid var(--surf4);
+  padding:15px 26px;border-radius:50px;
+  font-size:15px;font-weight:600;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:8px
+}
 .cta-sec:hover{border-color:var(--ink4);transform:translateY(-1px)}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:60px}
-.scard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:22px 24px;transition:all var(--dur) var(--ease);cursor:default}
-.scard:hover{transform:translateY(-2px);border-color:var(--surf4)}
-.scard-bar{height:3px;border-radius:2px;margin-bottom:14px;width:32px}
-.scard-n{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-1px}
-.scard-l{font-size:13px;color:var(--ink3);margin-top:3px}
+/* ========================================================
+   STATS CARDS
+   ======================================================== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:52px}
+.scard{
+  background:var(--surf);
+  border:1px solid var(--surf3);
+  border-radius:var(--r-lg);
+  padding:20px 22px;
+  transition:all var(--dur) var(--ease);
+  box-shadow:var(--shadow-sm)
+}
+.scard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.scard-bar{height:3px;border-radius:2px;margin-bottom:12px;width:28px}
+.scard-n{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-1px}
+.scard-l{font-size:12.5px;color:var(--ink3);margin-top:2px}
 
-.sec-hd{margin-bottom:24px;display:flex;justify-content:between;align-items:center;width:100%}.sec-hd h2{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:5px;color:var(--ink)}.sec-hd p{font-size:14px;color:var(--ink3)}
+/* ========================================================
+   SECTION HEADERS
+   ======================================================== */
+.sec-hd{margin-bottom:20px}
+.sec-hd h2{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;color:var(--ink)}
+.sec-hd p{font-size:13.5px;color:var(--ink3)}
 
-.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:40px}
-.ccat{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r-lg);padding:20px 16px 18px;cursor:pointer;transition:all var(--dur) var(--ease);position:relative}
-.ccat:hover{border-color:var(--blue-m);transform:translateY(-3px)}
+/* ========================================================
+   SEARCH BAR (NEW)
+   ======================================================== */
+.search-wrap{
+  position:relative;
+  margin-bottom:22px
+}
+.search-wrap i.search-ic{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  font-size:17px;color:var(--ink3);pointer-events:none
+}
+.search-inp{
+  width:100%;
+  background:var(--surf);
+  border:1.5px solid var(--surf3);
+  border-radius:50px;
+  padding:13px 20px 13px 46px;
+  font-size:14px;
+  color:var(--ink);
+  outline:none;
+  transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)
+}
+.search-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
+.search-inp::placeholder{color:var(--ink4)}
+.search-clear{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border-radius:50%;
+  background:var(--surf3);border:none;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  color:var(--ink3);font-size:13px;
+  transition:all var(--dur) var(--ease)
+}
+.search-clear.vis{display:flex}
+.search-clear:hover{background:var(--surf4);color:var(--ink)}
+
+/* ========================================================
+   CATEGORY CHIPS
+   ======================================================== */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:10px;margin-bottom:52px}
+.ccat{
+  background:var(--surf);
+  border:1.5px solid var(--surf3);
+  border-radius:var(--r-lg);
+  padding:18px 14px 16px;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  box-shadow:var(--shadow-sm)
+}
+.ccat:hover{border-color:var(--blue-m);transform:translateY(-3px);box-shadow:var(--shadow)}
 .ccat.sel{border-color:var(--blue);background:var(--blue-l)}
-.ccat-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px;transition:all var(--dur) var(--ease)}
+.ccat-ic{
+  width:40px;height:40px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:11px;font-size:19px;
+  transition:all var(--dur) var(--ease)
+}
 .ccat.sel .ccat-ic{background:var(--blue)!important}
 .ccat.sel .ccat-ic i{color:#fff!important}
-.ccat-name{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:3px}
-.ccat-ct{font-size:12px;color:var(--ink3)}
+.ccat-name{font-weight:700;font-size:12.5px;color:var(--ink);margin-bottom:3px}
+.ccat.sel .ccat-name{color:var(--blue-d)}
+.ccat-ct{font-size:11.5px;color:var(--ink3)}
 
-.evts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-bottom:60px}
-.ecard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;flex-direction:column;justify-content:between}
-.ecard:hover{transform:translateY(-4px);border-color:var(--surf4);box-shadow:0 10px 20px rgba(0,0,0,0.02)}
-.ecard-top{height:100px;display:flex;align-items:center;justify-content:center;position:relative}
-.ecard-top i{font-size:36px}
-.ecard-chip{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:50px}
-.ecard-body{padding:16px 18px;flex-grow:1}
-.ecard-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px;line-height:1.35;color:var(--ink);height:40px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.ecard-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3);margin-bottom:12px}
-.ecard-foot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px dashed var(--surf3)}
-.prize{font-size:13px;font-weight:700;color:var(--green)}
-.chip{display:inline-block;padding:3px 9px;border-radius:50px;font-size:11px;font-weight:700}
-.ch-b{background:var(--blue-l);color:#1847ED}.ch-o{background:var(--orange-l);color:#F04E23}.ch-g{background:var(--green-l);color:#00966A}.ch-p{background:var(--purple-l);color:#6D28D9}.ch-a{background:var(--amber-l);color:#D97706}
-.dl{font-size:11px;color:var(--ink3);margin-top:6px;display:flex;align-items:center;gap:4px}
+/* ========================================================
+   EVENT CARDS
+   ======================================================== */
+.evts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:52px}
+.ecard{
+  background:var(--surf);
+  border:1px solid var(--surf3);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  box-shadow:var(--shadow-sm);
+  position:relative
+}
+.ecard:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.ecard-top{height:106px;display:flex;align-items:center;justify-content:center;position:relative}
+.ecard-top i{font-size:38px}
+.ecard-chip{
+  position:absolute;top:12px;left:12px;
+  font-size:10.5px;font-weight:700;
+  padding:4px 10px;border-radius:50px
+}
+.ecard-bm{
+  position:absolute;top:10px;right:10px;
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(8px);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink3);font-size:15px;
+  transition:all var(--dur) var(--ease)
+}
+.ecard-bm:hover{background:#fff;color:var(--blue)}
+.ecard-bm.saved{color:var(--blue);background:#fff}
+.ecard-body{padding:14px 16px 16px}
+.ecard-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-weight:700;font-size:14.5px;
+  margin-bottom:9px;line-height:1.3;color:var(--ink)
+}
+.ecard-meta{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink3);margin-bottom:12px}
+.ecard-foot{display:flex;align-items:center;justify-content:space-between}
+.prize{font-size:12.5px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px}
+.chip{display:inline-block;padding:4px 10px;border-radius:50px;font-size:10.5px;font-weight:700}
+.ch-b{background:var(--blue-l);color:#1239C4}
+.ch-o{background:var(--orange-l);color:#C43C14}
+.ch-g{background:var(--green-l);color:#006B4C}
+.ch-p{background:var(--purple-l);color:#5B21B6}
+.ch-a{background:var(--amber-l);color:#92400E}
+.dl{font-size:11px;color:var(--ink3);margin-top:7px;display:flex;align-items:center;gap:4px}
 
-.qwrap{max-width:600px;margin:0 auto;padding:48px 24px 80px}
-.q-chat{display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
-.q-bubble{background:var(--surf);border:1px solid var(--surf3);border-radius:0 18px 18px 18px;padding:18px 22px;max-width:88%;animation:bubbleIn .3s var(--ease)}
+/* ========================================================
+   QUIZ
+   ======================================================== */
+.qwrap{max-width:600px;margin:0 auto;padding:44px 20px 80px}
+.q-chat{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;min-height:140px}
+.q-bubble{
+  background:var(--surf);
+  border:1px solid var(--surf3);
+  border-radius:0 18px 18px 18px;
+  padding:18px 22px;
+  max-width:88%;
+  animation:bubbleIn .3s var(--ease);
+  box-shadow:var(--shadow-sm)
+}
 @keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.q-text{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--ink);line-height:1.25}
-.q-hint{font-size:14px;color:var(--ink3);margin-top:6px}
-.qopts{display:grid;gap:9px;margin-bottom:32px}
-.qopt{background:var(--surf);border:1.5px solid var(--surf3);border-radius:var(--r);padding:15px 18px;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:14px}
-.qopt:hover{border-color:var(--blue-m);background:var(--blue-l);transform:translateX(4px)}
+.q-bubble-label{
+  font-size:10.5px;font-weight:700;
+  color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.8px;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px
+}
+.q-bubble-label i{font-size:13px}
+.q-text{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:19px;font-weight:800;
+  color:var(--ink);letter-spacing:-.3px;line-height:1.25
+}
+.q-hint{font-size:13.5px;color:var(--ink3);margin-top:6px}
+.qprog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.qprog{flex:1;height:4px;background:var(--surf3);border-radius:4px;overflow:hidden}
+.qbar{height:100%;background:var(--blue);border-radius:4px;transition:width .5s var(--ease)}
+.qstep{font-size:12px;font-weight:700;color:var(--ink3);white-space:nowrap}
+.qopts{display:grid;gap:9px;margin-bottom:28px}
+.qopt{
+  background:var(--surf);
+  border:1.5px solid var(--surf3);
+  border-radius:var(--r);
+  padding:14px 16px;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:13px;
+  font-size:14px;font-weight:500;
+  color:var(--ink2);
+  box-shadow:var(--shadow-sm)
+}
+.qopt:hover{border-color:var(--blue-m);background:var(--blue-l);color:var(--ink);transform:translateX(4px)}
 .qopt.on{border-color:var(--blue);background:var(--blue-l);color:var(--blue-d);font-weight:600}
+.qopt-ic{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surf2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all var(--dur) var(--ease)
+}
+.qopt-ic i{font-size:17px;color:var(--ink3);transition:color var(--dur) var(--ease)}
+.qopt.on .qopt-ic{background:#C5D4FB}
+.qopt.on .qopt-ic i{color:var(--blue)}
+.qnav{display:flex;gap:10px}
+.btn-bk{
+  background:var(--surf);border:1.5px solid var(--surf3);
+  color:var(--ink3);padding:13px 20px;border-radius:50px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:7px
+}
+.btn-bk:hover{border-color:var(--ink4);color:var(--ink)}
+.btn-nx{
+  background:var(--blue);color:#fff;border:none;
+  padding:13px 0;border-radius:50px;
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  flex:1;letter-spacing:-.1px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 14px rgba(24,71,237,.28)
+}
+.btn-nx:hover{background:var(--blue-d);transform:translateY(-1px)}
 
-.kwrap{max-width:960px;margin:0 auto;padding:48px 24px 80px}
-.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.kcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;transition:all var(--dur) var(--ease);display:flex;flex-direction:column}
-.kcard:hover{transform:translateY(-3px);border-color:var(--surf4)}
-.kban{height:64px;display:flex;align-items:center;justify-content:center;font-size:24px}
-.kbody{padding:18px;flex-grow:1;display:flex;flex-direction:column}
-.kname{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;color:var(--ink);margin-bottom:5px}
-.kdesc{font-size:13px;color:var(--ink2);line-height:1.5;margin-bottom:12px;flex-grow:1}
-.ktags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.kft{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--surf3)}
-.btn-join{background:var(--green);color:#fff;border:none;padding:9px 16px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:6px}
-.btn-join:hover{background:var(--green-d);transform:scale(1.03)}
+/* ========================================================
+   RESULT PAGE
+   ======================================================== */
+.rwrap{max-width:660px;margin:0 auto;padding:36px 20px 80px}
+.rhero{
+  border-radius:var(--r-xl);
+  padding:38px 32px 32px;
+  margin-bottom:20px;
+  text-align:center;
+  position:relative;overflow:hidden
+}
+.r-ic{
+  width:68px;height:68px;border-radius:18px;
+  margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center
+}
+.r-ic i{font-size:32px;color:#fff}
+.r-label{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:.55;margin-bottom:8px}
+.r-title{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;margin-bottom:12px;letter-spacing:-.5px;line-height:1.1}
+.r-desc{font-size:14.5px;line-height:1.7;opacity:.78;max-width:420px;margin:0 auto 20px}
+.r-skills{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}
+.r-skill{padding:7px 16px;border-radius:50px;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.14);letter-spacing:.2px}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px}
+.rcard{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);padding:16px 18px;
+  box-shadow:var(--shadow-sm)
+}
+.rcard-hd{
+  font-size:10.5px;font-weight:700;
+  color:var(--ink3);text-transform:uppercase;
+  letter-spacing:.8px;margin-bottom:13px;
+  display:flex;align-items:center;gap:6px
+}
+.rcard-hd i{font-size:14px}
+.com-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--surf3)}
+.com-row:last-child{border:none;padding-bottom:0}
+.com-av{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.com-av i{font-size:16px}
+.com-name{font-size:13.5px;font-weight:600;color:var(--ink)}
+.com-meta{font-size:11.5px;color:var(--ink3)}
+.ev-row{padding:9px 0;border-bottom:1px solid var(--surf3)}
+.ev-row:last-child{border:none;padding-bottom:0}
+.ev-name{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.ev-name i{font-size:13px;color:var(--amber);flex-shrink:0}
+.ev-meta{font-size:11.5px;color:var(--ink3)}
+.rcta{
+  background:var(--ink);color:var(--surf);
+  border-radius:var(--r-lg);
+  padding:22px 26px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;margin-bottom:14px
+}
+.rcta h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.3px}
+.rcta p{font-size:12.5px;opacity:.6;margin-top:3px}
+.btn-w{
+  background:var(--surf);color:var(--ink);border:none;
+  padding:11px 20px;border-radius:50px;
+  font-weight:700;font-size:13px;
+  cursor:pointer;transition:all var(--dur) var(--ease);
+  white-space:nowrap;display:flex;align-items:center;gap:6px
+}
+.btn-w:hover{opacity:.9;transform:translateY(-1px)}
 
-.bot-panel{background:var(--blue-l);border:1px dashed var(--blue-m);border-radius:var(--r-lg);padding:20px;margin-top:24px;text-align:left}
-.bot-code{background:var(--ink);color:#A8B0C8;padding:12px;border-radius:8px;font-family:monospace;font-size:12px;overflow-x:auto;margin:10px 0}
+/* ========================================================
+   KOMUNITAS PAGE
+   ======================================================== */
+.kwrap{max-width:980px;margin:0 auto;padding:44px 20px 80px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.kcard{
+  background:var(--surf);
+  border:1px solid var(--surf3);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  box-shadow:var(--shadow-sm);
+  position:relative
+}
+.kcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.kban{height:68px;display:flex;align-items:center;justify-content:center;position:relative}
+.kban i{font-size:30px}
+.kcard-bm{
+  position:absolute;top:10px;right:10px;
+  width:28px;height:28px;border-radius:7px;
+  background:rgba(255,255,255,.7);backdrop-filter:blur(8px);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink3);font-size:14px;
+  transition:all var(--dur) var(--ease)
+}
+.kcard-bm:hover{background:rgba(255,255,255,.95);color:var(--blue)}
+.kcard-bm.saved{color:var(--blue);background:rgba(255,255,255,.95)}
+.kbody{padding:16px}
+.kname{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;color:var(--ink);margin-bottom:5px}
+.kdesc{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-bottom:11px}
+.ktags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px}
+.kft{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.kmem{font-size:11.5px;color:var(--ink3);font-weight:500;display:flex;align-items:center;gap:4px}
+.kmem i{font-size:12px}
+.kft-btns{display:flex;gap:7px;align-items:center}
+.btn-join{
+  background:var(--blue);color:#fff;border:none;
+  padding:8px 16px;border-radius:50px;
+  font-size:11.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:4px
+}
+.btn-join:hover{background:var(--blue-d)}
+.btn-join.ok{background:var(--green)}
 
-.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:10px 0 18px;position:sticky;bottom:0;z-index:150}
-.bi{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--ink4);padding:6px 20px;border-radius:var(--r)}
+/* WhatsApp Channel button */
+.btn-wa{
+  background:var(--wa-green);color:#fff;border:none;
+  padding:8px 14px;border-radius:50px;
+  font-size:11.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:flex;align-items:center;gap:4px;
+  text-decoration:none
+}
+.btn-wa:hover{background:var(--wa-green-d);transform:translateY(-1px)}
+.btn-wa i{font-size:13px}
+
+/* WhatsApp Channel Banner (komunitas page) */
+.wa-channel-banner{
+  background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
+  border-radius:var(--r-lg);
+  padding:22px 24px;
+  margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+  box-shadow:0 6px 24px rgba(37,211,102,.25)
+}
+.wa-banner-text h3{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:17px;font-weight:800;color:#fff;
+  letter-spacing:-.3px;margin-bottom:4px
+}
+.wa-banner-text p{font-size:13px;color:rgba(255,255,255,.8);line-height:1.5}
+.btn-wa-join{
+  background:#fff;color:var(--wa-green-d);
+  border:none;padding:12px 22px;border-radius:50px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
+  box-shadow:0 2px 10px rgba(0,0,0,.12)
+}
+.btn-wa-join:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.18)}
+
+/* ========================================================
+   BOOKMARK PAGE (NEW)
+   ======================================================== */
+.bkwrap{max-width:860px;margin:0 auto;padding:44px 20px 80px}
+.bk-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:2px solid var(--surf3);padding-bottom:0}
+.bk-tab{
+  background:none;border:none;
+  padding:10px 18px 12px;
+  font-size:14px;font-weight:600;
+  color:var(--ink3);cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-2px;
+  transition:all var(--dur) var(--ease)
+}
+.bk-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.bk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px}
+.bk-empty{
+  text-align:center;padding:52px 20px;
+  color:var(--ink3)
+}
+.bk-empty i{font-size:44px;display:block;margin-bottom:14px;color:var(--ink4)}
+.bk-empty h3{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--ink2)}
+.bk-empty p{font-size:13.5px}
+
+/* ========================================================
+   LOGIN / REGISTER PAGES
+   ======================================================== */
+.lwrap{max-width:440px;margin:0 auto;padding:36px 20px 80px}
+.lcard{
+  background:var(--surf);
+  border:1px solid var(--surf3);
+  border-radius:var(--r-xl);
+  padding:36px 30px;
+  box-shadow:var(--shadow)
+}
+.lhead{text-align:center;margin-bottom:28px}
+.lhead-ic{
+  width:54px;height:54px;border-radius:15px;
+  background:var(--blue-l);
+  margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center
+}
+.lhead-ic i{font-size:25px;color:var(--blue)}
+.lhead h2{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:5px;color:var(--ink)}
+.lhead p{font-size:13.5px;color:var(--ink3)}
+.google-btn{
+  width:100%;background:var(--surf);
+  border:1.5px solid var(--surf4);
+  color:var(--ink);
+  padding:13px 18px;border-radius:var(--r);
+  font-size:14px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all var(--dur) var(--ease);
+  margin-bottom:18px
+}
+.google-btn:hover{border-color:var(--ink4);background:var(--surf2);transform:translateY(-1px)}
+.g-logo{width:18px;height:18px;flex-shrink:0}
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:18px;color:var(--ink4);
+  font-size:12px;font-weight:600
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--surf4)}
+.fg{margin-bottom:14px}
+.flbl{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:6px;display:block;letter-spacing:.2px}
+.finp{
+  width:100%;border:1.5px solid var(--surf4);
+  border-radius:var(--r-sm);
+  padding:12px 14px;
+  font-size:14px;color:var(--ink);
+  outline:none;
+  transition:all var(--dur) var(--ease);
+  background:var(--surf)
+}
+.finp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.08)}
+.finp::placeholder{color:var(--ink4)}
+.finp.err{border-color:var(--orange)}
+.err-msg{font-size:11.5px;color:var(--orange);margin-top:4px;display:none}
+.err-msg.vis{display:block}
+
+/* Phone field with prefix */
+.phone-wrap{display:flex;gap:0}
+.phone-prefix{
+  background:var(--surf2);
+  border:1.5px solid var(--surf4);
+  border-right:none;
+  border-radius:var(--r-sm) 0 0 var(--r-sm);
+  padding:12px 14px;
+  font-size:14px;font-weight:600;color:var(--ink2);
+  white-space:nowrap;display:flex;align-items:center;gap:6px
+}
+.phone-prefix span{font-size:16px}
+.finp-phone{
+  flex:1;border:1.5px solid var(--surf4);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:12px 14px;
+  font-size:14px;color:var(--ink);
+  outline:none;
+  transition:all var(--dur) var(--ease);
+  background:var(--surf)
+}
+.finp-phone:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.08)}
+.finp-phone::placeholder{color:var(--ink4)}
+
+/* OTP field */
+.otp-wrap{display:flex;gap:8px;justify-content:center;margin-bottom:6px}
+.otp-inp{
+  width:48px;height:56px;
+  border:1.5px solid var(--surf4);
+  border-radius:var(--r-sm);
+  text-align:center;font-size:20px;font-weight:700;
+  color:var(--ink);background:var(--surf);
+  outline:none;transition:all var(--dur) var(--ease)
+}
+.otp-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
+.otp-info{font-size:12.5px;color:var(--ink3);text-align:center;margin-bottom:20px;line-height:1.6}
+.otp-resend{
+  background:none;border:none;color:var(--blue);
+  font-size:13px;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px
+}
+.otp-resend:disabled{color:var(--ink4);cursor:default}
+
+.btn-full{
+  width:100%;background:var(--blue);color:#fff;border:none;
+  padding:14px;border-radius:var(--r);
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  margin-top:4px;letter-spacing:-.2px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 16px rgba(24,71,237,.28)
+}
+.btn-full:hover{background:var(--blue-d);transform:translateY(-1px)}
+.btn-full:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-full-wa{
+  width:100%;background:var(--wa-green);color:#fff;border:none;
+  padding:14px;border-radius:var(--r);
+  font-size:14.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  margin-top:4px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 4px 16px rgba(37,211,102,.3)
+}
+.btn-full-wa:hover{background:var(--wa-green-d);transform:translateY(-1px)}
+.form-foot{text-align:center;font-size:13px;color:var(--ink3);margin-top:16px}
+.form-foot a{color:var(--blue);font-weight:700;cursor:pointer}
+.privacy-note{font-size:11px;color:var(--ink4);text-align:center;margin-top:12px;line-height:1.6}
+.privacy-note a{color:var(--blue-m);cursor:pointer}
+
+/* Loading spinner */
+.spinner{
+  width:18px;height:18px;
+  border:2.5px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ========================================================
+   STEP INDICATOR (for register flow)
+   ======================================================== */
+.reg-steps{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.reg-step{
+  display:flex;flex-direction:column;align-items:center;gap:5px;flex:1
+}
+.reg-step-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--surf3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--ink3);
+  transition:all var(--dur) var(--ease)
+}
+.reg-step.done .reg-step-num{background:var(--green);color:#fff}
+.reg-step.active .reg-step-num{background:var(--blue);color:#fff}
+.reg-step-lbl{font-size:10.5px;font-weight:600;color:var(--ink4)}
+.reg-step.active .reg-step-lbl{color:var(--blue)}
+.reg-step.done .reg-step-lbl{color:var(--green)}
+.reg-step-line{height:2px;background:var(--surf3);flex:1;margin-bottom:16px;transition:background var(--dur) var(--ease)}
+.reg-step-line.done{background:var(--green)}
+
+/* Step panels */
+.reg-panel{display:none;animation:rise .25s var(--ease)}
+.reg-panel.on{display:block}
+
+/* ========================================================
+   BOTTOM NAV
+   ======================================================== */
+.bnav{
+  background:var(--surf);
+  border-top:1px solid var(--surf3);
+  display:flex;justify-content:space-around;
+  padding:8px 0 16px;
+  position:sticky;bottom:0;z-index:150;
+  transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease);
+  box-shadow:0 -2px 16px rgba(0,0,0,.04)
+}
+.bi{
+  display:flex;flex-direction:column;align-items:center;
+  gap:3px;cursor:pointer;color:var(--ink4);
+  transition:color var(--dur) var(--ease);
+  padding:6px 18px;border-radius:var(--r);position:relative
+}
 .bi.on{color:var(--blue)}
-.bi-ic{font-size:22px}
-.bi-lbl{font-size:10px;font-weight:700}
+.bi-ic{font-size:22px;transition:transform var(--dur) var(--ease)}
+.bi.on .bi-ic{transform:translateY(-1px)}
+.bi-lbl{font-size:10px;font-weight:700;letter-spacing:.3px}
+.bi-badge{
+  position:absolute;top:2px;right:8px;
+  width:7px;height:7px;
+  background:var(--orange);border-radius:50%;
+  border:2px solid var(--surf)
+}
 
-.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surf);padding:11px 22px;border-radius:50px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;display:flex;align-items:center;gap:8px}
-.toast.show{opacity:1}
+/* ========================================================
+   TOAST NOTIFICATION
+   ======================================================== */
+.toast{
+  position:fixed;top:72px;left:50%;
+  transform:translateX(-50%) translateY(-8px);
+  background:var(--ink);color:var(--surf);
+  padding:11px 22px;border-radius:50px;
+  font-size:13px;font-weight:600;
+  z-index:999;opacity:0;
+  transition:opacity .25s,transform .25s;
+  pointer-events:none;white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:var(--shadow-lg)
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast i{font-size:15px}
+
+/* Canvas confetti */
 canvas#confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:300;display:none}
+
+/* ========================================================
+   PROFILE PAGE
+   ======================================================== */
+.prwrap{max-width:440px;margin:0 auto;padding:36px 20px 80px}
+.pr-hero{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-xl);padding:28px 24px;
+  margin-bottom:16px;text-align:center;
+  box-shadow:var(--shadow-sm)
+}
+.pr-av{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--purple) 100%);
+  margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:800;color:#fff;
+  font-family:'Bricolage Grotesque',sans-serif
+}
+.pr-name{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+.pr-meta{font-size:13px;color:var(--ink3);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px}
+.pr-wa-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--wa-green-l);
+  color:var(--wa-green-d);
+  padding:5px 12px;border-radius:50px;
+  font-size:12px;font-weight:700;margin-top:10px
+}
+.pr-list{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:var(--shadow-sm)
+}
+.pr-row{
+  display:flex;align-items:center;gap:14px;
+  padding:15px 18px;border-bottom:1px solid var(--surf3);
+  cursor:pointer;transition:background var(--dur) var(--ease)
+}
+.pr-row:last-child{border:none}
+.pr-row:hover{background:var(--surf2)}
+.pr-row-ic{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--surf2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;color:var(--ink3);flex-shrink:0
+}
+.pr-row-text{flex:1}
+.pr-row-label{font-size:14px;font-weight:600;color:var(--ink)}
+.pr-row-sub{font-size:12px;color:var(--ink3)}
+.pr-row i.chevron{font-size:14px;color:var(--ink4)}
+.btn-logout{
+  width:100%;background:none;
+  border:1.5px solid var(--orange-l);
+  color:var(--orange);
+  padding:14px;border-radius:var(--r);
+  font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all var(--dur) var(--ease);margin-top:16px
+}
+.btn-logout:hover{background:var(--orange-l)}
+
+/* ========================================================
+   SPLASH / AUTH GATE
+   ======================================================== */
+#splash{
+  position:fixed;inset:0;
+  background:var(--surf);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;
+  transition:opacity .4s var(--ease),visibility .4s
+}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{text-align:center}
+.splash-logo{
+  width:70px;height:70px;
+  background:linear-gradient(135deg,var(--orange) 0%,#ff6b3d 100%);
+  border-radius:20px;
+  margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(240,78,35,.3);
+  animation:splashBounce .7s var(--ease)
+}
+@keyframes splashBounce{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.splash-logo i{color:#fff;font-size:34px}
+.splash-brand{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:26px;font-weight:800;
+  color:var(--ink);letter-spacing:-.5px;
+  margin-bottom:8px
+}
+.splash-sub{font-size:14px;color:var(--ink3)}
+.splash-dots{margin-top:28px;display:flex;gap:6px;justify-content:center}
+.splash-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--surf4);
+  animation:dotPulse 1.2s ease infinite
+}
+.splash-dot:nth-child(2){animation-delay:.2s}
+.splash-dot:nth-child(3){animation-delay:.4s}
+@keyframes dotPulse{0%,80%,100%{background:var(--surf4)}40%{background:var(--blue)}}
+
+/* Responsive tweaks */
+@media(max-width:520px){
+  nav{padding:0 14px}
+  .btn-primary{display:none}
+  .btn-ghost span{display:none}
+  .hero{padding:36px 14px 32px}
+  .stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .scard-n{font-size:22px}
+  .rgrid{grid-template-columns:1fr}
+  .rcta{flex-direction:column;align-items:flex-start}
+  .lcard{padding:28px 18px}
+  .wa-channel-banner{flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
-<div id="toast" class="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
 
+<!-- =====================================================================
+     SPLASH SCREEN (shown while checking auth state)
+     ===================================================================== -->
+<div id="splash">
+  <div class="splash-inner">
+    <div class="splash-logo"><i class="ti ti-sparkles"></i></div>
+    <div class="splash-brand">LostPotential</div>
+    <div class="splash-sub">Memuat pengalamanmu…</div>
+    <div class="splash-dots">
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" class="toast"><i class="ti ti-check" aria-hidden="true"></i><span id="toast-msg">Notifikasi</span></div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti"></canvas>
+
+<!-- =====================================================================
+     TOP NAV
+     ===================================================================== -->
 <nav>
   <div class="brand" onclick="go('home');setNav('home')">
-    <div class="brand-mark"><i class="ti ti-sparkles"></i></div>LostPotential
+    <div class="brand-mark"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+    LostPotential
   </div>
   <div class="nav-r">
-    <button class="dark-toggle" onclick="toggleDark()"><i class="ti ti-moon" id="dark-ic"></i></button>
-    <button class="btn-ghost" onclick="go('login');setNav('profil')"><i class="ti ti-user"></i>Profil / Bot</button>
-    <button class="btn-primary" onclick="go('quiz');setNav('cari')">Kuis Bakat</button>
+    <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" title="Mode gelap/terang">
+      <i class="ti ti-moon" id="dark-ic" aria-hidden="true"></i>
+    </button>
+    <button class="btn-ghost" id="nav-btn-login" onclick="go('register');setNav('profil')">
+      <i class="ti ti-user" aria-hidden="true"></i><span>Daftar</span>
+    </button>
+    <button class="btn-primary" onclick="go('quiz');setNav('cari')">
+      Temukan Bakatku<i class="ti ti-arrow-right" aria-hidden="true"></i>
+    </button>
   </div>
 </nav>
 
+<!-- =====================================================================
+     PAGE: HOME
+     ===================================================================== -->
 <div id="pg-home" class="page on">
-<div class="hero">
-  <div class="hero-tag"><span class="live-dot"></span> 30+ Info Lomba Nasional Terupdate Pekan Ini</div>
-  <h1>Pelajar Berbakat,<br>Waktunya <span class="accent">Beraksi</span> &amp; <span class="outline">Juara.</span></h1>
-  <p class="hero-sub">Ikuti kuis pemetaan bakat digital, masuk ke ruang komunitas WhatsApp asli, dan dapatkan asisten Bot AI otomatis pencari info lomba.</p>
-  
-  <div class="hero-ctas">
-    <button class="cta-main" onclick="go('quiz');setNav('cari')"><i class="ti ti-search"></i>Mulai Cari Bakat</button>
-    <button class="cta-sec" onclick="go('komunitas');setNav('komunitas')">WhatsApp Channel Komunitas</button>
-  </div>
-
-  <div class="sec-hd"><h2>Filter Bidang Lomba</h2></div>
-  <div class="cats" id="cat-list"></div>
-  
-  <div class="sec-hd" style="margin-top:20px"><h2>Daftar 30 Lomba Ril di Indonesia (2025/2026)</h2></div>
-  <div class="evts" id="ev-list"></div>
-</div>
-</div>
-
-<div id="pg-quiz" class="page">
-<div class="qwrap">
-  <div class="q-chat" id="q-chat"></div>
-  <div class="qopts" id="qopts"></div>
-  <div class="qnav">
-    <button class="btn-nx" style="background:var(--blue)" onclick="nextQ()">Lanjut Pertanyaan <i class="ti ti-arrow-right"></i></button>
-  </div>
-</div>
-</div>
-
-<div id="pg-komunitas" class="page">
-<div class="kwrap">
-  <div class="sec-hd"><h2>Grup WhatsApp Komunitas Pelajar</h2><p>Klik tombol untuk langsung join ke Link Channel WA Resmi tiap divisi</p></div>
-  <div class="kgrid" id="k-list"></div>
-</div>
-</div>
-
-<div id="pg-login" class="page">
-<div class="kwrap" style="max-width:700px">
-  <div style="background:var(--surf);padding:30px;border-radius:var(--r-xl);border:1px solid var(--surf3);text-align:center">
-    <i class="ti ti-robot" style="font-size:50px;color:var(--blue)"></i>
-    <h2 style="margin:15px 0 8px">Sistem Database &amp; Bot Lomba Auto-Update</h2>
-    <p style="color:var(--ink2);font-size:14px">Fitur integrasi sistem otomasi WhatsApp Engine untuk melacak kompetisi terbaru.</p>
-    
-    <div class="bot-panel">
-      <h4 style="color:var(--blue-d);margin-bottom:6px"><i class="ti ti-check"></i> Status Koneksi Bot WA: <span style="color:var(--green)">Aktif &amp; Terintegrasi</span></h4>
-      <p style="font-size:13px;color:var(--ink2)">Bot ini bekerja di background server membaca data web menggunakan webhook JSON API secara berkala untuk didistribusikan langsung ke nomor pendaftar.</p>
-      
-      <div class="bot-code">
-// Endpoint API Data Lomba Terupdate untuk Engine Bot Lu
-{
-  "status": "success",
-  "bot_name": "LostPotential Searcher",
-  "total_tracked_events": 30,
-  "update_frequency": "Every 6 Hours"
-}
-      </div>
-      
-      <h4 style="margin-top:15px;font-size:14px">Cara Kerja Simulasi Sistem Bot Terupdate:</h4>
-      <p style="font-size:12px;color:var(--ink2);margin-top:4px">1. Bot terhubung ke Web API *LostPotential*.<br>2. Setiap ada input lomba baru, bot membaca skrip dan melakukan *broadcast* otomatis ke nomor WhatsApp anggota.<br>3. Ketik kata kunci **!infolomba** atau **!caribakat** di nomor WA grup untuk memanggil database.</p>
+  <div class="hero">
+    <div class="hero-tag"><span class="live-dot"></span>12.400+ siswa sudah bergabung</div>
+    <h1>Setiap Anak<br>Punya <span class="accent">Bakat.</span><br>Kita Bantu <span class="outline">Menemukannya.</span></h1>
+    <p class="hero-sub">Dari kuis minat sederhana, kamu langsung terhubung ke komunitas, mentor, dan lomba yang benar-benar cocok.</p>
+    <div class="hero-ctas">
+      <button class="cta-main" onclick="go('quiz');setNav('cari')">
+        <i class="ti ti-search" aria-hidden="true"></i>Mulai Kuis Bakat — Gratis
+      </button>
+      <button class="cta-sec" onclick="go('komunitas');setNav('komunitas')">
+        Lihat Komunitas<i class="ti ti-chevron-right" aria-hidden="true"></i>
+      </button>
     </div>
-    
-    <button class="btn-primary" style="margin:20px auto 0" onclick="toast('Webhook Bot sukses diuji coba!','ti-plug')">Test Webhook API</button>
+    <div class="stats">
+      <div class="scard">
+        <div class="scard-bar" style="background:var(--blue)"></div>
+        <div class="scard-n">12.4K</div>
+        <div class="scard-l">Siswa aktif</div>
+      </div>
+      <div class="scard">
+        <div class="scard-bar" style="background:var(--orange)"></div>
+        <div class="scard-n">340+</div>
+        <div class="scard-l">Lomba &amp; event</div>
+      </div>
+      <div class="scard">
+        <div class="scard-bar" style="background:var(--green)"></div>
+        <div class="scard-n">48</div>
+        <div class="scard-l">Komunitas bakat</div>
+      </div>
+    </div>
+    <div class="sec-hd">
+      <h2>Eksplor bidang bakat</h2>
+      <p>Klik kategori untuk melihat event dan komunitas yang relevan</p>
+    </div>
+    <div class="cats" id="cat-list"></div>
+    <div class="sec-hd">
+      <h2>Event &amp; lomba terkini</h2>
+      <p>Dikurasi khusus untuk pelajar Indonesia</p>
+    </div>
+    <div class="search-wrap">
+      <i class="ti ti-search search-ic" aria-hidden="true"></i>
+      <input class="search-inp" id="ev-search" type="text" placeholder="Cari nama lomba, kategori, atau kota…" oninput="filterEvs()" autocomplete="off"/>
+      <button class="search-clear" id="ev-search-clear" onclick="clearEvSearch()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="evts" id="ev-list"></div>
   </div>
 </div>
+
+<!-- =====================================================================
+     PAGE: QUIZ
+     ===================================================================== -->
+<div id="pg-quiz" class="page">
+  <div class="qwrap">
+    <div class="qprog-row">
+      <div class="qprog"><div class="qbar" id="qbar" style="width:16%"></div></div>
+      <div class="qstep" id="qstep">1 / 6</div>
+    </div>
+    <div class="q-chat" id="q-chat"></div>
+    <div class="qopts" id="qopts"></div>
+    <div class="qnav">
+      <button class="btn-bk" onclick="prevQ()">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i>Kembali
+      </button>
+      <button class="btn-nx" onclick="nextQ()">
+        Lanjut<i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
 </div>
 
+<!-- =====================================================================
+     PAGE: RESULT
+     ===================================================================== -->
+<div id="pg-result" class="page">
+  <div class="rwrap" id="rwrap"></div>
+</div>
+
+<!-- =====================================================================
+     PAGE: KOMUNITAS
+     ===================================================================== -->
+<div id="pg-komunitas" class="page">
+  <div class="kwrap">
+    <div class="sec-hd">
+      <h2>Komunitas bakat</h2>
+      <p>Bergabung, belajar, dan berkembang bersama teman sevisi</p>
+    </div>
+
+    <!-- WhatsApp Channel Banner -->
+    <div class="wa-channel-banner">
+      <div style="display:flex;align-items:center;gap:14px;flex:1">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ti-brand-whatsapp" style="font-size:26px;color:#fff"></i>
+        </div>
+        <div class="wa-banner-text">
+          <h3>Saluran WhatsApp Resmi LostPotential</h3>
+          <p>Info lomba terbaru, tips bakat, dan update komunitas langsung di WhatsApp kamu!</p>
+        </div>
+      </div>
+      <a class="btn-wa-join" href="https://whatsapp.com/channel/0029VaWExampleLostPotential" target="_blank" rel="noopener">
+        <i class="ti ti-brand-whatsapp"></i>Ikuti Saluran
+      </a>
+    </div>
+
+    <!-- Search komunitas -->
+    <div class="search-wrap" style="margin-bottom:20px">
+      <i class="ti ti-search search-ic" aria-hidden="true"></i>
+      <input class="search-inp" id="kom-search" type="text" placeholder="Cari komunitas berdasarkan nama atau bidang…" oninput="filterKoms()" autocomplete="off"/>
+      <button class="search-clear" id="kom-search-clear" onclick="clearKomSearch()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="kgrid" id="k-list"></div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     PAGE: BOOKMARK (NEW)
+     ===================================================================== -->
+<div id="pg-bookmark" class="page">
+  <div class="bkwrap">
+    <div class="sec-hd">
+      <h2>Tersimpan</h2>
+      <p>Komunitas dan lomba favorit yang kamu simpan</p>
+    </div>
+    <div class="bk-tabs">
+      <button class="bk-tab on" id="bkt-komunitas" onclick="switchBkTab('komunitas')">Komunitas</button>
+      <button class="bk-tab" id="bkt-lomba" onclick="switchBkTab('lomba')">Lomba</button>
+    </div>
+    <div class="bk-grid" id="bk-content"></div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     PAGE: LOGIN
+     ===================================================================== -->
+<div id="pg-login" class="page">
+  <div class="lwrap">
+    <div class="lcard">
+      <div class="lhead">
+        <div class="lhead-ic"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+        <h2>Selamat datang kembali</h2>
+        <p>Masuk untuk melanjutkan perjalanan bakatmu</p>
+      </div>
+
+      <!-- Google Login -->
+      <button class="google-btn" onclick="loginWithGoogle()">
+        <svg class="g-logo" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Lanjutkan dengan Google
+      </button>
+
+      <div class="divider">atau masuk dengan WhatsApp</div>
+
+      <div id="login-phone-panel">
+        <div class="fg">
+          <label class="flbl">Nomor WhatsApp</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix"><span>🇮🇩</span> +62</div>
+            <input class="finp-phone" id="login-phone" type="tel" inputmode="numeric" placeholder="812-3456-7890" maxlength="13" oninput="onPhoneInput(this)"/>
+          </div>
+          <div class="err-msg" id="login-phone-err">Format nomor tidak valid (contoh: 81234567890)</div>
+        </div>
+        <div id="recaptcha-login"></div>
+        <button class="btn-full-wa" onclick="loginSendOTP()">
+          <i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP
+        </button>
+      </div>
+
+      <div id="login-otp-panel" style="display:none">
+        <p class="otp-info">Kode OTP 6 digit telah dikirim ke WhatsApp<br><strong id="login-phone-display"></strong></p>
+        <div class="otp-wrap">
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,0,'login')" id="lotp0"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,1,'login')" id="lotp1"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,2,'login')" id="lotp2"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,3,'login')" id="lotp3"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,4,'login')" id="lotp4"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,5,'login')" id="lotp5"/>
+        </div>
+        <button class="btn-full" id="login-verify-btn" onclick="loginVerifyOTP()">
+          <i class="ti ti-login"></i>Verifikasi &amp; Masuk
+        </button>
+        <div style="text-align:center;margin-top:12px">
+          <button class="otp-resend" id="login-resend-btn" onclick="loginSendOTP(true)" disabled>
+            <i class="ti ti-refresh"></i><span id="login-resend-lbl">Kirim ulang (60s)</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="form-foot">Belum punya akun? <a onclick="go('register');setNav('profil')">Daftar gratis</a></p>
+      <p class="privacy-note">Dengan masuk, kamu menyetujui <a>Syarat &amp; Ketentuan</a> dan <a>Kebijakan Privasi</a> kami.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     PAGE: REGISTER (WHATSAPP FLOW — 3 STEPS)
+     ===================================================================== -->
+<div id="pg-register" class="page">
+  <div class="lwrap">
+    <div class="lcard">
+      <div class="lhead">
+        <div class="lhead-ic" style="background:var(--wa-green-l)">
+          <i class="ti ti-brand-whatsapp" style="color:var(--wa-green)"></i>
+        </div>
+        <h2>Buat akun gratis</h2>
+        <p>Bergabung dengan 12.400+ pelajar Indonesia</p>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="reg-steps">
+        <div class="reg-step active" id="rstep-0">
+          <div class="reg-step-num">1</div>
+          <div class="reg-step-lbl">No. WA</div>
+        </div>
+        <div class="reg-step-line" id="rline-0"></div>
+        <div class="reg-step" id="rstep-1">
+          <div class="reg-step-num">2</div>
+          <div class="reg-step-lbl">Verifikasi</div>
+        </div>
+        <div class="reg-step-line" id="rline-1"></div>
+        <div class="reg-step" id="rstep-2">
+          <div class="reg-step-num">3</div>
+          <div class="reg-step-lbl">Profil</div>
+        </div>
+      </div>
+
+      <!-- PANEL 0: Enter WhatsApp number -->
+      <div class="reg-panel on" id="rpanel-0">
+        <div class="fg">
+          <label class="flbl">Nomor WhatsApp aktif</label>
+          <div class="phone-wrap">
+            <div class="phone-prefix"><span>🇮🇩</span> +62</div>
+            <input class="finp-phone" id="reg-phone" type="tel" inputmode="numeric" placeholder="81234567890" maxlength="13" oninput="onPhoneInput(this)"/>
+          </div>
+          <div class="err-msg" id="reg-phone-err">Masukkan nomor WA yang valid (tanpa awalan 0)</div>
+        </div>
+        <!-- reCAPTCHA container for Firebase Phone Auth -->
+        <div id="recaptcha-container"></div>
+        <button class="btn-full-wa" id="reg-send-otp-btn" onclick="regSendOTP()">
+          <i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP via SMS/WA
+        </button>
+        <div class="divider" style="margin-top:18px">atau daftar dengan</div>
+        <button class="google-btn" style="margin-bottom:0" onclick="loginWithGoogle()">
+          <svg class="g-logo" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Daftar dengan Google — Cepat &amp; mudah
+        </button>
+        <p class="form-foot">Sudah punya akun? <a onclick="go('login');setNav('profil')">Masuk</a></p>
+      </div>
+
+      <!-- PANEL 1: OTP Verification -->
+      <div class="reg-panel" id="rpanel-1">
+        <p class="otp-info">
+          Masukkan kode OTP 6 digit yang dikirim ke WhatsApp<br>
+          <strong id="reg-phone-display">+62 ...</strong>
+        </p>
+        <div class="otp-wrap">
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,0,'reg')" id="rotp0"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,1,'reg')" id="rotp1"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,2,'reg')" id="rotp2"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,3,'reg')" id="rotp3"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,4,'reg')" id="rotp4"/>
+          <input class="otp-inp" maxlength="1" inputmode="numeric" pattern="[0-9]" oninput="otpNext(this,5,'reg')" id="rotp5"/>
+        </div>
+        <button class="btn-full" id="reg-verify-btn" onclick="regVerifyOTP()">
+          <i class="ti ti-shield-check"></i>Verifikasi OTP
+        </button>
+        <div style="text-align:center;margin-top:12px">
+          <button class="otp-resend" id="reg-resend-btn" onclick="regSendOTP(true)" disabled>
+            <i class="ti ti-refresh"></i><span id="reg-resend-lbl">Kirim ulang (60s)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Fill profile -->
+      <div class="reg-panel" id="rpanel-2">
+        <div class="fg">
+          <label class="flbl">Nama lengkap</label>
+          <input class="finp" id="reg-name" type="text" placeholder="Nama kamu"/>
+          <div class="err-msg" id="reg-name-err">Nama harus diisi</div>
+        </div>
+        <div class="fg">
+          <label class="flbl">Nama sekolah</label>
+          <input class="finp" id="reg-school" type="text" placeholder="Contoh: SMAN 3 Surabaya"/>
+        </div>
+        <div class="fg">
+          <label class="flbl">Tingkat kelas</label>
+          <select class="finp" id="reg-grade">
+            <option value="">Pilih tingkat kelas</option>
+            <option value="SMP 7">SMP Kelas 7</option>
+            <option value="SMP 8">SMP Kelas 8</option>
+            <option value="SMP 9">SMP Kelas 9</option>
+            <option value="SMA 10">SMA Kelas 10</option>
+            <option value="SMA 11">SMA Kelas 11</option>
+            <option value="SMA 12">SMA Kelas 12</option>
+          </select>
+        </div>
+        <button class="btn-full" id="reg-finish-btn" onclick="regFinish()">
+          <i class="ti ti-rocket"></i>Selesai &amp; Mulai Eksplorasi!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     PAGE: PROFIL
+     ===================================================================== -->
+<div id="pg-profil" class="page">
+  <div class="prwrap">
+    <div class="pr-hero">
+      <div class="pr-av" id="pr-av-initials">LP</div>
+      <div class="pr-name" id="pr-name-display">Tamu</div>
+      <div class="pr-meta">
+        <i class="ti ti-school" style="font-size:14px"></i>
+        <span id="pr-school-display">Belum diatur</span>
+      </div>
+      <div class="pr-wa-chip" id="pr-wa-chip" style="display:none">
+        <i class="ti ti-brand-whatsapp"></i>
+        <span id="pr-wa-display">+62 xxx</span>
+      </div>
+    </div>
+    <div class="pr-list">
+      <div class="pr-row" onclick="go('bookmark');setNav('bookmark')">
+        <div class="pr-row-ic" style="background:var(--blue-l);color:var(--blue)"><i class="ti ti-bookmark"></i></div>
+        <div class="pr-row-text">
+          <div class="pr-row-label">Tersimpan</div>
+          <div class="pr-row-sub">Komunitas &amp; lomba favoritmu</div>
+        </div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="go('quiz');setNav('cari')">
+        <div class="pr-row-ic" style="background:var(--orange-l);color:var(--orange)"><i class="ti ti-brain"></i></div>
+        <div class="pr-row-text">
+          <div class="pr-row-label">Kuis Bakat</div>
+          <div class="pr-row-sub">Ulangi atau lihat hasilmu</div>
+        </div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="toggleDark()">
+        <div class="pr-row-ic" style="background:var(--surf3)"><i class="ti ti-moon" id="pr-dark-ic"></i></div>
+        <div class="pr-row-text">
+          <div class="pr-row-label">Tema Gelap</div>
+          <div class="pr-row-sub" id="pr-dark-sub">Aktifkan dark mode</div>
+        </div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="toast('Pengaturan notifikasi akan hadir segera!','ti-bell')">
+        <div class="pr-row-ic" style="background:var(--green-l);color:var(--green)"><i class="ti ti-bell"></i></div>
+        <div class="pr-row-text">
+          <div class="pr-row-label">Notifikasi</div>
+          <div class="pr-row-sub">Atur preferensi notifikasimu</div>
+        </div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="toast('Bantuan &amp; FAQ akan segera tersedia','ti-help')">
+        <div class="pr-row-ic" style="background:var(--purple-l);color:var(--purple)"><i class="ti ti-help-circle"></i></div>
+        <div class="pr-row-text">
+          <div class="pr-row-label">Bantuan &amp; FAQ</div>
+          <div class="pr-row-sub">Pertanyaan yang sering ditanyakan</div>
+        </div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+    </div>
+    <button class="btn-logout" id="logout-btn" onclick="doLogout()" style="display:none">
+      <i class="ti ti-logout"></i>Keluar dari akun
+    </button>
+    <div id="pr-login-cta" style="margin-top:16px">
+      <button class="btn-full" onclick="go('register');setNav('profil')">
+        <i class="ti ti-user-plus"></i>Daftar / Masuk sekarang
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================================
+     BOTTOM NAV
+     ===================================================================== -->
 <div class="bnav">
-  <div class="bi on" id="nav-home" onclick="go('home');setNav('home')"><div class="bi-ic"><i class="ti ti-home"></i></div><div class="bi-lbl">Home</div></div>
-  <div class="bi" id="nav-cari" onclick="go('quiz');setNav('cari')"><div class="bi-ic"><i class="ti ti-search"></i></div><div class="bi-lbl">Kuis</div></div>
-  <div class="bi" id="nav-komunitas" onclick="go('komunitas');setNav('komunitas')"><div class="bi-ic"><i class="ti ti-brand-whatsapp"></i></div><div class="bi-lbl">WA Grup</div></div>
-  <div class="bi" id="nav-profil" onclick="go('login');setNav('profil')"><div class="bi-ic"><i class="ti ti-robot"></i></div><div class="bi-lbl">Config Bot</div></div>
+  <div class="bi on" id="nav-home" onclick="go('home');setNav('home')">
+    <div class="bi-ic"><i class="ti ti-home" aria-hidden="true"></i></div>
+    <div class="bi-lbl">Home</div>
+  </div>
+  <div class="bi" id="nav-cari" onclick="go('quiz');setNav('cari')">
+    <div class="bi-ic"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+    <div class="bi-lbl">Kuis</div>
+  </div>
+  <div class="bi" id="nav-komunitas" onclick="go('komunitas');setNav('komunitas')">
+    <div class="bi-ic"><i class="ti ti-users" aria-hidden="true"></i></div>
+    <div class="bi-lbl">Komunitas</div>
+    <div class="bi-badge"></div>
+  </div>
+  <div class="bi" id="nav-bookmark" onclick="go('bookmark');setNav('bookmark')">
+    <div class="bi-ic"><i class="ti ti-bookmark" aria-hidden="true"></i></div>
+    <div class="bi-lbl">Tersimpan</div>
+  </div>
+  <div class="bi" id="nav-profil" onclick="go('profil');setNav('profil')">
+    <div class="bi-ic"><i class="ti ti-user-circle" aria-hidden="true"></i></div>
+    <div class="bi-lbl">Profil</div>
+  </div>
 </div>
+<div style="height:20px"></div>
 
+<!-- =====================================================================
+     JAVASCRIPT
+     ===================================================================== -->
 <script>
-// DATABASE 6 KATEGORI UTAMA
-const CATS=[
-  {ic:'ti-code',name:'Teknologi & IT',ct:'7 Lomba',bg:'#EEF2FD',bgi:'#C5D4FB',ci:'#1239C4',id:'tech'},
-  {ic:'ti-palette',name:'Seni & Desain',ct:'6 Lomba',bg:'#FEF0EC',bgi:'#FBC9B8',ci:'#C43C14',id:'seni'},
-  {ic:'ti-microscope',name:'Sains & Riset',ct:'6 Lomba',bg:'#E5F7F2',bgi:'#9DE4CE',ci:'#006B4C',id:'sains'},
-  {ic:'ti-pencil',name:'Menulis & Sastra',ct:'4 Lomba',bg:'#F0EEFF',bgi:'#C4B5FD',ci:'#5B21B6',id:'tulis'},
-  {ic:'ti-music',name:'Musik & Drama',ct:'4 Lomba',bg:'#FDF0F6',bgi:'#F5B8D8',ci:'#9D174D',id:'musik'},
-  {ic:'ti-ball-football',name:'Olahraga',ct:'3 Lomba',bg:'#FEF9EC',bgi:'#FCD970',ci:'#92400E',id:'sport'},
-];
+/* ===================================================================
+   FIREBASE CONFIGURATION
+   ===================================================================
+   PENTING: Ganti nilai-nilai di bawah dengan konfigurasi Firebase
+   project kamu. Temukan di:
+   Firebase Console → Project Settings → Your apps → Web app → SDK setup
+   =================================================================== */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",                          // ← ganti
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",   // ← ganti
+  projectId: "YOUR_PROJECT_ID",                    // ← ganti
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",    // ← ganti
+  messagingSenderId: "YOUR_SENDER_ID",             // ← ganti
+  appId: "YOUR_APP_ID"                             // ← ganti
+};
 
-// DATA 30 LOMBA VALID, POPULER & TERSTRUKTUR SE-INDONESIA
-const EVS=[
-  // TEKNOLOGI
-  {ic:'ti-code',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'Olimpiade Sains Nasional (OSN) Informatika',loc:'Nasional · Balai Talenta Pelajar',prize:'Medali Emas + Beasiswa',dl:'12 Agt 2026',badge:'Puspresnas',bc:'ch-b'},
-  {ic:'ti-cpu',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'Lomba Kompetisi Siswa (LKS) Web Technologies',loc:'Provinsi / Nasional · SMK',prize:'Piala Gubernur + Uang Pembinaan',dl:'22 Sep 2026',badge:'Khusus SMK',bc:'ch-b'},
-  {ic:'ti-device-laptop',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'COMPFEST Indie Game Development Juara',loc:'Nasional · Universitas Indonesia',prize:'Total Rp 35.000.000',dl:'30 Jun 2026',badge:'Hot',bc:'ch-o'},
-  {ic:'ti-brand-android',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'Artech Sipil & App Development Competition',loc:'Nasional · Institut Teknologi Bandung',prize:'Rp 20.000.000 + Plakat',dl:'15 Okt 2026',badge:'Prestisius',bc:'ch-a'},
-  {ic:'ti-shield-lock',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'National Cyber Security Capture The Flag (CTF)',loc:'Online · Universitas Gadjah Mada',prize:'Uang Tunai + Sertifikasi Internasional',dl:'19 Nov 2026',badge:'Siber Security',bc:'ch-p'},
-  {ic:'ti-robot',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'Kontes Robot Pintar Siswa Nasional (KRPI)',loc:'Surabaya · ITS',prize:'Piala Menteri + Rp 15.000.000',dl:'05 Juli 2026',badge:'Robotics',bc:'ch-g'},
-  {ic:'ti-terminal-2',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'Hackathon Pelajar Nusantara CodeFest',loc:'Online · Kominfo',prize:'Inkubasi Startup + Rp 50.000.000',dl:'08 Des 2026',badge:'Terbesar',bc:'ch-r'},
+/* ===================================================================
+   FIREBASE INITIALIZATION
+   =================================================================== */
+let app, auth, db;
+let firebaseReady = false;
 
-  // SENI & DESAIN
-  {ic:'ti-palette',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'FLS2N Bidang Poster Digital Pelajar',loc:'Nasional · Kemenristekdikti',prize:'Medali + Sertifikat Nasional',dl:'14 Jul 2026',badge:'Resmi Negara',bc:'ch-o'},
-  {ic:'ti-brush',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'Lomba Ilustrasi Komik Strip Nuansa Budaya',loc:'Nasional · ISI Yogyakarta',prize:'Beasiswa Jalur Prestasi + Rp 10jt',dl:'28 Agt 2026',badge:'Baru',bc:'ch-g'},
-  {ic:'ti-layout-dashboard',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'UI/UX Design Challenge for High School',loc:'Online · BINUS University',prize:'Laptop Kreator + Free Pass Kuliah',dl:'05 Sep 2026',badge:'Rekomendasi',bc:'ch-b'},
-  {ic:'ti-photo',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'Lomba Foto Esai Pesona Lingkungan Kita',loc:'Nasional · KemenLHK',prize:'Kamera Mirrorless + Trofi',dl:'12 Nov 2026',badge:'Lingkungan',bc:'ch-a'},
-  {ic:'ti-video',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'Festival Film Pendek Edukasi Pelajar',loc:'Jakarta · Kemendikbud',prize:'Total Dana Apresiasi Rp 40jt',dl:'20 Des 2026',badge:'Sinematografi',bc:'ch-p'},
-  {ic:'ti-brand-sketch',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'Lomba Desain Logo Branding UMKM Nasional',loc:'Online · Kemenkop UKM',prize:'Sertifikat Menteri + Rp 25.000.000',dl:'17 Nov 2026',badge:'Eksklusif',bc:'ch-a'},
-
-  // SAINS & RISET
-  {ic:'ti-microscope',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Olimpiade Sains Nasional (OSN) Fisika & Kimia',loc:'Nasional · Puspresnas',prize:'Akses Pelatnas Internasional',dl:'11 Agt 2026',badge:'Puspresnas',bc:'ch-g'},
-  {ic:'ti-flask',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Lomba Karya Ilmiah Remaja (LKIR) Ke-58',loc:'Nasional · BRIN (LIPI)',prize:'Pendanaan Riset Luar Negeri',dl:'30 Jul 2026',badge:'Riset Tertinggi',bc:'ch-p'},
-  {ic:'ti-dna',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Indonesian Fun Science Award (IFA)',loc:'Serpong · Swiss German Univ.',prize:'Trip Edukasi ke Jerman',dl:'25 Jan 2027',badge:'Hadiah Juara',bc:'ch-a'},
-  {ic:'ti-math-symbols',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Olimpiade Matematika Vektor Nasional',loc:'Malang · Universitas Negeri Malang',prize:'Piala Bergilir + Rp 12.000.000',dl:'09 Sep 2026',badge:'Tahunan',bc:'ch-o'},
-  {ic:'ti-world',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'National Geographic Geografi Olympiad',loc:'Online/Offline · Universitas Indonesia',prize:'Medali Internasional + Tabungan',dl:'14 Okt 2026',badge:'Populer',bc:'ch-b'},
-  {ic:'ti-leaf',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Lomba Inovasi Energi Terbarukan Hijau',loc:'Bandung · Unpad',prize:'Sertifikat & Pendanaan Prototipe',dl:'01 Des 2026',badge:'Eco-Riset',bc:'ch-g'},
-
-  // MENULIS & SASTRA
-  {ic:'ti-pencil',ibg:'#F0EEFF',ic2:'#5B21B6',tag:'Menulis',tc:'ch-p',title:'Lomba Menulis Cerpen Remaja Nasional',loc:'Online · Balai Bahasa RI',prize:'Karya Diterbitkan Antologi + Uang',dl:'30 Jul 2026',badge:'Sastra',bc:'ch-p'},
-  {ic:'ti-news',ibg:'#F0EEFF',ic2:'#5B21B6',tag:'Menulis',tc:'ch-p',title:'Kompetisi Esai Opini Kritis Pelajar Nasional',loc:'Online · Universitas Airlangga',prize:'Piala Rektor + Uang Tunai',dl:'22 Sep 2026',badge:'Esai',bc:'ch-b'},
-  {ic:'ti-feather',ibg:'#F0EEFF',ic2:'#5B21B6',tag:'Menulis',tc:'ch-p',title:'Cipta Puisi Harmoni Bangsa Festival',loc:'Nasional · Kemenag',prize:'Sertifikat Juara Nasional + Rp 10jt',dl:'18 Okt 2026',badge:'Puisi',bc:'ch-o'},
-  {ic:'ti-book-2',ibg:'#F0EEFF',ic2:'#5B21B6',tag:'Menulis',tc:'ch-p',title:'Lomba Karya Tulis Jurnalistik Pelajar',loc:'Jakarta · Harian Kompas',prize:'Magang Eksklusif + Gadget Baru',dl:'05 Nov 2026',badge:'Jurnalistik',bc:'ch-a'},
-
-  // MUSIK & DRAMA
-  {ic:'ti-music',ibg:'#FDF0F6',ic2:'#9D174D',tag:'Musik',tc:'ch-p',title:'FLS2N Gitar Solo & Menyanyi Solo',loc:'Nasional · Kemendikbud',prize:'Sertifikat Negara + Dana Pembinaan',dl:'15 Jul 2026',badge:'Resmi',bc:'ch-p'},
-  {ic:'ti-microphone',ibg:'#FDF0F6',ic2:'#9D174D',tag:'Musik',tc:'ch-p',title:'Festival Band Musik Indie Pelajar Se-Jawa',loc:'Surabaya · Dinas Kebudayaan',prize:'Rekaman Studio Gratis + Juara 123',dl:'11 Sep 2026',badge:'Panggung Ril',bc:'ch-o'},
-  {ic:'ti-music-podium',ibg:'#FDF0F6',ic2:'#9D174D',tag:'Musik',tc:'ch-p',title:'Kompetisi Aransemen Musik Tradisional',loc:'Online · ISI Surakarta',prize:'Piala Walikota + Uang Pembinaan',dl:'02 Nov 2026',badge:'Budaya',bc:'ch-g'},
-  {ic:'ti-mask',ibg:'#FDF0F6',ic2:'#9D174D',tag:'Musik',tc:'ch-p',title:'Lomba Teater & Monolog Pelajar SMA',loc:'Offline · Taman Ismail Marzuki',prize:'Piala Sutradara Terbaik + Beasiswa',dl:'14 Des 2026',badge:'Akting',bc:'ch-a'},
-
-  // OLAHRAGA
-  {ic:'ti-ball-football',ibg:'#FEF9EC',ic2:'#92400E',tag:'Olahraga',tc:'ch-a',title:'Olimpiade Olahraga Siswa Nasional (O2SN) Futsal',loc:'Nasional · BPTI',prize:'Medali Emas + Piagam Kemenpora',dl:'20 Jul 2026',badge:'O2SN',bc:'ch-a'},
-  {ic:'ti-ball-basketball',ibg:'#FEF9EC',ic2:'#92400E',tag:'Olahraga',tc:'ch-a',title:'Liga Basket Pelajar DBL Regional Tournament',loc:'Kota Pilihan · DBL Indonesia',prize:'Trofi Utama + Beasiswa Kampus',dl:'10 Agt 2026',badge:'Populer',bc:'ch-o'},
-  {ic:'ti-device-gamepad-2',ibg:'#FEF9EC',ic2:'#92400E',tag:'Olahraga',tc:'ch-a',title:'Piala Pelajar Esport Indonesia (Mobile Legends)',loc:'Online/Offline · PBESI',prize:'Total Hadiah Rp 100.000.000',dl:'29 Sep 2026',badge:'Esports',bc:'ch-b'}
-];
-
-// DATA GRUP WHATSAPP ASLI TERINTEGRASI LINK CHANNEL/GRUP WA
-const KOMS=[
-  {ic:'ti-code',bg:'#EEF2FD',bgi:'#1239C4',name:'Divisi IT & CodeKid Indonesia',desc:'Saluran WA update info kompetisi coding, UI/UX, dan robotik nasional terbaru.',mem:'3.240 Member',tags:['Coding','Web','AI'], waLink:'https://whatsapp.com/channel/AbcTechLostPotentialMock1'},
-  {ic:'ti-palette',bg:'#FEF0EC',bgi:'#C43C14',name:'Divisi Seni & Desainer Muda ID',desc:'Grup sharing karya, feedback poster digital, informasi kompetisi FLS2N desain.',mem:'1.890 Member',tags:['Desain','Komik','Video'], waLink:'https://whatsapp.com/channel/AbcSeniLostPotentialMock2'},
-  {ic:'ti-microscope',bg:'#E5F7F2',bgi:'#006B4C',name:'Divisi Sains & Riset Pelajar (KIR/OSN)',desc:'Komunitas diskusi persiapan soal OSN Matematika, Fisika, Biologi, dan LKIR BRIN.',mem:'2.100 Member',tags:['OSN','Riset','Kimia'], waLink:'https://whatsapp.com/channel/AbcSainsLostPotentialMock3'},
-  {ic:'ti-pencil',bg:'#F0EEFF',bgi:'#5B21B6',name:'Divisi Sastra & Pena Muda Indonesia',desc:'Wadah kumpul pelajar penyuka lomba esai, menulis opini kritis, puisi, dan cerpen.',mem:'980 Member',tags:['Esai','Cerpen','Puisi'], waLink:'https://whatsapp.com/channel/AbcTulisLostPotentialMock4'},
-  {ic:'ti-music',bg:'#FDF0F6',bgi:'#9D174D',name:'Divisi Nada & Musik Kreatif Pelajar',desc:'Saluran info festival musik, vokal solo, kompetisi teater, dan ajang tari kreasi.',mem:'1.450 Member',tags:['Musik','Vokal','Teater'], waLink:'https://whatsapp.com/channel/AbcMusikLostPotentialMock5'},
-  {ic:'ti-ball-football',bg:'#FEF9EC',bgi:'#92400E',name:'Divisi Olahraga & Atlet Remaja ID',desc:'Info pendaftaran turnamen futsal, basket DBL, badminton, dan kejuaraan Esport resmi.',mem:'4.120 Member',tags:['Futsal','Basket','Esport'], waLink:'https://whatsapp.com/channel/AbcSportLostPotentialMock6'},
-];
-
-const QS=[
-  {q:'Minat terbesar kamu di sekolah mengarah ke mana?',h:'Pilih satu untuk filter tipe lomba terbaikmu',opts:[{ic:'ti-code',t:'Teknologi, Coding & Game'},{ic:'ti-palette',t:'Desain Visual, Seni menggambar'},{ic:'ti-microscope',t:'Eksperimen, Logika Matematika & IPA'},{ic:'ti-pencil',t:'Menulis cerita, Puisi & Esai opini'}]}
-];
-
-let qi=0,ans=[],dark=false;
-
-function go(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  const pg=document.getElementById('pg-'+id);
-  if(pg){pg.classList.add('on');window.scrollTo(0,0)}
-  if(id==='quiz'){qi=0;ans=[];renderQ()}
-}
-function setNav(k){
-  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
-  const el=document.getElementById('nav-'+k);
-  if(el)el.classList.add('on');
-}
-function toggleDark(){
-  dark=!dark;document.body.toggleAttribute('data-dark',dark);
-  document.getElementById('dark-ic').className=dark?'ti ti-sun':'ti ti-moon';
-}
-function toast(msg,icon='ti-check'){
-  document.getElementById('toast-msg').textContent=msg;
-  const t=document.getElementById('toast');
-  t.querySelector('i').className=`ti ${icon}`;
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);
-}
-
-// BUKA LINK GRUP WHATSAPP
-function joinWhatsAppChannel(url, namaGrup){
-  toast('Membuka Link WhatsApp ' + namaGrup, 'ti-brand-whatsapp');
-  setTimeout(() => {
-    window.open(url, '_blank');
-  }, 600);
-}
-
-function renderCats(){
-  document.getElementById('cat-list').innerHTML=CATS.map(c=>`<div class="ccat" onclick="filterLomba('${c.tag || c.name.split(' ')[0]}', this)" style="background:${c.bg}"><div class="ccat-ic" style="background:${c.bgi+'33'}"><i class="ti ${c.ic}" style="color:${c.ci}"></i></div><div class="ccat-name">${c.name}</div><div class="ccat-ct">${c.ct}</div></div>`).join('');
-}
-
-function filterLomba(tag, el){
-  document.querySelectorAll('.ccat').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');
-  const filtered = EVS.filter(e => e.tag.toLowerCase().includes(tag.toLowerCase()) || tag.toLowerCase().includes(e.tag.toLowerCase()));
-  renderLombaCards(filtered);
-  toast(`Menampilkan kategori ${tag}`,'ti-filter');
-}
-
-function renderLombaCards(dataArr){
-  document.getElementById('ev-list').innerHTML=dataArr.map(e=>`<div class="ecard" onclick="toast('Membuka Panduan &amp; Formulir Lomba Ril','ti-file-text')"><div class="ecard-top" style="background:${e.ibg}"><i class="ti ${e.ic}" style="color:${e.ic2}"></i><span class="ecard-chip ${e.tc}">${e.tag}</span></div><div class="ecard-body"><div class="ecard-title">${e.title}</div><div class="ecard-meta"><i class="ti ti-map-pin"></i> ${e.loc}</div><div class="ecard-foot"><span class="prize"><i class="ti ti-trophy"></i> ${e.prize}</span><span class="chip ${e.bc}">${e.badge}</span></div><div class="dl"><i class="ti ti-clock"></i>Batas Daftar: ${e.dl}</div></div></div>`).join('');
-}
-
-function renderKoms(){
-  document.getElementById('k-list').innerHTML=KOMS.map(k=>`<div class="kcard"><div class="kban" style="background:${k.bg}"><i class="ti ${k.ic}" style="color:${k.bgi}"></i></div><div class="kbody"><div class="kname">${k.name}</div><div class="kdesc">${k.desc}</div><div class="ktags">${k.tags.map(t=>`<span class="chip ch-b">${t}</span>`).join('')}</div><div class="kft"><span class="kmem"><i class="ti ti-users"></i>${k.mem}</span><button class="btn-join" onclick="joinWhatsAppChannel('${k.waLink}', '${k.name}')"><i class="ti ti-brand-whatsapp"></i> Masuk WA</button></div></div></div>`).join('');
-}
-
-function renderQ(){
-  const q=QS[qi];
-  document.getElementById('q-chat').innerHTML=`<div class="q-bubble"><div class="q-text">${q.q}</div><div class="q-hint">${q.h}</div></div>`;
-  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this)"><i class="ti ${o.ic}"></i> <span style="margin-left:10px">${o.t}</span></div>`).join('');
-}
-function selOpt(i,el){
-  document.querySelectorAll('.qopt').forEach(o=>o.classList.remove('on'));
-  el.classList.add('on');ans[qi]=i;
-}
-function nextQ(){
-  toast('Menganalisis Jawaban...','ti-adjustments');
-  setTimeout(()=>{
-    go('komunitas'); setNav('komunitas');
-    launchConfetti();
-  },800);
-}
-
-function launchConfetti(){
-  const cv=document.getElementById('confetti');cv.style.display='block';const ctx=cv.getContext('2d');
-  cv.width=window.innerWidth;cv.height=window.innerHeight;
-  const pts=Array.from({length:60},()=>({x:Math.random()*cv.width,y:0,r:Math.random()*4+2,c:'#1847ED',vx:(Math.random()-0.5)*3,vy:Math.random()*3+2}));
-  function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    pts.forEach(p=>{ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,p.r*2,p.r);p.x+=p.vx;p.y+=p.vy;});
-    requestAnimationFrame(draw);
+/**
+ * Inisialisasi Firebase. Dipanggil saat DOM siap.
+ * Jika firebaseConfig belum diisi (masih placeholder),
+ * sistem akan berjalan dalam mode demo (localStorage).
+ */
+function initFirebase() {
+  try {
+    // Cek apakah config sudah diisi
+    if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
+      console.warn('[LostPotential] Firebase belum dikonfigurasi. Berjalan dalam mode demo.');
+      firebaseReady = false;
+      checkAuthState(); // langsung cek state demo
+      return;
+    }
+    app  = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db   = firebase.firestore();
+    firebaseReady = true;
+    console.log('[LostPotential] Firebase berhasil diinisialisasi.');
+    // Dengarkan perubahan auth state dari Firebase
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        onUserLoggedIn(user);
+      } else {
+        onUserLoggedOut();
+      }
+    });
+  } catch (e) {
+    console.error('[LostPotential] Firebase init error:', e);
+    firebaseReady = false;
+    checkAuthState();
   }
-  draw(); setTimeout(()=>cv.style.display='none',1500);
 }
 
-// BOOTSTRAP INITIALIZER
-renderCats();
-renderLombaCards(EVS);
-renderKoms();
+/* ===================================================================
+   DATA: CATEGORIES
+   =================================================================== */
+const CATS = [
+  { ic:'ti-code',       name:'Teknologi & IT',          ct:'38 lomba', bg:'#EEF2FD', bgi:'#C5D4FB', ci:'#1239C4', id:'tech'  },
+  { ic:'ti-palette',    name:'Seni & Desain',            ct:'24 lomba', bg:'#FEF0EC', bgi:'#FBC9B8', ci:'#C43C14', id:'seni'  },
+  { ic:'ti-microscope', name:'Sains & Riset',            ct:'18 lomba', bg:'#E5F7F2', bgi:'#9DE4CE', ci:'#006B4C', id:'sains' },
+  { ic:'ti-pencil',     name:'Menulis & Sastra',         ct:'14 lomba', bg:'#F0EEFF', bgi:'#C4B5FD', ci:'#5B21B6', id:'tulis' },
+  { ic:'ti-music',      name:'Musik & Pertunjukan',      ct:'20 lomba', bg:'#FDF0F6', bgi:'#F5B8D8', ci:'#9D174D', id:'musik' },
+  { ic:'ti-ball-football',name:'Olahraga',               ct:'31 lomba', bg:'#FEF9EC', bgi:'#FCD970', ci:'#92400E', id:'sport' },
+  { ic:'ti-robot',      name:'Robotika & AI',            ct:'12 lomba', bg:'#F0EEFF', bgi:'#A78BFA', ci:'#4C1D95', id:'robot' },
+  { ic:'ti-camera',     name:'Fotografi & Film',         ct:'16 lomba', bg:'#FEF0EC', bgi:'#FDE68A', ci:'#92400E', id:'foto'  },
+];
+
+/* ===================================================================
+   DATA: EVENTS / LOMBA (lebih lengkap)
+   =================================================================== */
+const EVS = [
+  { id:'ev1',  ic:'ti-cpu',            ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',  tc:'ch-b', title:'National Olympiad Informatika 2025',        loc:'Online · SMA/SMK',      prize:'Total Rp 50jt',      dl:'30 Jun 2025', badge:'Populer',      bc:'ch-b',  cat:'tech'  },
+  { id:'ev2',  ic:'ti-layout',         ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain', tc:'ch-o', title:'Lomba Desain Poster Kemerdekaan RI',      loc:'Nasional · SMP–SMA',    prize:'Piala + Sertifikat', dl:'1 Jul 2025',  badge:'Baru',         bc:'ch-o',  cat:'seni'  },
+  { id:'ev3',  ic:'ti-flask',          ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',       tc:'ch-g', title:'Karya Ilmiah Remaja Tingkat Provinsi',       loc:'Offline · SMP–SMA',     prize:'Beasiswa + Medali',  dl:'15 Jul 2025', badge:'Deadline Dekat',bc:'ch-g', cat:'sains' },
+  { id:'ev4',  ic:'ti-book',           ibg:'#F0EEFF', ic2:'#5B21B6', tag:'Menulis',     tc:'ch-p', title:'Cerpen Nasional "Suara Generasi"',           loc:'Online · SMP–SMA',      prize:'Rp 15jt + Diterbitkan',dl:'20 Jul 2025',badge:'Trending',    bc:'ch-p',  cat:'tulis' },
+  { id:'ev5',  ic:'ti-music',          ibg:'#FDF0F6', ic2:'#9D174D', tag:'Musik',       tc:'ch-p', title:'Kompetisi Musik Indie Pelajar 2025',         loc:'Hybrid · SMA',          prize:'Kontrak Label + Rp 30jt',dl:'5 Jul 2025', badge:'Hot',       bc:'ch-o',  cat:'musik' },
+  { id:'ev6',  ic:'ti-trophy',         ibg:'#FEF9EC', ic2:'#92400E', tag:'Olahraga',    tc:'ch-o', title:'Turnamen Futsal Pelajar Se-Jawa',            loc:'Offline · SMA',         prize:'Piala Gubernur',     dl:'25 Jun 2025', badge:'Segera',       bc:'ch-o',  cat:'sport' },
+  { id:'ev7',  ic:'ti-robot',          ibg:'#F0EEFF', ic2:'#4C1D95', tag:'Robotika',    tc:'ch-p', title:'Indonesia Robot Contest (IRC) 2025',         loc:'Offline · Nasional',    prize:'Rp 75jt + Trophy',   dl:'10 Agt 2025', badge:'Prestisius',   bc:'ch-p',  cat:'robot' },
+  { id:'ev8',  ic:'ti-camera',         ibg:'#FEF0EC', ic2:'#92400E', tag:'Fotografi',   tc:'ch-o', title:'Lomba Foto Pelajar Tema Alam Nusantara',     loc:'Online · SMP–SMA',      prize:'Kamera DSLR',        dl:'12 Agt 2025', badge:'Populer',      bc:'ch-o',  cat:'foto'  },
+  { id:'ev9',  ic:'ti-code-circle',    ibg:'#EEF2FD', ic2:'#1239C4', tag:'Teknologi',   tc:'ch-b', title:'Hackathon Pelajar Nasional: Build for ID',   loc:'Online · SMA',          prize:'Rp 100jt',           dl:'1 Agt 2025',  badge:'Grand Prize',  bc:'ch-b',  cat:'tech'  },
+  { id:'ev10', ic:'ti-writing-sign',   ibg:'#F0EEFF', ic2:'#5B21B6', tag:'Menulis',     tc:'ch-p', title:'Olimpiade Bahasa Indonesia Tingkat SMA',     loc:'Offline · Jawa Timur',  prize:'Beasiswa Rp 20jt',   dl:'7 Jul 2025',  badge:'Beasiswa',     bc:'ch-p',  cat:'tulis' },
+  { id:'ev11', ic:'ti-atom',           ibg:'#E5F7F2', ic2:'#006B4C', tag:'Sains',       tc:'ch-g', title:'Olimpiade Sains Nasional (OSN) 2025',        loc:'Nasional · SMP & SMA',  prize:'Medali Emas + Trip',  dl:'30 Agt 2025', badge:'OSN',          bc:'ch-g',  cat:'sains' },
+  { id:'ev12', ic:'ti-palette',        ibg:'#FEF0EC', ic2:'#C43C14', tag:'Seni & Desain',tc:'ch-o', title:'Young Designer Award 2025 — Kategori Pelajar', loc:'Online · Nasional',  prize:'Rp 25jt + Mentorship',dl:'18 Jul 2025', badge:'Baru',        bc:'ch-o',  cat:'seni'  },
+];
+
+/* ===================================================================
+   DATA: KOMUNITAS (lebih banyak & variatif)
+   =================================================================== */
+const KOMS = [
+  { id:'k1',  ic:'ti-code',         bg:'#EEF2FD', bgi:'#1239C4', name:'CodeKid Indonesia',        desc:'Komunitas coding untuk pelajar. Weekly hackathon dan mentoring gratis dari engineer profesional.',       mem:'3.240 anggota',  tags:['Coding','Web Dev','AI'],       wa:'https://whatsapp.com/channel/0029VaCodeKid'  },
+  { id:'k2',  ic:'ti-palette',      bg:'#FEF0EC', bgi:'#C43C14', name:'Desainer Muda ID',          desc:'Forum desainer pelajar. Feedback portofolio, design challenge mingguan, dan job board khusus.',          mem:'1.890 anggota',  tags:['UI/UX','Ilustrasi','Branding'], wa:'https://whatsapp.com/channel/0029VaDesainer' },
+  { id:'k3',  ic:'ti-microscope',   bg:'#E5F7F2', bgi:'#006B4C', name:'Saintis Cilik',             desc:'Riset, eksperimen, dan olimpiade sains. Dibimbing mahasiswa ITB, UI, dan UGM.',                           mem:'2.100 anggota',  tags:['KIR','Olimpiade','Biologi'],    wa:'https://whatsapp.com/channel/0029VaSaintis'  },
+  { id:'k4',  ic:'ti-music',        bg:'#FDF0F6', bgi:'#9D174D', name:'Nada & Rima',               desc:'Komunitas musisi muda. Open mic virtual tiap bulan dan workshop produksi musik gratis.',                  mem:'1.450 anggota',  tags:['Musik','Produksi','Cover'],     wa:'https://whatsapp.com/channel/0029VaNada'     },
+  { id:'k5',  ic:'ti-pencil',       bg:'#F0EEFF', bgi:'#5B21B6', name:'Pena Muda',                 desc:'Menulis cerpen, esai, dan puisi. Majalah digital bulanan bersama penulis Indonesia.',                    mem:'980 anggota',    tags:['Cerpen','Puisi','Jurnalis'],    wa:'https://whatsapp.com/channel/0029VaPena'     },
+  { id:'k6',  ic:'ti-ball-football',bg:'#FEF9EC', bgi:'#92400E', name:'Atlet Remaja',              desc:'Network atlet pelajar seluruh Indonesia. Info tryout, beasiswa, dan kalender turnamen.',                  mem:'4.120 anggota',  tags:['Futsal','Renang','Badminton'],  wa:'https://whatsapp.com/channel/0029VaAtlet'    },
+  { id:'k7',  ic:'ti-robot',        bg:'#F0EEFF', bgi:'#4C1D95', name:'Robotika Pelajar ID',       desc:'Eksplorasi dunia robotika, IoT, dan kecerdasan buatan bersama mentor insinyur nasional.',                 mem:'1.320 anggota',  tags:['Robotika','IoT','Arduino'],     wa:'https://whatsapp.com/channel/0029VaRobot'    },
+  { id:'k8',  ic:'ti-camera',       bg:'#FEF0EC', bgi:'#D97706', name:'Lensa Pelajar',             desc:'Komunitas fotografi & videografi pelajar. Photo walk bulanan, workshop editing, dan pameran online.',     mem:'870 anggota',    tags:['Fotografi','Video','Editing'],  wa:'https://whatsapp.com/channel/0029VaLensa'    },
+  { id:'k9',  ic:'ti-math-function',bg:'#EEF2FD', bgi:'#1847ED', name:'Olimpiade Math ID',         desc:'Persiapan OSN Matematika, IMO, dan kompetisi internasional. Daily problem set + pembahasan.',             mem:'2.560 anggota',  tags:['Matematika','OSN','Olimpiade'], wa:'https://whatsapp.com/channel/0029VaMath'     },
+  { id:'k10', ic:'ti-world',        bg:'#E5F7F2', bgi:'#006B4C', name:'English Debaters Club',     desc:'Latihan debat bahasa Inggris, public speaking, dan persiapan kompetisi internasional.',                   mem:'1.150 anggota',  tags:['Bahasa','Debat','Public Speaking'], wa:'https://whatsapp.com/channel/0029VaDebate' },
+  { id:'k11', ic:'ti-heartbeat',    bg:'#FEF9EC', bgi:'#D97706', name:'Kader Kesehatan Remaja',    desc:'Komunitas remaja peduli kesehatan. Workshop P3K, edukasi kesehatan mental, dan info beasiswa kedokteran.', mem:'760 anggota',    tags:['Kesehatan','PMR','Biologi'],    wa:'https://whatsapp.com/channel/0029VaKader'    },
+  { id:'k12', ic:'ti-building',     bg:'#FEF0EC', bgi:'#C43C14', name:'Arsitek Muda Indonesia',    desc:'Komunitas pelajar peminatan arsitektur. Lomba desain interior, tur virtual, dan mentoring arsitek profesional.', mem:'540 anggota', tags:['Arsitektur','Desain','3D'],   wa:'https://whatsapp.com/channel/0029VaArsitektur'},
+];
+
+/* ===================================================================
+   DATA: QUIZ QUESTIONS
+   =================================================================== */
+const QS = [
+  {
+    q: 'Waktu luang kamu biasanya dihabiskan untuk apa?',
+    h: 'Pilih yang paling sering kamu lakukan',
+    opts: [
+      { ic:'ti-device-gamepad', t:'Main game atau coding' },
+      { ic:'ti-brush',          t:'Menggambar atau berkreasi' },
+      { ic:'ti-book-2',         t:'Membaca atau menulis' },
+      { ic:'ti-run',            t:'Olahraga atau aktivitas fisik' }
+    ]
+  },
+  {
+    q: 'Dalam proyek kelompok, kamu paling suka jadi…',
+    h: 'Pilih peran yang paling bikin kamu nyaman',
+    opts: [
+      { ic:'ti-bulb',             t:'Pemikir dan perencana strategi' },
+      { ic:'ti-microphone',       t:'Presenter dan komunikator' },
+      { ic:'ti-tools',            t:'Eksekutor yang kerja nyata' },
+      { ic:'ti-vector-triangle',  t:'Desainer dan kreatif visual' }
+    ]
+  },
+  {
+    q: 'Mata pelajaran mana yang paling kamu nikmati?',
+    h: 'Bukan yang paling mudah — yang paling kamu suka',
+    opts: [
+      { ic:'ti-calculator',  t:'Matematika dan Komputer' },
+      { ic:'ti-atom',        t:'IPA dan Eksperimen' },
+      { ic:'ti-abc',         t:'Bahasa Indonesia dan Sastra' },
+      { ic:'ti-artboard',    t:'Seni Budaya dan Kesenian' }
+    ]
+  },
+  {
+    q: 'Kamu paling termotivasi saat…',
+    h: 'Situasi yang paling bikin kamu semangat',
+    opts: [
+      { ic:'ti-trophy',           t:'Menang kompetisi dan bersaing' },
+      { ic:'ti-heart-handshake',  t:'Bisa membantu orang lain' },
+      { ic:'ti-puzzle',           t:'Menemukan ide atau solusi baru' },
+      { ic:'ti-star',             t:'Tampil dan diakui banyak orang' }
+    ]
+  },
+  {
+    q: 'Konten apa yang paling sering kamu tonton?',
+    h: 'Yang beneran kamu tonton, bukan yang kamu kira keren',
+    opts: [
+      { ic:'ti-video',        t:'Tutorial dan how-to video' },
+      { ic:'ti-headphones',   t:'Musik dan hiburan' },
+      { ic:'ti-device-mobile',t:'Tech dan gadget review' },
+      { ic:'ti-photo',        t:'Art, ilustrasi, dan desain' }
+    ]
+  },
+  {
+    q: 'Dalam 5 tahun, kamu paling ingin…',
+    h: 'Impian yang paling dalam — jawab jujur',
+    opts: [
+      { ic:'ti-rocket',    t:'Bangun startup atau produk sendiri' },
+      { ic:'ti-medal',     t:'Jadi atlet atau seniman profesional' },
+      { ic:'ti-telescope', t:'Jadi peneliti atau ilmuwan' },
+      { ic:'ti-writing',   t:'Penulis atau kreator konten terkenal' }
+    ]
+  },
+];
+
+/* ===================================================================
+   DATA: QUIZ RESULTS
+   =================================================================== */
+const RES = {
+  tech: {
+    ic:'ti-code-circle', icbg:'#1847ED',
+    title:'Tech Visionary',
+    desc:'Logika tajam dan rasa ingin tahu tinggi soal teknologi. Kamu cocok di dunia coding, AI, atau membangun produk digital.',
+    skills:['Pemrograman','Problem Solving','Logika'],
+    bg:'#0C1A3A', tc:'#fff',
+    coms:['ti-code','ti-palette'], comN:['CodeKid Indonesia','Desainer Muda ID'], comM:['3.240 anggota','1.890 anggota'],
+    evs:['National Olympiad Informatika 2025','Hackathon Pelajar Nasional']
+  },
+  seni: {
+    ic:'ti-palette', icbg:'#F04E23',
+    title:'Creative Soul',
+    desc:'Kamu melihat dunia berbeda. Ekspresi visual adalah bahasamu yang paling kuat — desain, ilustrasi, dan multimedia adalah areamu.',
+    skills:['Visual Thinking','Kreativitas','Desain'],
+    bg:'#2A1206', tc:'#fff',
+    coms:['ti-palette','ti-music'], comN:['Desainer Muda ID','Nada & Rima'], comM:['1.890 anggota','1.450 anggota'],
+    evs:['Lomba Desain Poster Kemerdekaan','Young Designer Award']
+  },
+  sains: {
+    ic:'ti-microscope', icbg:'#00966A',
+    title:'Young Scientist',
+    desc:'Rasa ingin tahumu terhadap "mengapa" di balik segalanya luar biasa. Olimpiade sains dan karya ilmiah adalah arena terbaikmu.',
+    skills:['Penelitian','Analisis Data','Sains'],
+    bg:'#021E14', tc:'#fff',
+    coms:['ti-microscope','ti-code'], comN:['Saintis Cilik','CodeKid Indonesia'], comM:['2.100 anggota','3.240 anggota'],
+    evs:['Karya Ilmiah Remaja Tingkat Provinsi','Olimpiade Sains Nasional (OSN) 2025']
+  },
+  tulis: {
+    ic:'ti-pencil', icbg:'#6D28D9',
+    title:'Storyteller',
+    desc:'Kata-kata adalah senjatamu. Kemampuan bercerita dan mengekspresikan pikiran secara tertulis adalah bakatmu yang harus terus diasah.',
+    skills:['Menulis Kreatif','Komunikasi','Analisis'],
+    bg:'#160B2A', tc:'#fff',
+    coms:['ti-pencil','ti-palette'], comN:['Pena Muda','Desainer Muda ID'], comM:['980 anggota','1.890 anggota'],
+    evs:['Cerpen Nasional "Suara Generasi"','Kompetisi Esai ASEAN']
+  },
+  musik: {
+    ic:'ti-music', icbg:'#9D174D',
+    title:'Music Maverick',
+    desc:'Dunia musik mengalir dalam nadimu. Entah memainkan, menciptakan, atau memproduksi — kepekaan artistikmu sangat kuat.',
+    skills:['Musikal','Kreativitas','Ekspresi'],
+    bg:'#240B18', tc:'#fff',
+    coms:['ti-music','ti-pencil'], comN:['Nada & Rima','Pena Muda'], comM:['1.450 anggota','980 anggota'],
+    evs:['Kompetisi Musik Indie Pelajar 2025','FLS2N Bidang Musik']
+  },
+  sport: {
+    ic:'ti-ball-football', icbg:'#D97706',
+    title:'Athlete Spirit',
+    desc:'Dedikasi, kerja keras, dan semangat bersaing adalah DNA kamu. Bakatmu butuh ruang — turnamen dan pelatih yang tepat sudah menunggu.',
+    skills:['Disiplin','Kerja Tim','Leadership'],
+    bg:'#1A1600', tc:'#fff',
+    coms:['ti-ball-football','ti-microscope'], comN:['Atlet Remaja','Saintis Cilik'], comM:['4.120 anggota','2.100 anggota'],
+    evs:['Turnamen Futsal Pelajar Se-Jawa','O2SN Tingkat Nasional']
+  },
+};
+
+/* ===================================================================
+   APP STATE
+   =================================================================== */
+let qi = 0;         // quiz question index
+let ans = [];       // quiz answers array
+let dark = false;   // dark mode state
+let currentUser = null; // Firebase user or demo user object
+// Bookmarks stored as: { komunitas: Set of k.id, lomba: Set of ev.id }
+let bookmarks = { komunitas: new Set(), lomba: new Set() };
+// confirmationResult from Firebase phone auth
+let confirmationResult = null;
+// Countdown timer refs
+let loginResendTimer = null;
+let regResendTimer   = null;
+// Current bookmark tab
+let bkTab = 'komunitas';
+
+/* ===================================================================
+   NAVIGATION
+   =================================================================== */
+/**
+ * Navigasikan ke halaman dengan id 'pg-{id}'.
+ * @param {string} id
+ */
+function go(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  const pg = document.getElementById('pg-' + id);
+  if (pg) {
+    pg.classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  if (id === 'quiz')     { qi = 0; ans = []; renderQ(); }
+  if (id === 'bookmark') { renderBookmarks(); }
+  if (id === 'profil')   { renderProfile(); }
+  if (id === 'komunitas'){ renderKoms(); }
+}
+
+/**
+ * Set item aktif di bottom nav.
+ * @param {string} k - key nav item
+ */
+function setNav(k) {
+  document.querySelectorAll('.bi').forEach(b => b.classList.remove('on'));
+  const el = document.getElementById('nav-' + k);
+  if (el) el.classList.add('on');
+}
+
+/* ===================================================================
+   TOAST
+   =================================================================== */
+let toastTimer = null;
+/**
+ * Tampilkan toast notifikasi.
+ * @param {string} msg
+ * @param {string} icon - kelas ikon Tabler (misal 'ti-check')
+ */
+function toast(msg, icon = 'ti-check') {
+  const t  = document.getElementById('toast');
+  const ic = t.querySelector('i');
+  const sp = document.getElementById('toast-msg');
+  ic.className = 'ti ' + icon;
+  sp.textContent = msg;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ===================================================================
+   DARK MODE
+   =================================================================== */
+/**
+ * Toggle antara mode terang dan gelap.
+ * State disimpan di localStorage agar persisten.
+ */
+function toggleDark() {
+  dark = !dark;
+  document.body.toggleAttribute('data-dark', dark);
+  const ic    = document.getElementById('dark-ic');
+  const prIc  = document.getElementById('pr-dark-ic');
+  const prSub = document.getElementById('pr-dark-sub');
+  if (ic) ic.className       = dark ? 'ti ti-sun' : 'ti ti-moon';
+  if (prIc) prIc.className   = dark ? 'ti ti-sun' : 'ti ti-moon';
+  if (prSub) prSub.textContent = dark ? 'Dark mode aktif' : 'Aktifkan dark mode';
+  try { localStorage.setItem('lp_dark', dark ? '1' : '0'); } catch(e) {}
+  toast(dark ? 'Mode gelap aktif 🌙' : 'Mode terang aktif ☀️', dark ? 'ti-moon' : 'ti-sun');
+}
+
+/** Muat preferensi dark mode dari localStorage. */
+function loadDarkPref() {
+  try {
+    const saved = localStorage.getItem('lp_dark');
+    if (saved === '1' && !dark) toggleDark();
+  } catch(e) {}
+}
+
+/* ===================================================================
+   AUTH STATE MANAGEMENT
+   =================================================================== */
+/**
+ * Dipanggil oleh onAuthStateChanged Firebase ATAU fallback demo
+ * saat user terbukti sudah login.
+ * @param {object} user - Firebase User atau object demo
+ */
+function onUserLoggedIn(user) {
+  currentUser = user;
+  hideSplash();
+
+  // Update tombol nav atas
+  const navBtn = document.getElementById('nav-btn-login');
+  if (navBtn) { navBtn.innerHTML = '<i class="ti ti-user" aria-hidden="true"></i><span>Profil</span>'; navBtn.onclick = () => { go('profil'); setNav('profil'); }; }
+
+  // Show/hide logout
+  const logoutBtn = document.getElementById('logout-btn');
+  const loginCta  = document.getElementById('pr-login-cta');
+  if (logoutBtn) logoutBtn.style.display = 'flex';
+  if (loginCta)  loginCta.style.display  = 'none';
+
+  // Load bookmarks dari Firestore atau localStorage
+  loadBookmarks();
+}
+
+/**
+ * Dipanggil saat user belum / sudah logout.
+ */
+function onUserLoggedOut() {
+  currentUser = null;
+  hideSplash();
+
+  const navBtn = document.getElementById('nav-btn-login');
+  if (navBtn) { navBtn.innerHTML = '<i class="ti ti-user" aria-hidden="true"></i><span>Daftar</span>'; navBtn.onclick = () => { go('register'); setNav('profil'); }; }
+
+  const logoutBtn = document.getElementById('logout-btn');
+  const loginCta  = document.getElementById('pr-login-cta');
+  if (logoutBtn) logoutBtn.style.display = 'none';
+  if (loginCta)  loginCta.style.display  = 'block';
+}
+
+/**
+ * Cek state autentikasi untuk mode demo (tanpa Firebase).
+ */
+function checkAuthState() {
+  try {
+    const stored = localStorage.getItem('lp_user');
+    if (stored) {
+      const user = JSON.parse(stored);
+      onUserLoggedIn(user);
+    } else {
+      onUserLoggedOut();
+    }
+  } catch(e) {
+    onUserLoggedOut();
+  }
+}
+
+/** Sembunyikan splash screen. */
+function hideSplash() {
+  setTimeout(() => {
+    const sp = document.getElementById('splash');
+    if (sp) sp.classList.add('hide');
+  }, 700);
+}
+
+/* ===================================================================
+   PHONE INPUT HELPERS
+   =================================================================== */
+/**
+ * Format nomor telepon saat diketik (hanya angka).
+ * @param {HTMLInputElement} el
+ */
+function onPhoneInput(el) {
+  // Hanya izinkan angka
+  el.value = el.value.replace(/[^0-9]/g, '');
+  // Hapus awalan 0 otomatis
+  if (el.value.startsWith('0')) el.value = el.value.substring(1);
+}
+
+/**
+ * Validasi nomor WhatsApp Indonesia.
+ * @param {string} num - nomor tanpa +62 dan tanpa 0
+ * @returns {boolean}
+ */
+function isValidWANumber(num) {
+  return /^[89][0-9]{8,11}$/.test(num);
+}
+
+/* ===================================================================
+   OTP INPUT HELPERS
+   =================================================================== */
+/**
+ * Pindah fokus otomatis antar input OTP.
+ * @param {HTMLInputElement} el - input saat ini
+ * @param {number} idx          - index (0-5)
+ * @param {string} prefix       - 'reg' atau 'login'
+ */
+function otpNext(el, idx, prefix) {
+  // Hanya izinkan angka
+  el.value = el.value.replace(/[^0-9]/g, '');
+  if (el.value.length === 1 && idx < 5) {
+    const next = document.getElementById(prefix + 'otp' + (idx + 1));
+    if (next) next.focus();
+  }
+  // Backspace — kembali ke input sebelumnya
+  el.addEventListener('keydown', function handler(e) {
+    if (e.key === 'Backspace' && el.value === '' && idx > 0) {
+      const prev = document.getElementById(prefix + 'otp' + (idx - 1));
+      if (prev) { prev.value = ''; prev.focus(); }
+    }
+    // Hapus listener agar tidak berlipat ganda
+    el.removeEventListener('keydown', handler);
+  });
+}
+
+/**
+ * Ambil nilai OTP dari 6 input field.
+ * @param {string} prefix - 'reg' atau 'login'
+ * @returns {string} 6-digit OTP string
+ */
+function getOTPValue(prefix) {
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    const el = document.getElementById(prefix + 'otp' + i);
+    code += el ? el.value : '';
+  }
+  return code;
+}
+
+/** Reset semua input OTP. */
+function clearOTP(prefix) {
+  for (let i = 0; i < 6; i++) {
+    const el = document.getElementById(prefix + 'otp' + i);
+    if (el) el.value = '';
+  }
+  const first = document.getElementById(prefix + 'otp0');
+  if (first) first.focus();
+}
+
+/**
+ * Mulai countdown timer untuk tombol kirim ulang OTP.
+ * @param {string} btnId   - id tombol resend
+ * @param {string} lblId   - id span label
+ * @param {number} seconds - durasi countdown
+ * @param {object} timerRef - objek { ref } untuk menyimpan timer handle
+ */
+function startResendCountdown(btnId, lblId, seconds, timerRef) {
+  const btn = document.getElementById(btnId);
+  const lbl = document.getElementById(lblId);
+  if (!btn || !lbl) return;
+  btn.disabled = true;
+  let remaining = seconds;
+  if (timerRef.ref) clearInterval(timerRef.ref);
+  timerRef.ref = setInterval(() => {
+    remaining--;
+    lbl.textContent = `Kirim ulang (${remaining}s)`;
+    if (remaining <= 0) {
+      clearInterval(timerRef.ref);
+      btn.disabled = false;
+      lbl.textContent = 'Kirim ulang kode OTP';
+    }
+  }, 1000);
+}
+const loginResendRef = { ref: null };
+const regResendRef   = { ref: null };
+
+/* ===================================================================
+   REGISTER FLOW (WhatsApp OTP)
+   =================================================================== */
+/** State: step saat ini (0, 1, atau 2). */
+let regStep = 0;
+
+/**
+ * Pindah ke step registrasi tertentu.
+ * @param {number} step
+ */
+function goRegStep(step) {
+  for (let i = 0; i < 3; i++) {
+    const panel  = document.getElementById('rpanel-' + i);
+    const stepEl = document.getElementById('rstep-' + i);
+    const line   = document.getElementById('rline-' + i);
+    if (panel)  panel.classList.toggle('on', i === step);
+    if (stepEl) {
+      stepEl.classList.toggle('active', i === step);
+      stepEl.classList.toggle('done',   i < step);
+    }
+    if (line && i < 2) {
+      line.classList.toggle('done', i < step);
+    }
+  }
+  regStep = step;
+}
+
+/**
+ * Step 0 → 1: Kirim OTP ke nomor WhatsApp via Firebase Phone Auth.
+ * @param {boolean} isResend - true jika ini pengiriman ulang
+ */
+async function regSendOTP(isResend = false) {
+  const phoneEl  = document.getElementById('reg-phone');
+  const phoneErr = document.getElementById('reg-phone-err');
+  const phone    = phoneEl ? phoneEl.value.trim() : '';
+
+  if (!isValidWANumber(phone)) {
+    if (phoneErr) { phoneErr.classList.add('vis'); phoneEl.classList.add('err'); }
+    return;
+  }
+  if (phoneErr) { phoneErr.classList.remove('vis'); phoneEl.classList.remove('err'); }
+
+  const fullPhone = '+62' + phone;
+  const btn = document.getElementById('reg-send-otp-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>Mengirim OTP…'; }
+
+  if (firebaseReady && auth) {
+    // ---- MODE FIREBASE NYATA ----
+    try {
+      // Inisialisasi reCAPTCHA (invisible)
+      if (!window.recaptchaVerifierReg || isResend) {
+        const rc = document.getElementById('recaptcha-container');
+        if (rc) rc.innerHTML = '';
+        window.recaptchaVerifierReg = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          size: 'invisible',
+          callback: () => {}
+        });
+        await window.recaptchaVerifierReg.render();
+      }
+      confirmationResult = await auth.signInWithPhoneNumber(fullPhone, window.recaptchaVerifierReg);
+      goRegOTPPanel(fullPhone, isResend);
+    } catch(err) {
+      console.error('[OTP] Error:', err);
+      toast('Gagal mengirim OTP: ' + (err.message || 'Coba lagi'), 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP via SMS/WA'; }
+    }
+  } else {
+    // ---- MODE DEMO (tanpa Firebase) ----
+    console.log('[DEMO] OTP simulasi dikirim ke:', fullPhone, '— gunakan kode 123456');
+    goRegOTPPanel(fullPhone, isResend);
+  }
+}
+
+/**
+ * Tampilkan panel OTP registrasi dan mulai timer.
+ */
+function goRegOTPPanel(fullPhone, isResend) {
+  const btn = document.getElementById('reg-send-otp-btn');
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP via SMS/WA'; }
+
+  const disp = document.getElementById('reg-phone-display');
+  if (disp) disp.textContent = fullPhone;
+  if (!isResend) goRegStep(1);
+  clearOTP('rotp');
+  toast('Kode OTP dikirim ke ' + fullPhone, 'ti-brand-whatsapp');
+  startResendCountdown('reg-resend-btn', 'reg-resend-lbl', 60, regResendRef);
+}
+
+/**
+ * Step 1 → 2: Verifikasi OTP registrasi.
+ */
+async function regVerifyOTP() {
+  const code = getOTPValue('rotp');
+  if (code.length < 6) { toast('Masukkan 6 digit kode OTP', 'ti-alert-circle'); return; }
+
+  const btn = document.getElementById('reg-verify-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>Memverifikasi…'; }
+
+  if (firebaseReady && auth && confirmationResult) {
+    // ---- MODE FIREBASE NYATA ----
+    try {
+      const result = await confirmationResult.confirm(code);
+      currentUser = result.user;
+      goRegStep(2);
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-shield-check"></i>Verifikasi OTP'; }
+    } catch(err) {
+      console.error('[OTP] Verify error:', err);
+      toast('Kode OTP salah atau kedaluwarsa', 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-shield-check"></i>Verifikasi OTP'; }
+    }
+  } else {
+    // ---- MODE DEMO ----
+    if (code === '123456' || code.length === 6) {
+      goRegStep(2);
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-shield-check"></i>Verifikasi OTP'; }
+    } else {
+      toast('Kode OTP salah (Demo: gunakan 123456)', 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-shield-check"></i>Verifikasi OTP'; }
+    }
+  }
+}
+
+/**
+ * Step 2: Selesaikan registrasi, simpan profil ke Firestore.
+ */
+async function regFinish() {
+  const nameEl   = document.getElementById('reg-name');
+  const schoolEl = document.getElementById('reg-school');
+  const gradeEl  = document.getElementById('reg-grade');
+  const nameErr  = document.getElementById('reg-name-err');
+  const name     = nameEl   ? nameEl.value.trim()   : '';
+  const school   = schoolEl ? schoolEl.value.trim() : '';
+  const grade    = gradeEl  ? gradeEl.value         : '';
+
+  if (!name) {
+    if (nameErr) { nameErr.classList.add('vis'); nameEl.classList.add('err'); }
+    return;
+  }
+  if (nameErr) { nameErr.classList.remove('vis'); nameEl.classList.remove('err'); }
+
+  const btn = document.getElementById('reg-finish-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>Menyimpan profil…'; }
+
+  const phoneEl    = document.getElementById('reg-phone');
+  const phoneValue = phoneEl ? '+62' + phoneEl.value.trim() : '';
+
+  const userData = {
+    name,
+    school,
+    grade,
+    phone: phoneValue,
+    createdAt: new Date().toISOString(),
+    uid: currentUser ? (currentUser.uid || 'demo-' + Date.now()) : ('demo-' + Date.now())
+  };
+
+  if (firebaseReady && db && currentUser && currentUser.uid) {
+    // ---- SIMPAN KE FIRESTORE ----
+    try {
+      await db.collection('users').doc(currentUser.uid).set(userData, { merge: true });
+      currentUser.displayName = name;
+    } catch(e) {
+      console.error('[Firestore] Save user error:', e);
+    }
+  }
+
+  // Simpan ke localStorage sebagai fallback / cache
+  try { localStorage.setItem('lp_user', JSON.stringify(userData)); } catch(e) {}
+
+  onUserLoggedIn(userData);
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-rocket"></i>Selesai &amp; Mulai Eksplorasi!'; }
+  toast('Selamat datang, ' + name + '! 🎉', 'ti-confetti');
+  setTimeout(() => { go('home'); setNav('home'); }, 900);
+}
+
+/* ===================================================================
+   LOGIN FLOW (WhatsApp OTP)
+   =================================================================== */
+/**
+ * Kirim OTP untuk login.
+ * @param {boolean} isResend
+ */
+async function loginSendOTP(isResend = false) {
+  const phoneEl  = document.getElementById('login-phone');
+  const phoneErr = document.getElementById('login-phone-err');
+  const phone    = phoneEl ? phoneEl.value.trim() : '';
+
+  if (!isValidWANumber(phone)) {
+    if (phoneErr) { phoneErr.classList.add('vis'); phoneEl.classList.add('err'); }
+    return;
+  }
+  if (phoneErr) { phoneErr.classList.remove('vis'); phoneEl.classList.remove('err'); }
+
+  const fullPhone = '+62' + phone;
+  const btn = document.querySelector('#login-phone-panel .btn-full-wa');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>Mengirim OTP…'; }
+
+  if (firebaseReady && auth) {
+    try {
+      if (!window.recaptchaVerifierLogin || isResend) {
+        const rc = document.getElementById('recaptcha-login');
+        if (rc) rc.innerHTML = '';
+        window.recaptchaVerifierLogin = new firebase.auth.RecaptchaVerifier('recaptcha-login', {
+          size: 'invisible',
+          callback: () => {}
+        });
+        await window.recaptchaVerifierLogin.render();
+      }
+      confirmationResult = await auth.signInWithPhoneNumber(fullPhone, window.recaptchaVerifierLogin);
+      showLoginOTPPanel(fullPhone);
+    } catch(err) {
+      console.error('[Login OTP] Error:', err);
+      toast('Gagal mengirim OTP: ' + (err.message || 'Coba lagi'), 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-brand-whatsapp"></i>Kirim Kode OTP'; }
+    }
+  } else {
+    console.log('[DEMO] Login OTP simulasi ke:', fullPhone);
+    showLoginOTPPanel(fullPhone);
+  }
+}
+
+function showLoginOTPPanel(fullPhone) {
+  const phonePanel = document.getElementById('login-phone-panel');
+  const otpPanel   = document.getElementById('login-otp-panel');
+  const disp       = document.getElementById('login-phone-display');
+  if (phonePanel) phonePanel.style.display = 'none';
+  if (otpPanel)   otpPanel.style.display   = 'block';
+  if (disp)       disp.textContent         = fullPhone;
+  clearOTP('lotp');
+  toast('Kode OTP dikirim ke ' + fullPhone, 'ti-brand-whatsapp');
+  startResendCountdown('login-resend-btn', 'login-resend-lbl', 60, loginResendRef);
+}
+
+async function loginVerifyOTP() {
+  const code = getOTPValue('lotp');
+  if (code.length < 6) { toast('Masukkan 6 digit kode OTP', 'ti-alert-circle'); return; }
+
+  const btn = document.getElementById('login-verify-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>Memverifikasi…'; }
+
+  if (firebaseReady && auth && confirmationResult) {
+    try {
+      const result = await confirmationResult.confirm(code);
+      currentUser = result.user;
+      // Ambil data profil dari Firestore
+      if (db && currentUser.uid) {
+        const doc = await db.collection('users').doc(currentUser.uid).get();
+        if (doc.exists) {
+          const data = doc.data();
+          try { localStorage.setItem('lp_user', JSON.stringify(data)); } catch(e) {}
+        }
+      }
+      onUserLoggedIn(currentUser);
+      toast('Berhasil masuk!', 'ti-login');
+      setTimeout(() => { go('home'); setNav('home'); }, 900);
+    } catch(err) {
+      console.error('[Login Verify] Error:', err);
+      toast('Kode OTP salah atau kedaluwarsa', 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-login"></i>Verifikasi &amp; Masuk'; }
+    }
+  } else {
+    // Demo mode
+    if (code === '123456' || code.length === 6) {
+      const phoneEl = document.getElementById('login-phone');
+      const phone   = phoneEl ? '+62' + phoneEl.value.trim() : '+62';
+      const demoUser = { uid: 'demo-login', name: 'Pengguna Demo', phone, school: 'Demo School' };
+      try { localStorage.setItem('lp_user', JSON.stringify(demoUser)); } catch(e) {}
+      onUserLoggedIn(demoUser);
+      toast('Berhasil masuk (Demo)!', 'ti-login');
+      setTimeout(() => { go('home'); setNav('home'); }, 900);
+    } else {
+      toast('Kode OTP salah (Demo: gunakan 123456)', 'ti-alert-circle');
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="ti ti-login"></i>Verifikasi &amp; Masuk'; }
+    }
+  }
+}
+
+/* ===================================================================
+   GOOGLE LOGIN
+   =================================================================== */
+async function loginWithGoogle() {
+  if (firebaseReady && auth) {
+    try {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      const result   = await auth.signInWithPopup(provider);
+      const user     = result.user;
+      // Simpan/update user doc di Firestore
+      if (db) {
+        await db.collection('users').doc(user.uid).set({
+          name:      user.displayName || 'Pengguna Google',
+          email:     user.email || '',
+          phone:     user.phoneNumber || '',
+          uid:       user.uid,
+          createdAt: new Date().toISOString()
+        }, { merge: true });
+      }
+      const userData = { uid: user.uid, name: user.displayName || 'Pengguna Google', email: user.email };
+      try { localStorage.setItem('lp_user', JSON.stringify(userData)); } catch(e) {}
+      onUserLoggedIn(userData);
+      toast('Berhasil masuk dengan Google!', 'ti-brand-google');
+      setTimeout(() => { go('home'); setNav('home'); }, 900);
+    } catch(err) {
+      console.error('[Google Auth] Error:', err);
+      toast('Login Google gagal: ' + (err.message || 'Coba lagi'), 'ti-alert-circle');
+    }
+  } else {
+    // Demo mode
+    const demoUser = { uid: 'demo-google', name: 'Pengguna Google Demo', email: 'demo@gmail.com' };
+    try { localStorage.setItem('lp_user', JSON.stringify(demoUser)); } catch(e) {}
+    onUserLoggedIn(demoUser);
+    toast('Berhasil masuk dengan Google (Demo)!', 'ti-brand-google');
+    setTimeout(() => { go('home'); setNav('home'); }, 900);
+  }
+}
+
+/* ===================================================================
+   LOGOUT
+   =================================================================== */
+async function doLogout() {
+  if (firebaseReady && auth) {
+    try { await auth.signOut(); } catch(e) { console.error(e); }
+  }
+  try { localStorage.removeItem('lp_user'); } catch(e) {}
+  bookmarks = { komunitas: new Set(), lomba: new Set() };
+  currentUser = null;
+  onUserLoggedOut();
+  toast('Berhasil keluar dari akun', 'ti-logout');
+  setTimeout(() => { go('home'); setNav('home'); }, 700);
+}
+
+/* ===================================================================
+   BOOKMARKS
+   =================================================================== */
+/**
+ * Load bookmarks dari Firestore atau localStorage.
+ */
+async function loadBookmarks() {
+  let data = { komunitas: [], lomba: [] };
+  if (firebaseReady && db && currentUser && currentUser.uid) {
+    try {
+      const doc = await db.collection('bookmarks').doc(currentUser.uid).get();
+      if (doc.exists) data = doc.data();
+    } catch(e) { console.error('[Bookmarks] Load error:', e); }
+  } else {
+    try {
+      const stored = localStorage.getItem('lp_bookmarks');
+      if (stored) data = JSON.parse(stored);
+    } catch(e) {}
+  }
+  bookmarks.komunitas = new Set(data.komunitas || []);
+  bookmarks.lomba     = new Set(data.lomba     || []);
+}
+
+/**
+ * Simpan bookmarks ke Firestore dan localStorage.
+ */
+async function saveBookmarks() {
+  const data = {
+    komunitas: [...bookmarks.komunitas],
+    lomba:     [...bookmarks.lomba]
+  };
+  if (firebaseReady && db && currentUser && currentUser.uid) {
+    try {
+      await db.collection('bookmarks').doc(currentUser.uid).set(data);
+    } catch(e) { console.error('[Bookmarks] Save error:', e); }
+  }
+  try { localStorage.setItem('lp_bookmarks', JSON.stringify(data)); } catch(e) {}
+}
+
+/**
+ * Toggle bookmark komunitas.
+ * @param {string} id - komunitas id
+ * @param {HTMLElement} el - tombol bookmark
+ */
+function toggleBookmarkKom(id, el) {
+  if (!currentUser) { toast('Masuk dulu untuk menyimpan!', 'ti-user'); go('register'); setNav('profil'); return; }
+  if (bookmarks.komunitas.has(id)) {
+    bookmarks.komunitas.delete(id);
+    el.classList.remove('saved');
+    el.innerHTML = '<i class="ti ti-bookmark" aria-hidden="true"></i>';
+    toast('Dihapus dari tersimpan', 'ti-bookmark-off');
+  } else {
+    bookmarks.komunitas.add(id);
+    el.classList.add('saved');
+    el.innerHTML = '<i class="ti ti-bookmark-filled" aria-hidden="true"></i>';
+    toast('Komunitas disimpan!', 'ti-bookmark-filled');
+  }
+  saveBookmarks();
+}
+
+/**
+ * Toggle bookmark lomba.
+ * @param {string} id - event id
+ * @param {HTMLElement} el - tombol bookmark
+ */
+function toggleBookmarkEv(id, el) {
+  if (!currentUser) { toast('Masuk dulu untuk menyimpan!', 'ti-user'); go('register'); setNav('profil'); return; }
+  if (bookmarks.lomba.has(id)) {
+    bookmarks.lomba.delete(id);
+    el.classList.remove('saved');
+    el.innerHTML = '<i class="ti ti-bookmark" aria-hidden="true"></i>';
+    toast('Dihapus dari tersimpan', 'ti-bookmark-off');
+  } else {
+    bookmarks.lomba.add(id);
+    el.classList.add('saved');
+    el.innerHTML = '<i class="ti ti-bookmark-filled" aria-hidden="true"></i>';
+    toast('Lomba disimpan!', 'ti-bookmark-filled');
+  }
+  saveBookmarks();
+}
+
+/* ===================================================================
+   RENDER: CATEGORIES
+   =================================================================== */
+function renderCats() {
+  const el = document.getElementById('cat-list');
+  if (!el) return;
+  el.innerHTML = CATS.map(c => `
+    <div class="ccat" data-id="${c.id}" onclick="toggleCat(this)" style="background:${c.bg}">
+      <div class="ccat-ic" style="background:${c.bgi}33"><i class="ti ${c.ic}" style="color:${c.ci}" aria-hidden="true"></i></div>
+      <div class="ccat-name">${c.name}</div>
+      <div class="ccat-ct">${c.ct}</div>
+    </div>
+  `).join('');
+}
+
+let activeCats = new Set();
+function toggleCat(el) {
+  const id = el.getAttribute('data-id');
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) {
+    activeCats.add(id);
+    toast('Filter: ' + el.querySelector('.ccat-name').textContent, 'ti-filter');
+  } else {
+    activeCats.delete(id);
+    toast('Filter dihapus', 'ti-filter');
+  }
+  filterEvs();
+}
+
+/* ===================================================================
+   RENDER: EVENTS WITH SEARCH & FILTER
+   =================================================================== */
+function renderEvs(list) {
+  const el = document.getElementById('ev-list');
+  if (!el) return;
+  if (!list) list = EVS;
+  if (list.length === 0) {
+    el.innerHTML = `<div class="bk-empty" style="grid-column:1/-1"><i class="ti ti-search-off" style="font-size:44px;display:block;margin-bottom:14px;color:var(--ink4)"></i><h3>Tidak ada hasil</h3><p>Coba kata kunci atau filter lain</p></div>`;
+    return;
+  }
+  el.innerHTML = list.map(e => {
+    const isBmSaved = bookmarks.lomba.has(e.id);
+    return `
+    <div class="ecard">
+      <div class="ecard-top" style="background:${e.ibg}">
+        <i class="ti ${e.ic}" style="color:${e.ic2}" aria-hidden="true"></i>
+        <span class="ecard-chip ${e.tc}">${e.tag}</span>
+        <button class="ecard-bm ${isBmSaved ? 'saved' : ''}" onclick="event.stopPropagation();toggleBookmarkEv('${e.id}',this)" aria-label="Simpan lomba">
+          <i class="ti ${isBmSaved ? 'ti-bookmark-filled' : 'ti-bookmark'}" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="ecard-body">
+        <div class="ecard-title">${e.title}</div>
+        <div class="ecard-meta"><i class="ti ti-map-pin" aria-hidden="true" style="font-size:12px"></i>${e.loc}</div>
+        <div class="ecard-foot">
+          <span class="prize"><i class="ti ti-trophy" aria-hidden="true" style="font-size:12px"></i>${e.prize}</span>
+          <span class="chip ${e.bc}">${e.badge}</span>
+        </div>
+        <div class="dl"><i class="ti ti-clock" aria-hidden="true"></i>Daftar s/d ${e.dl}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterEvs() {
+  const searchEl = document.getElementById('ev-search');
+  const clearEl  = document.getElementById('ev-search-clear');
+  const query    = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  if (clearEl) clearEl.classList.toggle('vis', query.length > 0);
+
+  let filtered = EVS;
+  // Filter by search query
+  if (query) {
+    filtered = filtered.filter(e =>
+      e.title.toLowerCase().includes(query) ||
+      e.tag.toLowerCase().includes(query)   ||
+      e.loc.toLowerCase().includes(query)   ||
+      e.badge.toLowerCase().includes(query)
+    );
+  }
+  // Filter by active category
+  if (activeCats.size > 0) {
+    filtered = filtered.filter(e => activeCats.has(e.cat));
+  }
+  renderEvs(filtered);
+}
+
+function clearEvSearch() {
+  const searchEl = document.getElementById('ev-search');
+  if (searchEl) { searchEl.value = ''; searchEl.focus(); }
+  filterEvs();
+}
+
+/* ===================================================================
+   RENDER: KOMUNITAS WITH SEARCH
+   =================================================================== */
+function renderKoms(list) {
+  const el = document.getElementById('k-list');
+  if (!el) return;
+  if (!list) list = KOMS;
+  if (list.length === 0) {
+    el.innerHTML = `<div class="bk-empty" style="grid-column:1/-1"><i class="ti ti-users-off"></i><h3>Tidak ada komunitas</h3><p>Coba kata kunci lain</p></div>`;
+    return;
+  }
+  el.innerHTML = list.map(k => {
+    const isBmSaved = bookmarks.komunitas.has(k.id);
+    return `
+    <div class="kcard">
+      <div class="kban" style="background:${k.bg}">
+        <i class="ti ${k.ic}" style="color:${k.bgi}" aria-hidden="true"></i>
+        <button class="kcard-bm ${isBmSaved ? 'saved' : ''}" onclick="toggleBookmarkKom('${k.id}',this)" aria-label="Simpan komunitas">
+          <i class="ti ${isBmSaved ? 'ti-bookmark-filled' : 'ti-bookmark'}" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="kbody">
+        <div class="kname">${k.name}</div>
+        <div class="kdesc">${k.desc}</div>
+        <div class="ktags">${k.tags.map(t => `<span class="chip ch-b">${t}</span>`).join('')}</div>
+        <div class="kft">
+          <span class="kmem"><i class="ti ti-users" aria-hidden="true"></i>${k.mem}</span>
+          <div class="kft-btns">
+            <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener" title="Ikuti Saluran WhatsApp" onclick="toast('Membuka saluran WhatsApp ${k.name}','ti-brand-whatsapp')">
+              <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>WA
+            </a>
+            <button class="btn-join" onclick="joinKom(this,'${k.id}')">
+              <i class="ti ti-plus" aria-hidden="true"></i>Gabung
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterKoms() {
+  const searchEl = document.getElementById('kom-search');
+  const clearEl  = document.getElementById('kom-search-clear');
+  const query    = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  if (clearEl) clearEl.classList.toggle('vis', query.length > 0);
+
+  if (!query) { renderKoms(); return; }
+  const filtered = KOMS.filter(k =>
+    k.name.toLowerCase().includes(query) ||
+    k.desc.toLowerCase().includes(query) ||
+    k.tags.some(t => t.toLowerCase().includes(query))
+  );
+  renderKoms(filtered);
+}
+
+function clearKomSearch() {
+  const searchEl = document.getElementById('kom-search');
+  if (searchEl) { searchEl.value = ''; searchEl.focus(); }
+  renderKoms();
+}
+
+function joinKom(btn, id) {
+  if (!currentUser) { toast('Masuk dulu untuk bergabung!', 'ti-user'); go('register'); setNav('profil'); return; }
+  const ok = btn.classList.toggle('ok');
+  btn.innerHTML = ok
+    ? '<i class="ti ti-check" aria-hidden="true"></i>Bergabung'
+    : '<i class="ti ti-plus"  aria-hidden="true"></i>Gabung';
+  if (ok) toast('Berhasil bergabung ke komunitas!', 'ti-users');
+}
+
+/* ===================================================================
+   RENDER: BOOKMARKS PAGE
+   =================================================================== */
+function switchBkTab(tab) {
+  bkTab = tab;
+  document.querySelectorAll('.bk-tab').forEach(t => t.classList.remove('on'));
+  const tabEl = document.getElementById('bkt-' + tab);
+  if (tabEl) tabEl.classList.add('on');
+  renderBookmarks();
+}
+
+function renderBookmarks() {
+  const el = document.getElementById('bk-content');
+  if (!el) return;
+
+  if (bkTab === 'komunitas') {
+    const savedKoms = KOMS.filter(k => bookmarks.komunitas.has(k.id));
+    if (savedKoms.length === 0) {
+      el.innerHTML = `
+        <div class="bk-empty" style="grid-column:1/-1">
+          <i class="ti ti-bookmark"></i>
+          <h3>Belum ada komunitas tersimpan</h3>
+          <p>Tekan ikon 🔖 pada kartu komunitas untuk menyimpannya di sini</p>
+        </div>`;
+      return;
+    }
+    el.innerHTML = savedKoms.map(k => `
+      <div class="kcard">
+        <div class="kban" style="background:${k.bg}">
+          <i class="ti ${k.ic}" style="color:${k.bgi}" aria-hidden="true"></i>
+          <button class="kcard-bm saved" onclick="toggleBookmarkKom('${k.id}',this);renderBookmarks()" aria-label="Hapus simpan">
+            <i class="ti ti-bookmark-filled" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="kbody">
+          <div class="kname">${k.name}</div>
+          <div class="kdesc">${k.desc}</div>
+          <div class="ktags">${k.tags.map(t => `<span class="chip ch-b">${t}</span>`).join('')}</div>
+          <div class="kft">
+            <span class="kmem"><i class="ti ti-users"></i>${k.mem}</span>
+            <a class="btn-wa" href="${k.wa}" target="_blank" rel="noopener">
+              <i class="ti ti-brand-whatsapp"></i>WA
+            </a>
+          </div>
+        </div>
+      </div>`).join('');
+
+  } else {
+    const savedEvs = EVS.filter(e => bookmarks.lomba.has(e.id));
+    if (savedEvs.length === 0) {
+      el.innerHTML = `
+        <div class="bk-empty" style="grid-column:1/-1">
+          <i class="ti ti-trophy"></i>
+          <h3>Belum ada lomba tersimpan</h3>
+          <p>Tekan ikon 🔖 pada kartu lomba untuk menyimpannya di sini</p>
+        </div>`;
+      return;
+    }
+    el.innerHTML = savedEvs.map(e => `
+      <div class="ecard">
+        <div class="ecard-top" style="background:${e.ibg}">
+          <i class="ti ${e.ic}" style="color:${e.ic2}" aria-hidden="true"></i>
+          <span class="ecard-chip ${e.tc}">${e.tag}</span>
+          <button class="ecard-bm saved" onclick="toggleBookmarkEv('${e.id}',this);renderBookmarks()" aria-label="Hapus simpan">
+            <i class="ti ti-bookmark-filled" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="ecard-body">
+          <div class="ecard-title">${e.title}</div>
+          <div class="ecard-meta"><i class="ti ti-map-pin" style="font-size:12px"></i>${e.loc}</div>
+          <div class="ecard-foot">
+            <span class="prize"><i class="ti ti-trophy" style="font-size:12px"></i>${e.prize}</span>
+            <span class="chip ${e.bc}">${e.badge}</span>
+          </div>
+          <div class="dl"><i class="ti ti-clock"></i>Daftar s/d ${e.dl}</div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+/* ===================================================================
+   RENDER: PROFILE
+   =================================================================== */
+function renderProfile() {
+  if (!currentUser) return;
+  const name   = currentUser.name || currentUser.displayName || 'Pengguna';
+  const school = currentUser.school || currentUser.email || 'Belum diatur';
+  const phone  = currentUser.phone  || currentUser.phoneNumber || '';
+  const initials = name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+  const avEl     = document.getElementById('pr-av-initials');
+  const nameEl   = document.getElementById('pr-name-display');
+  const schoolEl = document.getElementById('pr-school-display');
+  const waEl     = document.getElementById('pr-wa-chip');
+  const waDisp   = document.getElementById('pr-wa-display');
+
+  if (avEl)     avEl.textContent     = initials || 'LP';
+  if (nameEl)   nameEl.textContent   = name;
+  if (schoolEl) schoolEl.textContent = school;
+  if (waEl)     waEl.style.display   = phone ? 'inline-flex' : 'none';
+  if (waDisp)   waDisp.textContent   = phone;
+}
+
+/* ===================================================================
+   RENDER: QUIZ
+   =================================================================== */
+function renderQ() {
+  const q = QS[qi];
+  if (!q) return;
+  const barEl  = document.getElementById('qbar');
+  const stepEl = document.getElementById('qstep');
+  const chatEl = document.getElementById('q-chat');
+  const optsEl = document.getElementById('qopts');
+  if (barEl)  barEl.style.width      = `${((qi + 1) / QS.length) * 100}%`;
+  if (stepEl) stepEl.textContent     = `${qi + 1} / ${QS.length}`;
+  if (chatEl) chatEl.innerHTML       = `
+    <div class="q-bubble">
+      <div class="q-bubble-label"><i class="ti ti-sparkles" aria-hidden="true"></i>Lost Potential</div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-hint">${q.h}</div>
+    </div>`;
+  if (optsEl) optsEl.innerHTML = q.opts.map((o, i) => `
+    <div class="qopt${ans[qi] === i ? ' on' : ''}" onclick="selOpt(${i},this)">
+      <div class="qopt-ic"><i class="ti ${o.ic}" aria-hidden="true"></i></div>
+      <span>${o.t}</span>
+    </div>`).join('');
+}
+
+function selOpt(i, el) {
+  document.querySelectorAll('.qopt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+  ans[qi] = i;
+}
+
+function nextQ() {
+  if (ans[qi] === undefined) { const o = document.querySelector('.qopt'); if (o) selOpt(0, o); }
+  if (qi < QS.length - 1) { qi++; renderQ(); }
+  else showResult();
+}
+
+function prevQ() {
+  if (qi > 0) { qi--; renderQ(); }
+}
+
+/* ===================================================================
+   SHOW QUIZ RESULT
+   =================================================================== */
+function showResult() {
+  const sc = { tech:0, seni:0, sains:0, tulis:0, musik:0, sport:0 };
+  const mp = [
+    ['tech','seni','tulis','sport'],
+    ['seni','seni','tech','tulis'],
+    ['tech','sains','tulis','seni'],
+    ['tech','seni','sains','musik'],
+    ['sains','musik','tech','seni'],
+    ['tech','sport','sains','tulis']
+  ];
+  ans.forEach((a, i) => { if (mp[i] && mp[i][a]) sc[mp[i][a]] += 2; });
+  const top = Object.entries(sc).sort((a, b) => b[1] - a[1])[0][0];
+  const r   = RES[top];
+  const rWrap = document.getElementById('rwrap');
+  if (!rWrap) return;
+  rWrap.innerHTML = `
+    <div class="rhero" style="background:${r.bg};color:${r.tc}">
+      <div class="r-ic" style="background:${r.icbg}"><i class="ti ${r.ic}" aria-hidden="true"></i></div>
+      <div class="r-label">Hasil analisis bakatmu</div>
+      <div class="r-title">${r.title}</div>
+      <div class="r-desc">${r.desc}</div>
+      <div class="r-skills">${r.skills.map(s => `<span class="r-skill">${s}</span>`).join('')}</div>
+    </div>
+    <div class="rgrid">
+      <div class="rcard">
+        <div class="rcard-hd"><i class="ti ti-users" aria-hidden="true"></i>Komunitas untukmu</div>
+        ${r.coms.map((ic, i) => {
+          const k = KOMS.find(k => k.ic === ic);
+          return `
+          <div class="com-row">
+            <div class="com-av" style="background:${k ? k.bg : '#EEF2FD'}">
+              <i class="ti ${ic}" style="color:${k ? k.bgi : '#1239C4'}" aria-hidden="true"></i>
+            </div>
+            <div>
+              <div class="com-name">${r.comN[i]}</div>
+              <div class="com-meta">${r.comM[i]}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="rcard">
+        <div class="rcard-hd"><i class="ti ti-calendar-event" aria-hidden="true"></i>Event rekomendasi</div>
+        ${r.evs.map(e => `
+          <div class="ev-row">
+            <div class="ev-name"><i class="ti ti-trophy" aria-hidden="true"></i>${e}</div>
+            <div class="ev-meta">Pelajar SMP–SMA · Nasional</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="rcta">
+      <div>
+        <h3>Siap memulai perjalananmu?</h3>
+        <p>Bergabung komunitas dan daftar lomba pertamamu</p>
+      </div>
+      <button class="btn-w" onclick="go('komunitas');setNav('komunitas')">
+        Gabung sekarang<i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="go('quiz');setNav('cari')" style="background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px">
+        <i class="ti ti-refresh" aria-hidden="true"></i>Ulangi kuis
+      </button>
+    </div>`;
+  go('result');
+  setNav('cari');
+  launchConfetti();
+}
+
+/* ===================================================================
+   CONFETTI
+   =================================================================== */
+function launchConfetti() {
+  const cv = document.getElementById('confetti');
+  if (!cv) return;
+  cv.style.display = 'block';
+  const ctx    = cv.getContext('2d');
+  cv.width  = window.innerWidth;
+  cv.height = window.innerHeight;
+  const colors = ['#1847ED','#F04E23','#00966A','#6D28D9','#D97706','#9D174D','#25D366'];
+  const pts    = Array.from({ length: 120 }, () => ({
+    x:   Math.random() * cv.width,
+    y:   Math.random() * cv.height - cv.height,
+    r:   Math.random() * 5 + 2,
+    c:   colors[Math.floor(Math.random() * colors.length)],
+    vx:  (Math.random() - 0.5) * 3,
+    vy:  Math.random() * 4 + 1.5,
+    rot: Math.random() * 360,
+    vr:  (Math.random() - 0.5) * 7,
+    op:  1
+  }));
+  let fr = 0;
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    pts.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.globalAlpha = p.op;
+      ctx.fillStyle   = p.c;
+      ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+      ctx.restore();
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.rot += p.vr;
+      if (fr > 80) p.op -= 0.014;
+    });
+    fr++;
+    if (fr < 150) requestAnimationFrame(draw);
+    else { ctx.clearRect(0, 0, cv.width, cv.height); cv.style.display = 'none'; }
+  }
+  draw();
+}
+
+/* ===================================================================
+   INITIALIZATION
+   =================================================================== */
+document.addEventListener('DOMContentLoaded', function() {
+  // Render halaman statis
+  renderCats();
+  filterEvs();
+
+  // Muat preferensi dark mode
+  loadDarkPref();
+
+  // Inisialisasi Firebase dan cek auth state
+  initFirebase();
+
+  // Reset register steps setiap kali halaman register ditampilkan
+  const regPage = document.getElementById('pg-register');
+  if (regPage) {
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(m => {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          if (regPage.classList.contains('on')) {
+            goRegStep(0);
+            const phoneEl = document.getElementById('reg-phone');
+            if (phoneEl) phoneEl.value = '';
+            clearOTP('rotp');
+          }
+        }
+      });
+    });
+    observer.observe(regPage, { attributes: true });
+  }
+
+  // Reset login panel setiap kali halaman login ditampilkan
+  const loginPage = document.getElementById('pg-login');
+  if (loginPage) {
+    const observer2 = new MutationObserver(mutations => {
+      mutations.forEach(m => {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          if (loginPage.classList.contains('on')) {
+            const phonePanel = document.getElementById('login-phone-panel');
+            const otpPanel   = document.getElementById('login-otp-panel');
+            if (phonePanel) phonePanel.style.display = 'block';
+            if (otpPanel)   otpPanel.style.display   = 'none';
+            const phoneEl = document.getElementById('login-phone');
+            if (phoneEl) phoneEl.value = '';
+            clearOTP('lotp');
+          }
+        }
+      });
+    });
+    observer2.observe(loginPage, { attributes: true });
+  }
+});
 </script>
 </body>
 </html>
