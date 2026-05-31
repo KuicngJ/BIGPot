@@ -18,156 +18,221 @@
 }
 body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);overflow-x:hidden;min-height:100vh}
 
-/* OPTIMASI LAYAR HP (MOBILE FIRST) */
+/* ANIMASI UTAMA */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(240, 78, 35, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(240, 78, 35, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(240, 78, 35, 0.4); }
+}
+.animate-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+/* OPTIMASI HALAMAN */
 .page{display:none;padding-bottom:100px}
-.page.on{display:block}
+.page.on{display:block; animation: fadeInUp 0.4s ease-out forwards;}
 .container{max-width:1240px;margin:0 auto;padding:0 20px}
 
-/* Splash Screen Fix */
+/* Splash Screen */
 #splash{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;align-items:center;justify-content:center;color:white;transition:opacity 0.5s ease}
 
 /* Navigation & Bottom Bar */
 nav{background:var(--surf);padding:16px 0;position:sticky;top:0;z-index:900;box-shadow:var(--shd)}
-.nav-box{display:flex;justify-content:between;align-items:center}
+.nav-box{display:flex;justify-content:space-between;align-items:center}
 .logo-area{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:var(--ink);display:flex;align-items:center;gap:8px;cursor:pointer}
-.logo-dot{width:8px;height:8px;background:var(--orange);border-radius:50%}
+.logo-dot{width:8px;height:8px;background:var(--orange);border-radius:50%; animation: pulseGlow 2s infinite;}
 
-/* Bottom bar mobile fix */
-.bbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);display:flex;justify-content:space-around;padding:12px 0;box-shadow:0 -4px 20px rgba(0,0,0,0.04);z-index:999}
-.bi{background:none;border:none;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;cursor:pointer;width:60px}
-.bi i{font-size:22px;transition:0.2s}
+.bbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);display:flex;justify-content:space-around;padding:12px 0;box-shadow:0 -4px 20px rgba(0,0,0,0.06);z-index:999;border-top: 1px solid var(--surf3);}
+.bi{background:none;border:none;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;cursor:pointer;width:60px; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+.bi i{font-size:24px;transition:0.3s; margin-bottom: 2px;}
+.bi:hover i { transform: translateY(-3px); color: var(--ink2); }
 .bi.on{color:var(--blue)}
+.bi.on i{transform: translateY(-4px) scale(1.1);}
 
 /* Content components */
-.hero{padding:40px 0;text-align:center}
-.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:12px}
-.grid-2{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:768px){ .grid-2{grid-template-columns:1fr 1fr} .hero h1{font-size:54px} }
+.hero{padding:50px 0 30px;text-align:center}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:38px;font-weight:800;line-height:1.2;margin-bottom:12px}
 
-/* Login Card & Buttons */
-.auth-box{max-width:400px;margin:40px auto;background:white;padding:30px;border-radius:var(--rad);box-shadow:var(--shd-m)}
-.btn-main{width:100%;padding:14px;border-radius:var(--rad-s);border:none;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;transition:0.2s}
+/* Buttons */
+.btn-main{width:100%;padding:14px;border-radius:var(--rad-s);border:none;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;transition:all 0.3s ease;}
+.btn-main:active { transform: scale(0.96); }
 .btn-google{background:white;color:var(--ink);border:1px solid var(--ink4)}
-.btn-google:hover{background:var(--surf2)}
-.btn-p{background:var(--blue);color:white}
+.btn-google:hover{background:var(--surf2); border-color:var(--ink3); box-shadow: var(--shd);}
+.btn-p{background:var(--blue);color:white; box-shadow: 0 4px 15px rgba(24, 71, 237, 0.2);}
+.btn-p:hover{background:var(--blue-d); box-shadow: 0 6px 20px rgba(24, 71, 237, 0.3); transform: translateY(-2px);}
 
-/* Quiz UI */
-.q-box{max-width:600px;margin:20px auto;background:white;padding:24px;border-radius:var(--rad);box-shadow:var(--shd)}
-.q-bubble{background:var(--surf2);padding:20px;border-radius:var(--rad);margin-bottom:20px}
-.qopt{background:white;border:1px solid var(--surf4);padding:16px;border-radius:var(--rad-s);margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:12px;font-weight:600;transition:0.2s}
-.qopt:hover, .qopt.on{border-color:var(--blue);background:#EEF2FD}
-
-/* Lists and Cards */
-.cat-scroll{display:flex;gap:12px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
-.ccat{min-width:140px;padding:16px;border-radius:var(--rad);background:white;text-align:center;box-shadow:var(--shd);cursor:pointer}
-.ecard{background:white;border-radius:var(--rad);overflow:hidden;box-shadow:var(--shd);margin-bottom:16px}
+/* Cards & Lists (Hover Effects) */
+.auth-box{max-width:400px;margin:40px auto;background:white;padding:30px;border-radius:var(--rad);box-shadow:var(--shd-m)}
+.cat-scroll{display:flex;gap:12px;overflow-x:auto;padding:10px 0 20px;scrollbar-width:none;}
+.ccat{min-width:140px;padding:16px;border-radius:var(--rad);background:white;text-align:center;box-shadow:var(--shd);cursor:pointer; transition: 0.3s ease;}
+.ccat:hover { transform: translateY(-5px); box-shadow: var(--shd-m); }
+.ecard{background:white;border-radius:var(--rad);overflow:hidden;box-shadow:var(--shd);margin-bottom:16px; transition: 0.3s ease;}
+.ecard:hover { transform: translateY(-3px); box-shadow: var(--shd-m); }
 .ecard-top{padding:20px;display:flex;justify-content:space-between;align-items:center}
 .ecard-body{padding:20px}
 .ecard-title{font-weight:700;font-size:18px;margin-bottom:8px}
 
-/* Toast Notification */
-#toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--ink);color:white;padding:12px 24px;border-radius:30px;display:flex;align-items:center;gap:10px;font-weight:600;z-index:10000;transition:0.3s ease;box-shadow:var(--shd-m)}
+/* Quiz UI */
+.q-box{max-width:600px;margin:20px auto;background:white;padding:24px;border-radius:var(--rad);box-shadow:var(--shd)}
+.q-bubble{background:var(--surf2);padding:20px;border-radius:var(--rad);margin-bottom:20px}
+.qopt{background:white;border:1px solid var(--surf4);padding:16px;border-radius:var(--rad-s);margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:12px;font-weight:600;transition:all 0.2s ease;}
+.qopt:hover{border-color:var(--blue);background:#F8FAFF; transform: translateX(5px);}
+.qopt.on{border-color:var(--blue);background:#EEF2FD; box-shadow: inset 0 0 0 1px var(--blue);}
+
+/* Toast */
+#toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--ink);color:white;padding:12px 24px;border-radius:30px;display:flex;align-items:center;gap:10px;font-weight:600;z-index:10000;transition:transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);box-shadow:var(--shd-m)}
 #toast.show{transform:translateX(-50%) translateY(0)}
 
-/* Confetti Canvas */
+/* Confetti */
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:9998;display:none}
+
+/* Loading Spinner Overlay untuk Login */
+#login-loading { display: none; margin: 20px auto; text-align: center; color: var(--blue); }
+.spinner { animation: rotate 2s linear infinite; width: 30px; height: 30px; }
+@keyframes rotate { 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
+<!-- SPLASH SCREEN -->
 <div id="splash">
   <div style="text-align:center">
-    <i class="ti ti-sparkles" style="font-size:48px;color:var(--orange);animation:pulse 1.5s infinite"></i>
+    <i class="ti ti-sparkles" style="font-size:48px;color:var(--orange);animation:pulseGlow 1.5s infinite"></i>
     <h1 style="font-family:'Bricolage Grotesque',sans-serif;margin-top:10px">LostPotential</h1>
-    <p style="color:var(--ink3);font-size:14px">Memuat potensi terbaikmu...</p>
+    <p style="color:var(--ink3);font-size:14px">Membangun mimpimu...</p>
   </div>
 </div>
 
+<!-- TOAST -->
 <div id="toast"><i class="ti ti-check"></i><span id="toast-msg">Notifikasi</span></div>
 
+<!-- CANVAS PETASAN -->
 <canvas id="confetti"></canvas>
 
+<!-- NAVBAR -->
 <nav>
-  <div class="container nav-box" style="display:flex;justify-content:space-between;align-items:center">
-    <div class="logo-area" onclick="go('home')">
+  <div class="container nav-box">
+    <div class="logo-area" onclick="go('home');setNav('home')">
       <span>LostPotential</span><div class="logo-dot"></div>
     </div>
-    <div id="user-profile-nav" style="font-weight:700;font-size:14px;color:var(--blue)">
-      </div>
+    <div id="user-profile-nav" style="font-weight:700;font-size:14px;color:var(--blue); cursor:pointer;" onclick="go('profil');setNav('profil')">
+      <!-- Diisi otomatis oleh JS -->
+    </div>
   </div>
 </nav>
 
+<!-- HALAMAN 1: HOME -->
 <div id="pg-home" class="page on">
   <div class="container">
-    <div class="hero">
+    <div class="hero animate-up">
       <h1>Setiap Pelajar Punya<br><span style="color:var(--blue)">Bakat Tersembunyi</span></h1>
       <p style="color:var(--ink2);margin-bottom:24px">Temukan arah masa depan, kompetisi, dan komunitas yang cocok buat kamu.</p>
-      <button class="btn-main btn-p" style="max-width:240px;margin:0 auto" onclick="go('quiz')">Mulai Tes Bakat <i class="ti ti-arrow-right"></i></button>
+      <button class="btn-main btn-p" style="max-width:240px;margin:0 auto" onclick="go('quiz');setNav('cari')">Mulai Tes Bakat <i class="ti ti-arrow-right"></i></button>
     </div>
     
-    <h3 style="margin:20px 0 10px">Kategori Kompetisi</h3>
-    <div class="cat-scroll" id="cat-list"></div>
+    <div class="animate-up delay-1">
+      <h3 style="margin:20px 0 10px">Kategori Kompetisi</h3>
+      <div class="cat-scroll" id="cat-list"></div>
+    </div>
     
-    <h3 style="margin:30px 0 16px">Rekomendasi Lomba Untukmu</h3>
-    <div id="ev-list"></div>
+    <div class="animate-up delay-2">
+      <h3 style="margin:30px 0 16px">Rekomendasi Lomba</h3>
+      <div id="ev-list"></div>
+    </div>
   </div>
 </div>
 
+<!-- HALAMAN 2: KUIS -->
 <div id="pg-quiz" class="page">
   <div class="container">
-    <div class="q-box">
+    <div class="q-box animate-up">
       <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:13px;font-weight:700;color:var(--ink3)">
-        <span id="qstep">1 / 6</span><span>MINAT & BAKAT</span>
+        <span id="qstep">1 / 4</span><span>MINAT & BAKAT</span>
       </div>
-      <div style="background:var(--surf4);height:6px;border-radius:3px;margin-bottom:20px;overflow:hidden">
-        <div id="qbar" style="background:var(--blue);height:100%;width:16%;transition:0.3s"></div>
+      <div style="background:var(--surf4);height:8px;border-radius:4px;margin-bottom:20px;overflow:hidden">
+        <div id="qbar" style="background:var(--blue);height:100%;width:25%;transition:width 0.4s ease"></div>
       </div>
-      <div id="q-chat"></div>
-      <div id="qopts" style="margin-top:20px"></div>
-      <div style="display:flex;justify-content:space-between;margin-top:20px">
-        <button class="btn-main" style="width:auto;background:var(--surf3);color:var(--ink2)" onclick="prevQ()">Kembali</button>
-        <button class="btn-main btn-p" style="width:auto;padding:14px 30px" onclick="nextQ()">Lanjut</button>
+      <div id="q-chat" class="animate-up delay-1"></div>
+      <div id="qopts" style="margin-top:20px" class="animate-up delay-2"></div>
+      
+      <div style="display:flex;justify-content:space-between;margin-top:24px" class="animate-up delay-3">
+        <button class="btn-main" style="width:auto;background:var(--surf3);color:var(--ink2);padding:12px 20px" onclick="prevQ()">Kembali</button>
+        <button class="btn-main btn-p" style="width:auto;padding:12px 30px" onclick="nextQ()">Lanjut <i class="ti ti-chevron-right"></i></button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- HALAMAN 3: HASIL KUIS -->
 <div id="pg-result" class="page">
   <div class="container" id="rwrap" style="padding-top:20px"></div>
 </div>
 
+<!-- HALAMAN 4: KOMUNITAS -->
 <div id="pg-komunitas" class="page">
-  <div class="container">
+  <div class="container animate-up">
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;margin:20px 0 8px">Komunitas Pelajar</h2>
     <p style="color:var(--ink2);margin-bottom:20px">Kumpul bareng anak-anak se-Indonesia yang punya minat sama kaya kamu.</p>
-    <div id="k-list"></div>
+    <div id="k-list" class="animate-up delay-1"></div>
   </div>
 </div>
 
+<!-- HALAMAN 5: PROFIL / LOGIN -->
 <div id="pg-profil" class="page">
   <div class="container">
-    <div id="auth-view" class="auth-box">
-      <h2 style="font-family:'Bricolage Grotesque',sans-serif;text-align:center;margin-bottom:8px">Selamat Datang</h2>
-      <p style="text-align:center;color:var(--ink3);font-size:14px;margin-bottom:24px">Masuk untuk menyimpan hasil kuis dan sertifikat lomba kamu.</p>
-      <button class="btn-main btn-google" onclick="googleLogin()">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="18" alt="Google">
-        Lanjutkan dengan Google
-      </button>
-      <div style="text-align:center;margin:16px 0;color:var(--ink4);font-size:12px;font-weight:700">ATAU EMAIL</div>
-      <input type="email" id="l-email" placeholder="Email kamu" style="width:100%;padding:12px;border:1px solid var(--surf4);border-radius:var(--rad-s);margin-bottom:12px;font-family:inherit">
-      <button class="btn-main btn-p" onclick="emailLogin()">Masuk Rumah</button>
+    
+    <!-- JIKA BELUM LOGIN -->
+    <div id="auth-view" class="auth-box animate-up">
+      <div id="auth-form-content">
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;text-align:center;margin-bottom:8px">Selamat Datang</h2>
+        <p style="text-align:center;color:var(--ink3);font-size:14px;margin-bottom:24px">Masuk untuk menyimpan hasil kuis dan portofolio lomba kamu.</p>
+        
+        <button class="btn-main btn-google" onclick="googleLogin()">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" width="18" alt="Google">
+          Lanjutkan dengan Google
+        </button>
+        
+        <div style="text-align:center;margin:20px 0;color:var(--ink4);font-size:12px;font-weight:700;display:flex;align-items:center;gap:10px">
+          <div style="height:1px;background:var(--surf4);flex:1"></div>
+          ATAU
+          <div style="height:1px;background:var(--surf4);flex:1"></div>
+        </div>
+        
+        <input type="email" id="l-email" placeholder="Masukkan Email..." style="width:100%;padding:14px;border:2px solid var(--surf3);border-radius:var(--rad-s);margin-bottom:12px;font-family:inherit;outline:none;transition:0.3s">
+        <button class="btn-main btn-p" onclick="emailLogin()">Masuk Manual</button>
+      </div>
+
+      <!-- Loading Animasi Login -->
+      <div id="login-loading">
+        <svg class="spinner" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-dasharray="80" stroke-dashoffset="60"></circle>
+        </svg>
+        <p style="margin-top:10px;font-weight:600;font-size:14px">Memverifikasi...</p>
+      </div>
     </div>
 
-    <div id="profile-view" class="auth-box" style="display:none;text-align:center">
-      <div style="width:80px;height:80px;background:var(--blue);color:white;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700" id="prof-avatar">A</div>
-      <h2 id="prof-name" style="font-family:'Bricolage Grotesque',sans-serif">Ahza</h2>
-      <p id="prof-email" style="color:var(--ink3);font-size:14px;margin-bottom:20px">ahza@gmail.com</p>
-      <div style="background:var(--surf2);padding:12px;border-radius:var(--rad-s);margin-bottom:24px;font-size:13px;font-weight:700;color:var(--green)">Akun Terverifikasi (Google)</div>
-      <button class="btn-main" style="background:#FEF0EC;color:var(--orange)" onclick="logoutUser()">Keluar Akun</button>
+    <!-- JIKA SUDAH LOGIN -->
+    <div id="profile-view" class="auth-box animate-up" style="display:none;text-align:center">
+      <div style="width:90px;height:90px;background:linear-gradient(135deg, var(--blue), var(--purple));color:white;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;box-shadow:0 10px 20px rgba(24, 71, 237, 0.3)" id="prof-avatar">A</div>
+      <h2 id="prof-name" style="font-family:'Bricolage Grotesque',sans-serif">Nama</h2>
+      <p id="prof-email" style="color:var(--ink3);font-size:14px;margin-bottom:20px">email</p>
+      <div style="background:#E5F7F2;padding:12px;border-radius:var(--rad-s);margin-bottom:24px;font-size:13px;font-weight:700;color:var(--green);border: 1px solid #9DE4CE">
+        <i class="ti ti-shield-check"></i> Akun Pelajar Terverifikasi
+      </div>
+      <button class="btn-main" style="background:#FEF0EC;color:var(--orange-d);border:1px solid #FBC9B8" onclick="logoutUser()">
+        <i class="ti ti-logout"></i> Keluar Akun
+      </button>
     </div>
+
   </div>
 </div>
 
+<!-- NAVBAR BAWAH -->
 <div class="bbar">
   <button class="bi on" id="nav-home" onclick="go('home');setNav('home')"><i class="ti ti-smart-home"></i><span>Home</span></button>
   <button class="bi" id="nav-cari" onclick="go('quiz');setNav('cari')"><i class="ti ti-search"></i><span>Tes Bakat</span></button>
@@ -175,94 +240,133 @@ nav{background:var(--surf);padding:16px 0;position:sticky;top:0;z-index:900;box-
   <button class="bi" id="nav-profil" onclick="go('profil');setNav('profil')"><i class="ti ti-user"></i><span>Profil</span></button>
 </div>
 
+<!-- JAVASCRIPT -->
 <script>
-// DATA UTAMA WEBSITE
 const CATS=[
-  {ic:'ti-code',name:'Teknologi & IT',ct:'38 lomba',bg:'#EEF2FD',bgi:'#C5D4FB',ci:'#1239C4',id:'tech'},
-  {ic:'ti-palette',name:'Seni & Desain',ct:'24 lomba',bg:'#FEF0EC',bgi:'#FBC9B8',ci:'#C43C14',id:'seni'},
-  {ic:'ti-microscope',name:'Sains & Riset',ct:'18 lomba',bg:'#E5F7F2',bgi:'#9DE4CE',ci:'#006B4C',id:'sains'},
-  {ic:'ti-pencil',name:'Menulis & Sastra',ct:'14 lomba',bg:'#F0EEFF',bgi:'#C4B5FD',ci:'#5B21B6',id:'tulis'},
-  {ic:'ti-music',name:'Musik & Pertunjukan',ct:'20 lomba',bg:'#FDF0F6',bgi:'#F5B8D8',ci:'#9D174D',id:'musik'},
-  {ic:'ti-ball-football',name:'Olahraga',ct:'31 lomba',bg:'#FEF9EC',bgi:'#FCD970',ci:'#92400E',id:'sport'},
+  {ic:'ti-code',name:'Teknologi & IT',bg:'#EEF2FD',bgi:'#C5D4FB',ci:'#1239C4'},
+  {ic:'ti-palette',name:'Seni & Desain',bg:'#FEF0EC',bgi:'#FBC9B8',ci:'#C43C14'},
+  {ic:'ti-microscope',name:'Sains & Riset',bg:'#E5F7F2',bgi:'#9DE4CE',ci:'#006B4C'},
+  {ic:'ti-pencil',name:'Menulis',bg:'#F0EEFF',bgi:'#C4B5FD',ci:'#5B21B6'}
 ];
 const EVS=[
-  {ic:'ti-cpu',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',tc:'ch-b',title:'National Olympiad Informatika 2025',loc:'Online · SMA/SMK',prize:'Total Rp 50jt',dl:'30 Jun 2025',badge:'Populer',bc:'ch-b'},
-  {ic:'ti-layout',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Seni & Desain',tc:'ch-o',title:'Lomba Desain Poster Kemerdekaan RI',loc:'Nasional · SMP–SMA',prize:'Piala + Sertifikat',dl:'1 Jul 2025',badge:'Baru',bc:'ch-o'},
-  {ic:'ti-flask',ibg:'#E5F7F2',ic2:'#006B4C',tag:'Sains',tc:'ch-g',title:'Karya Ilmiah Remaja Tingkat Provinsi',loc:'Offline · SMP–SMA',prize:'Beasiswa + Medali',dl:'15 Jul 2025',badge:'Deadline Dekat',bc:'ch-g'},
+  {ic:'ti-cpu',ibg:'#EEF2FD',ic2:'#1239C4',tag:'Teknologi',title:'Olimpiade Informatika 2025',loc:'Online · SMA/SMK',prize:'Rp 50jt',dl:'30 Jun 2025'},
+  {ic:'ti-layout',ibg:'#FEF0EC',ic2:'#C43C14',tag:'Desain',title:'Lomba Poster Kemerdekaan',loc:'Nasional · SMP–SMA',prize:'Piala + Sertifikat',dl:'1 Jul 2025'},
+];
+const KOMS=[
+  {ic:'ti-code',bg:'#EEF2FD',bgi:'#1239C4',name:'CodeKid Indonesia',desc:'Mentoring gratis dari programmer profesional.',mem:'3.240 anggota'},
+  {ic:'ti-palette',bg:'#FEF0EC',bgi:'#C43C14',name:'Desainer Muda ID',desc:'Feedback portofolio dan challenge desain.',mem:'1.890 anggota'},
 ];
 const QS=[
-  {q:'Waktu luang kamu biasanya dihabiskan untuk apa?',h:'Pilih yang paling sering kamu lakukan',opts:[{ic:'ti-device-gamepad',t:'Main game atau coding'},{ic:'ti-brush',t:'Menggambar atau berkreasi'},{ic:'ti-book-2',t:'Membaca atau menulis'},{ic:'ti-run',t:'Olahraga atau aktivitas fisik'}]},
-  {q:'Dalam proyek kelompok, kamu paling suka jadi…',h:'Pilih peran yang paling bikin kamu nyaman',opts:[{ic:'ti-bulb',t:'Pemikir dan perencana strategi'},{ic:'ti-microphone',t:'Presenter dan komunikator'},{ic:'ti-tools',t:'Eksekutor yang kerja nyata'},{ic:'ti-vector-triangle',t:'Desainer dan kreatif visual'}]},
-  {q:'Mata pelajaran mana yang paling kamu nikmati?',h:'Bukan yang paling mudah — yang paling kamu suka',opts:[{ic:'ti-calculator',t:'Matematika dan Komputer'},{ic:'ti-atom',t:'IPA dan Eksperimen'},{ic:'ti-abc',t:'Bahasa Indonesia dan Sastra'},{ic:'ti-artboard',t:'Seni Budaya dan Kesenian'}]},
-  {q:'Kamu paling termotivasi saat…',h:'Situasi yang paling bikin kamu semangat',opts:[{ic:'ti-trophy',t:'Menang kompetisi dan bersaing'},{ic:'ti-heart-handshake',t:'Bisa membantu orang lain'},{ic:'ti-puzzle',t:'Menemukan ide atau solusi baru'},{ic:'ti-star',t:'Tampil dan diakui banyak orang'}]},
+  {q:'Waktu luang kamu untuk apa?',h:'Pilih yang paling sering',opts:[{ic:'ti-device-gamepad',t:'Main game atau coding'},{ic:'ti-brush',t:'Menggambar/berkreasi'},{ic:'ti-book-2',t:'Membaca/menulis'},{ic:'ti-run',t:'Olahraga'}]},
+  {q:'Dalam kelompok, kamu paling suka jadi…',h:'Peran yang bikin nyaman',opts:[{ic:'ti-bulb',t:'Pemikir & Strategi'},{ic:'ti-microphone',t:'Presenter/Komunikator'},{ic:'ti-tools',t:'Eksekutor Praktis'},{ic:'ti-vector-triangle',t:'Desainer Visual'}]},
+  {q:'Pelajaran mana yang paling dinikmati?',h:'Bukan yang termudah, tapi disuka',opts:[{ic:'ti-calculator',t:'Matematika / Komputer'},{ic:'ti-atom',t:'IPA / Eksperimen'},{ic:'ti-abc',t:'Bahasa / Sastra'},{ic:'ti-artboard',t:'Seni Budaya'}]},
+  {q:'Kamu paling termotivasi saat…',h:'Situasi yang bikin semangat',opts:[{ic:'ti-trophy',t:'Bersaing dan Menang'},{ic:'ti-heart-handshake',t:'Membantu orang lain'},{ic:'ti-puzzle',t:'Menemukan ide baru'},{ic:'ti-star',t:'Diakui banyak orang'}]},
 ];
-const RES={
-  tech:{ic:'ti-code-circle',icbg:'#1847ED',title:'Tech Visionary',desc:'Logika tajam dan rasa ingin tahu tinggi soal teknologi. Kamu cocok di dunia coding, AI, atau membangun produk digital.',skills:['Pemrograman','Problem Solving','Logika'],bg:'#0C1A3A',tc:'#fff',coms:['ti-code'],comN:['CodeKid Indonesia'],comM:['3.240 anggota'],evs:['National Olympiad Informatika 2025']},
-  seni:{ic:'ti-palette',icbg:'#F04E23',title:'Creative Soul',desc:'Kamu melihat dunia berbeda. Ekspresi visual adalah bahasamu yang paling kuat — desain, ilustrasi, dan multimedia adalah areamu.',skills:['Visual Thinking','Kreativitas','Desain'],bg:'#2A1206',tc:'#fff',coms:['ti-palette'],comN:['Desainer Muda ID'],comM:['1.890 anggota'],evs:['Lomba Desain Poster Kemerdekaan']},
-};
-const KOMS=[
-  {ic:'ti-code',bg:'#EEF2FD',bgi:'#1239C4',name:'CodeKid Indonesia',desc:'Komunitas coding untuk pelajar. Mentoring gratis dari engineer profesional.',mem:'3.240 anggota',tags:['Coding','Web Dev']},
-  {ic:'ti-palette',bg:'#FEF0EC',bgi:'#C43C14',name:'Desainer Muda ID',desc:'Forum desainer pelajar. Feedback portofolio dan challenge mingguan.',mem:'1.890 anggota',tags:['UI/UX','Ilustrasi']},
-];
+const RES={ title:'Tech Visionary',desc:'Logika tajam dan rasa ingin tahu tinggi. Kamu cocok di dunia coding, AI, atau membangun produk digital.',bg:'#0A0F1E',tc:'#fff',ic:'ti-code-circle' };
 
-let qi=0,ans=[],dark=false;
+let qi=0, ans=[];
 
-// LOGIKA SPLASH SCREEN (MENGHILANG OTOMATIS)
+// Splash Screen Logic
 window.addEventListener("load", () => {
   setTimeout(() => {
     const s = document.getElementById('splash');
-    if(s) {
-      s.style.opacity = '0';
-      setTimeout(() => s.style.display = 'none', 500);
-    }
-  }, 1500);
+    if(s) { s.style.opacity = '0'; setTimeout(() => s.style.display = 'none', 500); }
+  }, 1200);
   checkUserSession();
 });
 
-// NAVIGASI HALAMAN
+// Navigation
 function go(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  const pg=document.getElementById('pg-'+id);
-  if(pg){pg.classList.add('on');window.scrollTo(0,0)}
-  if(id==='quiz'){qi=0;ans=[];renderQ()}
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  const pg = document.getElementById('pg-'+id);
+  if(pg){ pg.classList.add('on'); window.scrollTo({top:0, behavior:'smooth'}); }
+  if(id==='quiz'){ qi=0; ans=[]; renderQ(); }
 }
 
 function setNav(k){
-  document.querySelectorAll('.bi').forEach(b=>b.classList.remove('on'));
-  const el=document.getElementById('nav-'+k);
-  if(el)el.classList.add('on');
+  document.querySelectorAll('.bi').forEach(b => b.classList.remove('on'));
+  const el = document.getElementById('nav-'+k);
+  if(el) el.classList.add('on');
 }
 
-// LOGIKA GOOGLE LOGIN (SIMULASI FRONTEND KEREN)
-function googleLogin() {
-  toast('Menghubungkan ke Google...','ti-brand-google');
+// Render Data
+function renderCats(){
+  document.getElementById('cat-list').innerHTML=CATS.map(c=>`<div class="ccat" onclick="toast('Kategori: ${c.name}')" style="background:${c.bg}"><div style="background:${c.bgi+'33'};width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto"><i class="ti ${c.ic}" style="color:${c.ci};font-size:20px"></i></div><div style="font-size:12px;font-weight:700;margin-top:10px;color:${c.ci}">${c.name}</div></div>`).join('');
+}
+function renderEvs(){
+  document.getElementById('ev-list').innerHTML=EVS.map(e=>`<div class="ecard"><div class="ecard-top" style="background:${e.ibg}"><i class="ti ${e.ic}" style="color:${e.ic2};font-size:24px"></i><span style="font-size:12px;font-weight:700;color:${e.ic2};background:white;padding:4px 8px;border-radius:20px">${e.tag}</span></div><div class="ecard-body"><div class="ecard-title">${e.title}</div><p style="font-size:13px;color:var(--ink3)"><i class="ti ti-map-pin"></i> ${e.loc} <br> <i class="ti ti-gift" style="margin-top:6px"></i> <b>${e.prize}</b></p></div></div>`).join('');
+}
+function renderKoms(){
+  document.getElementById('k-list').innerHTML=KOMS.map(k=>`<div class="ecard" style="padding:20px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><i class="ti ${k.ic}" style="font-size:28px;color:${k.bgi}"></i><h4 style="font-size:18px">${k.name}</h4></div><p style="font-size:14px;color:var(--ink2);margin-bottom:12px">${k.desc}</p><button class="btn-main btn-p" style="padding:8px;font-size:13px" onclick="toast('Berhasil gabung grup!')">Gabung Grup</button></div>`).join('');
+}
+
+// Quiz Logic
+function renderQ(){
+  const q=QS[qi];
+  document.getElementById('qbar').style.width=`${((qi+1)/QS.length)*100}%`;
+  document.getElementById('qstep').textContent=`${qi+1} / ${QS.length}`;
+  
+  const qChat = document.getElementById('q-chat');
+  qChat.innerHTML=`<div class="q-bubble"><div style="font-weight:700;font-size:18px">${q.q}</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">${q.h}</div></div>`;
+  
+  // Re-trigger animation
+  qChat.classList.remove('animate-up');
+  void qChat.offsetWidth; 
+  qChat.classList.add('animate-up');
+
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this)"><i class="ti ${o.ic}" style="font-size:20px"></i> <span>${o.t}</span></div>`).join('');
+}
+function selOpt(i,el){
+  document.querySelectorAll('.qopt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on'); ans[qi]=i;
+}
+function nextQ(){
+  if(ans[qi]===undefined) return toast('Pilih jawaban dulu bos!', 'ti-alert-circle');
+  if(qi<QS.length-1){ qi++; renderQ(); } else { showResult(); }
+}
+function prevQ(){ if(qi>0){ qi--; renderQ(); } }
+function showResult(){
+  const r = RES;
+  document.getElementById('rwrap').innerHTML=`<div class="animate-up" style="background:${r.bg};color:${r.tc};padding:40px 20px;border-radius:var(--rad);text-align:center;box-shadow:0 15px 30px rgba(0,0,0,0.1)"><div style="font-size:48px;color:var(--orange);margin-bottom:10px;animation:pulseGlow 2s infinite"><i class="ti ${r.ic}"></i></div><h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:28px">Kamu Seorang<br><span style="color:var(--blue)">${r.title}</span>!</h2><p style="margin-top:16px;color:var(--ink4);line-height:1.6">${r.desc}</p></div><div class="animate-up delay-1"><h3 style="margin:24px 0 16px">Rekomendasi Langkah:</h3><button class="btn-main btn-p" onclick="go('komunitas');setNav('komunitas')"><i class="ti ti-users"></i> Lihat Komunitas Terkait</button></div>`;
+  go('result'); launchConfetti();
+}
+
+// Authentication Logic (Simulation)
+function simulateNetwork(callback) {
+  document.getElementById('auth-form-content').style.display = 'none';
+  document.getElementById('login-loading').style.display = 'block';
   setTimeout(() => {
-    localStorage.setItem('user_name', 'Ahza CoCo');
-    localStorage.setItem('user_email', 'ahza.epic@gmail.com');
+    document.getElementById('login-loading').style.display = 'none';
+    document.getElementById('auth-form-content').style.display = 'block';
+    callback();
+  }, 1500);
+}
+
+function googleLogin() {
+  simulateNetwork(() => {
+    localStorage.setItem('user_name', 'Ahza (Google)');
+    localStorage.setItem('user_email', 'ahza@gmail.com');
     checkUserSession();
-    toast('Berhasil masuk akun Google!','ti-lock-open');
-    go('home');
-    setNav('home');
-  }, 1200);
+    toast('Berhasil masuk via Google!','ti-lock-open');
+  });
 }
 
 function emailLogin() {
   const email = document.getElementById('l-email').value;
   if(!email) return toast('Isi email dulu bos!', 'ti-alert-circle');
-  localStorage.setItem('user_name', 'User Pelajar');
-  localStorage.setItem('user_email', email);
-  checkUserSession();
-  toast('Berhasil Masuk!','ti-check');
-  go('home');
-  setNav('home');
+  simulateNetwork(() => {
+    localStorage.setItem('user_name', 'Siswa Kreatif');
+    localStorage.setItem('user_email', email);
+    checkUserSession();
+    toast('Berhasil Masuk!','ti-check');
+  });
 }
 
 function logoutUser() {
   localStorage.clear();
   checkUserSession();
   toast('Berhasil keluar akun','ti-logout');
-  go('home');
-  setNav('home');
+  document.getElementById('l-email').value = '';
 }
 
 function checkUserSession() {
@@ -271,81 +375,67 @@ function checkUserSession() {
   const pNav = document.getElementById('user-profile-nav');
   
   if(name) {
-    pNav.innerHTML = `<i class="ti ti-user-check"></i> ${name}`;
+    pNav.innerHTML = `<div style="display:flex;align-items:center;gap:6px;background:var(--surf2);padding:6px 12px;border-radius:20px"><i class="ti ti-user-check"></i> <span>${name.split(' ')[0]}</span></div>`;
     document.getElementById('auth-view').style.display = 'none';
     document.getElementById('profile-view').style.display = 'block';
     document.getElementById('prof-name').textContent = name;
     document.getElementById('prof-email').textContent = email;
     document.getElementById('prof-avatar').textContent = name.charAt(0);
   } else {
-    pNav.innerHTML = '';
+    pNav.innerHTML = `<i class="ti ti-user-circle" style="font-size:24px;color:var(--ink3)"></i>`;
     document.getElementById('auth-view').style.display = 'block';
     document.getElementById('profile-view').style.display = 'none';
   }
 }
 
-// TOAST NOTIFICATION
+// Utilities
 function toast(msg, icon='ti-check'){
   document.getElementById('toast-msg').textContent=msg;
   const t=document.getElementById('toast');
   t.querySelector('i').className=`ti ${icon}`;
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// RENDER DATA KE HTML
-function renderCats(){
-  document.getElementById('cat-list').innerHTML=CATS.map(c=>`<div class="ccat" onclick="toast('Filter: ${c.name}')" style="background:${c.bg}"><div class="ccat-ic" style="background:${c.bgi+'33'}"><i class="ti ${c.ic}" style="color:${c.ci}"></i></div><div class="ccat-name" style="font-size:12px;font-weight:700;margin-top:8px">${c.name}</div></div>`).join('');
-}
-
-function renderEvs(){
-  document.getElementById('ev-list').innerHTML=EVS.map(e=>`<div class="ecard"><div class="ecard-top" style="background:${e.ibg}"><i class="ti ${e.ic}" style="color:${e.ic2};font-size:24px"></i><span style="font-size:12px;font-weight:700;color:${e.ic2}">${e.tag}</span></div><div class="ecard-body"><div class="ecard-title">${e.title}</div><p style="font-size:13px;color:var(--ink3)">${e.loc} · <b>${e.prize}</b></p></div></div>`).join('');
-}
-
-function renderKoms(){
-  document.getElementById('k-list').innerHTML=KOMS.map(k=>`<div class="ecard" style="padding:20px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><i class="ti ${k.ic}" style="font-size:28px;color:${k.bgi}"></i><h4 style="font-size:18px">${k.name}</h4></div><p style="font-size:14px;color:var(--ink2);margin-bottom:12px">${k.desc}</p><button class="btn-main btn-p" style="padding:8px;font-size:13px" onclick="toast('Berhasil gabung grup!')">Gabung Grup</button></div>`).join('');
-}
-
-// LOGIKA KUIS MINAT
-function renderQ(){
-  const q=QS[qi];
-  document.getElementById('qbar').style.width=`${((qi+1)/QS.length)*100}%`;
-  document.getElementById('qstep').textContent=`${qi+1} / ${QS.length}`;
-  document.getElementById('q-chat').innerHTML=`<div class="q-bubble"><div class="q-text" style="font-weight:700;font-size:18px">${q.q}</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">${q.h}</div></div>`;
-  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`<div class="qopt${ans[qi]===i?' on':''}" onclick="selOpt(${i},this)"><i class="ti ${o.ic}"></i> <span>${o.t}</span></div>`).join('');
-}
-
-function selOpt(i,el){
-  document.querySelectorAll('.qopt').forEach(o=>o.classList.remove('on'));
-  el.classList.add('on');
-  ans[qi]=i;
-}
-
-function nextQ(){
-  if(ans[qi]===undefined) return toast('Pilih salah satu jawaban dulu!', 'ti-alert-circle');
-  if(qi<QS.length-1){qi++;renderQ()}else{showResult();}
-}
-
-function prevQ(){if(qi>0){qi--;renderQ()}}
-
-function showResult(){
-  const r = RES['tech']; // Default simulasi hasil ke Tech Visionary
-  document.getElementById('rwrap').innerHTML=`<div style="background:${r.bg};color:${r.tc};padding:30px;border-radius:var(--rad);text-align:center"><div style="font-size:40px;color:var(--orange)"><i class="ti ${r.ic}"></i></div><h2>Kamu Seorang ${r.title}!</h2><p style="margin-top:10px;opacity:0.8">${r.desc}</p></div><h3 style="margin-top:20px">Rekomendasi Langkah:</h3><button class="btn-main btn-p" style="margin-top:12px" onclick="go('komunitas');setNav('komunitas')">Lihat Komunitas Terkait</button>`;
-  go('result');
-  launchConfetti();
-}
-
-// EFFECT PETASAN / CONFETTI SELESAI KUIS
 function launchConfetti(){
   const cv=document.getElementById('confetti');
   cv.style.display='block';
   const ctx=cv.getContext('2d');
-  cv.width=window.innerWidth;cv.height=window.innerHeight;
-  setTimeout(()=> { cv.style.display='none'; }, 4000);
+  cv.width=window.innerWidth; cv.height=window.innerHeight;
+  // Simple particle system simulation
+  let particles = [];
+  for(let i=0; i<50; i++){
+    particles.push({
+      x: cv.width/2, y: cv.height,
+      vx: (Math.random()-0.5)*10, vy: (Math.random()-1)*15 - 5,
+      size: Math.random()*5+5, color: ['#1847ED','#F04E23','#00966A','#D97706'][Math.floor(Math.random()*4)]
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    let active = false;
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.5; // gravity
+      if(p.y < cv.height) active = true;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    });
+    if(active) requestAnimationFrame(draw);
+    else cv.style.display='none';
+  }
+  draw();
 }
 
-// Jalankan fungsi pas web dibuka
-renderCats();renderEvs();renderKoms();
+// Init
+renderCats(); renderEvs(); renderKoms();
+
+// Interaktif Input Style
+document.getElementById('l-email').addEventListener('focus', function() {
+  this.style.borderColor = 'var(--blue)';
+});
+document.getElementById('l-email').addEventListener('blur', function() {
+  this.style.borderColor = 'var(--surf3)';
+});
 </script>
 </body>
 </html>
