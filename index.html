@@ -465,18 +465,18 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 /* ========================================================
    BOTTOM NAV
    ======================================================== */
-.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:10px 0 18px;position:fixed;bottom:0;left:0;right:0;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.05);transition:background var(--dur) var(--ease)}
-.bi{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 12px;border-radius:var(--r-sm);transition:all var(--dur) var(--ease);position:relative;min-width:52px;color:var(--ink3)}
+.bnav{background:var(--surf);border-top:1px solid var(--surf3);display:flex;justify-content:space-around;padding:6px 0 12px;position:fixed;bottom:0;left:0;right:0;z-index:150;box-shadow:0 -4px 20px rgba(0,0,0,.05);transition:background var(--dur) var(--ease)}
+.bi{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 8px;border-radius:var(--r-sm);transition:all var(--dur) var(--ease);position:relative;min-width:44px;color:var(--ink3)}
 .bi:hover{background:var(--surf3)}
 .bi.on{color:var(--blue)}
-.bi-ic{font-size:22px}
-.bi-lbl{font-size:10px;font-weight:700;letter-spacing:.2px}
-.bi-badge{position:absolute;top:2px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid var(--surf)}
+.bi-ic{font-size:18px}
+.bi-lbl{font-size:9px;font-weight:700;letter-spacing:.2px}
+.bi-badge{position:absolute;top:2px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--orange);border:2px solid var(--surf)}
 
 /* ========================================================
    TOAST
    ======================================================== */
-.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--surf);padding:11px 20px;border-radius:50px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap;opacity:0;transition:all .25s var(--ease);z-index:999;pointer-events:none;box-shadow:var(--shadow-lg)}
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--surf);padding:11px 20px;border-radius:50px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap;opacity:0;transition:all .25s var(--ease);z-index:999;pointer-events:none;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast i{font-size:15px}
 
@@ -680,15 +680,18 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
    ======================================================== */
 
 /* ── Galaxy Page wrapper ── */
-.galaxy-page{max-width:760px;margin:0 auto;padding:0 0 100px}
+.galaxy-page{max-width:100%;margin:0;padding:0}
 
-/* ── Cinematic full-bleed space header ── */
+/* ── Cinematic full-bleed space header — overlaid on canvas ── */
 .galaxy-space-header{
-  position:relative;width:100%;
-  background:#030509;
+  position:absolute;
+  top:0;left:0;right:0;
+  z-index:10;
+  background:linear-gradient(180deg,rgba(3,5,9,.85) 0%,transparent 100%);
   overflow:hidden;
-  padding:32px 20px 0;
+  padding:20px 20px 0;
   text-align:center;
+  pointer-events:none;
 }
 .galaxy-space-header::before{
   content:'';position:absolute;inset:0;
@@ -697,7 +700,7 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
              radial-gradient(ellipse 40% 30% at 80% 60%,rgba(240,78,35,.12) 0%,transparent 60%);
 }
 .galaxy-badge{
-  position:relative;z-index:2;
+  position:relative;z-index:2;pointer-events:all;
   display:inline-flex;align-items:center;gap:8px;
   background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.15);
@@ -722,15 +725,16 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 /* legacy compat */
 .galaxy-header{display:none}
 
-/* ── Canvas wrap — full bleed deep space ── */
+/* ── Canvas wrap — FULL PAGE galaxy ── */
 .galaxy-canvas-wrap{
   position:relative;
   width:100%;
-  aspect-ratio:1/1;
-  max-width:560px;
+  height:calc(100vh - 64px);
+  min-height:500px;
   margin:0 auto;
   user-select:none;
   background:#030509;
+  overflow:hidden;
 }
 #galaxy-canvas{width:100%;height:100%;cursor:grab;display:block}
 #galaxy-canvas:active{cursor:grabbing}
@@ -893,9 +897,11 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 .galaxy-insight-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
 
 /* galaxy section wrapper forces dark bg */
+#pg-galaxy{background:#0A0F1E}
 #pg-galaxy .galaxy-below{
   background:#0A0F1E;
   padding-top:24px;
+  padding-bottom:100px;
 }
 #pg-galaxy .pvi-section{
   background:rgba(255,255,255,.03)!important;
@@ -914,11 +920,14 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 
 /* Mini galaxy hint text */
 .galaxy-hint{
+  position:absolute;
+  bottom:16px;left:0;right:0;
   text-align:center;
   font-size:12px;
   color:rgba(255,255,255,.3);
-  padding:8px 0 16px;
   display:flex;align-items:center;justify-content:center;gap:6px;
+  pointer-events:none;
+  z-index:10;
 }
 .galaxy-hint i{font-size:14px}
 
@@ -1487,18 +1496,17 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 <!-- ===================== PAGE: TALENT GALAXY ===================== -->
 <div id="pg-galaxy" class="page" style="background:#0A0F1E;min-height:100vh">
   <div class="galaxy-page">
-    <!-- Space header -->
-    <div class="galaxy-space-header">
-      <div class="galaxy-badge"><i class="ti ti-planet"></i>Talent Galaxy · Cermin Dirimu</div>
-      <h2>Semestamu, Dirimu</h2>
-      <p>Setiap planet adalah sisi dirimu. Klik planet untuk membaca insight mendalam — bakat, kepribadian, karir, dan potensi tersembunyimu.</p>
-    </div>
-
-    <!-- Full-bleed canvas -->
+    <!-- Full-bleed canvas with overlaid header -->
     <div class="galaxy-canvas-wrap">
+      <!-- Space header overlaid on canvas -->
+      <div class="galaxy-space-header">
+        <div class="galaxy-badge"><i class="ti ti-planet"></i>Talent Galaxy · Cermin Dirimu</div>
+        <h2>Semestamu, Dirimu</h2>
+        <p>Setiap planet adalah sisi dirimu. Klik planet untuk membaca insight mendalam — bakat, kepribadian, karir, dan potensi tersembunyimu.</p>
+      </div>
       <canvas id="galaxy-canvas"></canvas>
+      <div class="galaxy-hint"><i class="ti ti-hand-click"></i>Tap planet untuk baca insight dirimu · Seret untuk putar</div>
     </div>
-    <div class="galaxy-hint"><i class="ti ti-hand-click"></i>Tap planet untuk baca insight dirimu · Seret untuk putar</div>
 
     <!-- Below canvas — dark context -->
     <div class="galaxy-below">
@@ -4022,26 +4030,29 @@ function initGalaxyCanvas(scores){
   const canvas = document.getElementById('galaxy-canvas');
   if(!canvas) return;
   const wrap = canvas.parentElement;
-  const size = wrap.clientWidth || 400;
-  canvas.width = size * window.devicePixelRatio;
-  canvas.height = size * window.devicePixelRatio;
-  canvas.style.width = size+'px';
-  canvas.style.height = size+'px';
+  const W = wrap.clientWidth || window.innerWidth;
+  const H = wrap.clientHeight || (window.innerHeight - 64);
+  const size = Math.max(W, H);
+  canvas.width = W * window.devicePixelRatio;
+  canvas.height = H * window.devicePixelRatio;
+  canvas.style.width = W+'px';
+  canvas.style.height = H+'px';
   const ctx = canvas.getContext('2d');
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-  const cx = size/2, cy = size/2;
+  const cx = W/2, cy = H/2;
   const maxScore = Math.max(...Object.values(scores));
   const keys = Object.keys(scores);
   const total = keys.length;
 
-  // Compute planet sizes and orbits
+  // Compute planet sizes and orbits — use min of W/H to keep orbits in view
+  const refSize = Math.min(W, H);
   planets = keys.map((k, i) => {
     const sc = scores[k] || 0;
     const norm = maxScore > 0 ? sc / maxScore : 0;
-    const baseR = 14 + norm * 28;
-    const minOrbit = size * 0.14;
-    const maxOrbit = size * 0.42;
+    const baseR = 18 + norm * 40;
+    const minOrbit = refSize * 0.14;
+    const maxOrbit = refSize * 0.45;
     const orbitR = minOrbit + i * ((maxOrbit - minOrbit) / (total - 1 || 1));
     const cfg = PLANET_CONFIG[k];
     const angleOffset = (i / total) * Math.PI * 2;
@@ -4063,10 +4074,10 @@ function initGalaxyCanvas(scores){
   const c2 = document.getElementById('galaxy-canvas');
   if(!c2) return;
   // re-scale after clone
-  c2.width = size * window.devicePixelRatio;
-  c2.height = size * window.devicePixelRatio;
-  c2.style.width = size+'px';
-  c2.style.height = size+'px';
+  c2.width = W * window.devicePixelRatio;
+  c2.height = H * window.devicePixelRatio;
+  c2.style.width = W+'px';
+  c2.style.height = H+'px';
   const ctx2 = c2.getContext('2d');
   ctx2.scale(window.devicePixelRatio, window.devicePixelRatio);
 
@@ -4082,9 +4093,9 @@ function initGalaxyCanvas(scores){
 
   // Nebula colors (generated once)
   const nebulaPoints = Array.from({length:5}, (_,i) => ({
-    x: cx + (Math.sin(i*2.1)*0.35 + (Math.random()-.5)*.3) * size,
-    y: cy + (Math.cos(i*1.7)*0.35 + (Math.random()-.5)*.3) * size,
-    r: size * (0.12 + Math.random() * 0.18),
+    x: cx + (Math.sin(i*2.1)*0.35 + (Math.random()-.5)*.3) * W,
+    y: cy + (Math.cos(i*1.7)*0.35 + (Math.random()-.5)*.3) * H,
+    r: refSize * (0.12 + Math.random() * 0.18),
     color: ['#1847ED','#6D28D9','#9D174D','#F04E23','#00966A'][i % 5],
     alpha: 0.03 + Math.random() * 0.04,
   }));
@@ -4092,10 +4103,10 @@ function initGalaxyCanvas(scores){
   // Shooting stars
   let shootingStars = [];
   function spawnShootingStar(){
-    const edge = Math.random() < 0.5 ? 0 : size;
+    const edge = Math.random() < 0.5 ? 0 : H;
     shootingStars.push({
-      x: Math.random() * size,
-      y: edge === 0 ? -10 : size + 10,
+      x: Math.random() * W,
+      y: edge === 0 ? -10 : H + 10,
       vx: (Math.random() - 0.5) * 4,
       vy: edge === 0 ? 2 + Math.random() * 3 : -(2 + Math.random() * 3),
       len: 40 + Math.random() * 60,
@@ -4110,18 +4121,18 @@ function initGalaxyCanvas(scores){
   let shootTimer = 0;
 
   function draw(){
-    ctx2.clearRect(0,0,size,size);
+    ctx2.clearRect(0,0,W,H);
 
     // ── Background: true deep space ──
     ctx2.fillStyle = '#030509';
-    ctx2.fillRect(0,0,size,size);
+    ctx2.fillRect(0,0,W,H);
 
     // radial center glow
-    const bgGlow = ctx2.createRadialGradient(cx,cy,0,cx,cy,size*.55);
+    const bgGlow = ctx2.createRadialGradient(cx,cy,0,cx,cy,refSize*.55);
     bgGlow.addColorStop(0,'rgba(20,30,80,.6)');
     bgGlow.addColorStop(1,'transparent');
     ctx2.fillStyle = bgGlow;
-    ctx2.fillRect(0,0,size,size);
+    ctx2.fillRect(0,0,W,H);
 
     // ── Nebulae ──
     nebulaPoints.forEach(n => {
@@ -4135,7 +4146,7 @@ function initGalaxyCanvas(scores){
     });
 
     // ── Stars (3 layers: tiny/medium/bright) ──
-    drawCinematicStars(ctx2, size, t);
+    drawCinematicStars(ctx2, W, H, t);
 
     // ── Shooting stars ──
     shootTimer++;
@@ -4158,8 +4169,8 @@ function initGalaxyCanvas(scores){
 
     // ── Cosmic dust particles ──
     for(let d=0; d<20; d++){
-      const dx = (Math.sin(d*432.1+t*.002)*0.5+0.5)*size;
-      const dy = (Math.cos(d*876.3+t*.003)*0.5+0.5)*size;
+      const dx = (Math.sin(d*432.1+t*.002)*0.5+0.5)*W;
+      const dy = (Math.cos(d*876.3+t*.003)*0.5+0.5)*H;
       const dalpha = 0.03 + Math.sin(t*.02+d)*0.02;
       ctx2.beginPath();
       ctx2.arc(dx,dy,0.8,0,Math.PI*2);
@@ -4169,7 +4180,7 @@ function initGalaxyCanvas(scores){
 
     // ── Center star (dominant bakat) ──
     const dominant = planets.find(p=>p.isDominant) || planets[0];
-    drawCinematicCenterStar(ctx2, cx, cy, dominant, t, size);
+    drawCinematicCenterStar(ctx2, cx, cy, dominant, t, refSize);
 
     // ── Orbit rings ──
     planets.forEach(p => {
@@ -4311,20 +4322,20 @@ function initGalaxyCanvas(scores){
   renderPVI(scores);
 }
 
-function drawCinematicStars(ctx, size, t){
+function drawCinematicStars(ctx, W, H, t){
   ctx.save();
   // Tiny stars
   for(let i=0;i<120;i++){
-    const sx=(Math.sin(i*2345.6)*0.5+0.5)*size;
-    const sy=(Math.cos(i*8765.4)*0.5+0.5)*size;
+    const sx=(Math.sin(i*2345.6)*0.5+0.5)*W;
+    const sy=(Math.cos(i*8765.4)*0.5+0.5)*H;
     const alpha=0.15+Math.sin(t*0.02+i)*0.1;
     ctx.beginPath();ctx.arc(sx,sy,0.6,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
   }
   // Medium stars with twinkle
   for(let i=0;i<40;i++){
-    const sx=(Math.sin(i*9876.5)*0.5+0.5)*size;
-    const sy=(Math.cos(i*5432.1)*0.5+0.5)*size;
+    const sx=(Math.sin(i*9876.5)*0.5+0.5)*W;
+    const sy=(Math.cos(i*5432.1)*0.5+0.5)*H;
     const sr=0.8+Math.sin(t*0.05+i)*0.5;
     const alpha=0.3+Math.sin(t*0.04+i*0.7)*0.2;
     ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
@@ -4332,8 +4343,8 @@ function drawCinematicStars(ctx, size, t){
   }
   // Bright accent stars
   for(let i=0;i<8;i++){
-    const sx=(Math.sin(i*6543.2)*0.5+0.5)*size;
-    const sy=(Math.cos(i*3210.9)*0.5+0.5)*size;
+    const sx=(Math.sin(i*6543.2)*0.5+0.5)*W;
+    const sy=(Math.cos(i*3210.9)*0.5+0.5)*H;
     const sr=1.2+Math.sin(t*0.03+i)*0.4;
     const alpha=0.6+Math.sin(t*0.06+i)*0.3;
     ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
@@ -4501,52 +4512,108 @@ function openPlanetPanel(key, score, isDominant){
   document.querySelector('.pp-quote').style.borderLeftColor = cfg.color;
 
   document.getElementById('pp-name').textContent = cfg.label;
-  document.getElementById('pp-key').textContent = isDominant ? '🌟 Planet Dominan — Bakat Terkuatmu' : `Skor ${score}% · Planet Bakатmu`;
-  document.getElementById('pp-score-num').textContent = score + '%';
   document.getElementById('pp-score-num').style.color = cfg.color;
 
-  // char tags
-  document.getElementById('pp-char-tags').innerHTML = insight.char.map(c =>
-    `<span class="pp-ctag">${c}</span>`).join('');
+  if(isDominant){
+    // ★ DOMINANT planet — full personal description
+    document.getElementById('pp-key').textContent = '🌟 Planet Dominan — Ini Kamu Banget!';
+    document.getElementById('pp-score-num').textContent = score + '%';
 
-  // desc
-  document.getElementById('pp-desc').textContent = insight.desc;
+    // char tags
+    document.getElementById('pp-char-tags').innerHTML = insight.char.map(c =>
+      `<span class="pp-ctag">${c}</span>`).join('');
 
-  // stats
-  document.getElementById('pp-stat-grid').innerHTML = insight.stats.map(s =>
-    `<div class="pp-stat-card">
-      <div class="pp-stat-val" style="color:${s.color}">${s.val}%</div>
-      <div class="pp-stat-name">${s.name}</div>
-      <div class="pp-stat-bar"><div class="pp-stat-fill" data-target="${s.val}" style="background:${s.color};width:0"></div></div>
-    </div>`).join('');
+    // desc — personalized
+    document.getElementById('pp-desc').textContent = insight.desc;
 
-  // traits
-  document.getElementById('pp-traits').innerHTML = insight.traits.map(tr =>
-    `<div class="pp-trait"><div class="pp-trait-dot" style="background:${tr.color}"></div>${tr.text}</div>`).join('');
+    // stats
+    document.getElementById('pp-stat-grid').innerHTML = insight.stats.map(s =>
+      `<div class="pp-stat-card">
+        <div class="pp-stat-val" style="color:${s.color}">${s.val}%</div>
+        <div class="pp-stat-name">${s.name}</div>
+        <div class="pp-stat-bar"><div class="pp-stat-fill" data-target="${s.val}" style="background:${s.color};width:0"></div></div>
+      </div>`).join('');
 
-  // strengths
-  document.getElementById('pp-insights').innerHTML = insight.strengths.map(s =>
-    `<div class="pp-insight-row">
-      <div class="pp-insight-ic"><i class="ti ${s.ic}"></i></div>
-      <div class="pp-insight-text"><strong>${s.title}</strong>${s.text}</div>
-    </div>`).join('');
+    // traits
+    document.getElementById('pp-traits').innerHTML = insight.traits.map(tr =>
+      `<div class="pp-trait"><div class="pp-trait-dot" style="background:${tr.color}"></div>${tr.text}</div>`).join('');
 
-  // careers
-  document.getElementById('pp-careers').innerHTML = insight.careers.map(c =>
-    `<div class="pp-career-row">
-      <div class="pp-career-ic" style="background:${c.color}22;color:${c.color}"><i class="ti ti-briefcase"></i></div>
-      <div>
-        <div class="pp-career-name">${c.name}</div>
-        <div class="pp-career-desc">${c.desc}</div>
-      </div>
-      <div class="pp-career-match" style="background:${c.color}22;color:${c.color}">${c.match}%</div>
-    </div>`).join('');
+    // strengths
+    document.getElementById('pp-insights').innerHTML = insight.strengths.map(s =>
+      `<div class="pp-insight-row">
+        <div class="pp-insight-ic"><i class="ti ${s.ic}"></i></div>
+        <div class="pp-insight-text"><strong>${s.title}</strong>${s.text}</div>
+      </div>`).join('');
 
-  // quote
-  document.getElementById('pp-quote').innerHTML =
-    `<div class="pp-quote-text">"${insight.quote}"</div>
-     <div class="pp-quote-sub">${insight.quoteSub}</div>
-     <div class="pp-quote-author">— ${insight.quoteAuthor}</div>`;
+    // careers
+    document.getElementById('pp-careers').innerHTML = insight.careers.map(c =>
+      `<div class="pp-career-row">
+        <div class="pp-career-ic" style="background:${c.color}22;color:${c.color}"><i class="ti ti-briefcase"></i></div>
+        <div>
+          <div class="pp-career-name">${c.name}</div>
+          <div class="pp-career-desc">${c.desc}</div>
+        </div>
+        <div class="pp-career-match" style="background:${c.color}22;color:${c.color}">${c.match}%</div>
+      </div>`).join('');
+
+    // quote
+    document.getElementById('pp-quote').innerHTML =
+      `<div class="pp-quote-text">"${insight.quote}"</div>
+       <div class="pp-quote-sub">${insight.quoteSub}</div>
+       <div class="pp-quote-author">— ${insight.quoteAuthor}</div>`;
+
+  } else {
+    // ● Non-dominant planet — say user doesn't fit here
+    const mismatchReasons = {
+      tech:  'Dari jawabanmu, kamu lebih cenderung ke eksplorasi kreatif & human-centered — bukan pola logika teknis yang mendominasi dunia teknologi.',
+      seni:  'Jawabanmu menunjukkan kamu lebih menyukai struktur dan sistem daripada ekspresi bebas dan estetika yang menjadi inti dari bidang seni.',
+      sains: 'Pola jawabanmu tidak menunjukkan ketertarikan kuat pada riset mendalam, metodologi ilmiah, atau berpikir berbasis data yang ketat.',
+      tulis: 'Kamu lebih suka bertindak dan bereksperimen langsung — bukan duduk lama merefleksikan dunia dalam bentuk tulisan dan narasi.',
+      musik: 'Kepekaan emosional dan artistik yang tinggi dibutuhkan di bidang ini — dari jawabanmu, ini bukan area terkuat dirimu saat ini.',
+      sport: 'Energi fisik, kompetisi, dan disiplin tubuh yang menjadi core olahraga tidak tercermin dominan dalam profil jawabanmu.',
+      robot: 'Robotika butuh kombinasi logika teknis + hands-on engineering yang sangat spesifik — ini belum menjadi kombinasi dominanmu.',
+      foto:  'Observasi visual yang sangat halus dan kesabaran menangkap momen adalah inti fotografi — ini kurang dominan dalam profilmu.',
+    };
+
+    const mismatchMsg = mismatchReasons[key] || 'Berdasarkan jawabanmu, bidang ini kurang cocok dengan pola bakat dan minatmu saat ini.';
+
+    document.getElementById('pp-key').textContent = `Skor ${score}% · Bukan Fokus Utamamu`;
+    document.getElementById('pp-score-num').textContent = score + '%';
+    document.getElementById('pp-char-tags').innerHTML = `<span class="pp-ctag" style="opacity:.5">Bukan area terkuatmu</span>`;
+    document.getElementById('pp-desc').textContent = mismatchMsg;
+
+    // Show a gentle "not your type" stat grid
+    document.getElementById('pp-stat-grid').innerHTML = `
+      <div class="pp-stat-card" style="grid-column:span 2">
+        <div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:12px;">
+          <i class="ti ti-info-circle" style="font-size:16px;margin-right:6px;color:rgba(255,255,255,.3)"></i>
+          Tidak apa-apa jika ini bukan bidangmu. Galaxy-mu punya planet yang jauh lebih besar — dan itulah tempat kamu bersinar.
+        </div>
+        <div class="pp-stat-bar"><div class="pp-stat-fill" data-target="${score}" style="background:${cfg.color};width:0"></div></div>
+        <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:6px">Kesesuaian: ${score}% dari profilmu</div>
+      </div>`;
+
+    document.getElementById('pp-traits').innerHTML = `
+      <div class="pp-trait" style="opacity:.5"><div class="pp-trait-dot" style="background:rgba(255,255,255,.3)"></div>Bukan ciri khasmu</div>
+      <div class="pp-trait" style="opacity:.5"><div class="pp-trait-dot" style="background:rgba(255,255,255,.3)"></div>Masih bisa dipelajari</div>`;
+
+    document.getElementById('pp-insights').innerHTML = `
+      <div class="pp-insight-row">
+        <div class="pp-insight-ic"><i class="ti ti-planet" style="color:${cfg.color}66"></i></div>
+        <div class="pp-insight-text"><strong style="color:rgba(255,255,255,.6)">Fokus pada Planet Dominanmu</strong>Ada bidang di galaximu yang jauh lebih mencerminkan dirimu — klik planet terbesar (berbintang ★) untuk melihat insight penuhmu.</div>
+      </div>`;
+
+    document.getElementById('pp-careers').innerHTML = `
+      <div style="text-align:center;padding:16px 0;color:rgba(255,255,255,.3)">
+        <i class="ti ti-lock" style="font-size:24px;display:block;margin-bottom:8px"></i>
+        <div style="font-size:13px">Karir di bidang ini tidak direkomendasikan untukmu saat ini</div>
+      </div>`;
+
+    document.getElementById('pp-quote').innerHTML =
+      `<div class="pp-quote-text" style="font-size:13px;opacity:.6">"Mengetahui bukan bidangmu juga adalah bentuk self-awareness yang langka."</div>
+       <div class="pp-quote-sub" style="opacity:.4">Fokus pada bintangmu, bukan pada semua planet.</div>
+       <div class="pp-quote-author" style="opacity:.3">— LostPotential Galaxy</div>`;
+  }
 
   // open
   document.getElementById('planet-panel-overlay').classList.add('open');
