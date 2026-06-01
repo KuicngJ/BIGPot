@@ -663,6 +663,412 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
   .cecard-body{padding:14px 16px}
   .cecard-top{padding:18px 16px 14px}
 }
+
+/* ========================================================
+   FITUR — TALENT GALAXY (ICONIC FEATURE)
+   ======================================================== */
+
+/* ── Galaxy Page wrapper ── */
+.galaxy-page{max-width:760px;margin:0 auto;padding:0 0 100px}
+
+/* ── Cinematic full-bleed space header ── */
+.galaxy-space-header{
+  position:relative;width:100%;
+  background:#030509;
+  overflow:hidden;
+  padding:32px 20px 0;
+  text-align:center;
+}
+.galaxy-space-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(109,40,217,.28) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 40% at 20% 80%,rgba(24,71,237,.18) 0%,transparent 60%),
+             radial-gradient(ellipse 40% 30% at 80% 60%,rgba(240,78,35,.12) 0%,transparent 60%);
+}
+.galaxy-badge{
+  position:relative;z-index:2;
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(8px);
+  color:rgba(255,255,255,.9);
+  padding:7px 18px;border-radius:50px;
+  font-size:11.5px;font-weight:700;margin-bottom:16px;letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.galaxy-space-header h2{
+  position:relative;z-index:2;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(26px,5vw,40px);font-weight:800;
+  letter-spacing:-1.5px;color:#fff;margin-bottom:8px;line-height:1.1;
+  text-shadow:0 0 40px rgba(109,40,217,.5);
+}
+.galaxy-space-header p{
+  position:relative;z-index:2;
+  font-size:13.5px;color:rgba(255,255,255,.5);
+  line-height:1.6;max-width:420px;margin:0 auto;
+}
+/* legacy compat */
+.galaxy-header{display:none}
+
+/* ── Canvas wrap — full bleed deep space ── */
+.galaxy-canvas-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:1/1;
+  max-width:560px;
+  margin:0 auto;
+  user-select:none;
+  background:#030509;
+}
+#galaxy-canvas{width:100%;height:100%;cursor:grab;display:block}
+#galaxy-canvas:active{cursor:grabbing}
+
+/* ── Below-canvas section strip ── */
+.galaxy-below{padding:20px 20px 0}
+
+/* ── Planet click panel (bottom-sheet style) ── */
+.planet-panel-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);
+  z-index:600;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .28s ease;
+}
+.planet-panel-overlay.open{opacity:1;pointer-events:all}
+.planet-panel{
+  width:100%;max-width:600px;max-height:88vh;
+  overflow-y:auto;scrollbar-width:none;
+  background:#0A0F1E;
+  border-radius:28px 28px 0 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.32,0,.18,1);
+  padding-bottom:40px;
+}
+.planet-panel-overlay.open .planet-panel{transform:translateY(0)}
+.planet-panel::-webkit-scrollbar{display:none}
+
+.pp-thumb{width:44px;height:4px;border-radius:2px;background:rgba(255,255,255,.15);margin:14px auto 0}
+
+/* Panel hero */
+.pp-hero{padding:24px 24px 20px;position:relative}
+.pp-hero-bg{
+  position:absolute;inset:0;border-radius:28px 28px 0 0;
+  opacity:.12;pointer-events:none;
+}
+.pp-hero-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;position:relative;z-index:1}
+.pp-planet-orb{
+  width:56px;height:56px;border-radius:50%;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:800;color:#fff;
+  box-shadow:0 0 24px var(--pp-color, #fff3);
+}
+.pp-name{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:2px}
+.pp-key{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px}
+.pp-score-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;position:relative;z-index:1}
+.pp-score-num{font-family:'Bricolage Grotesque',sans-serif;font-size:52px;font-weight:800;line-height:1;letter-spacing:-3px}
+.pp-score-label{font-size:12px;color:rgba(255,255,255,.45);line-height:1.4}
+.pp-char-tags{display:flex;flex-wrap:wrap;gap:7px;position:relative;z-index:1}
+.pp-ctag{
+  padding:5px 12px;border-radius:50px;
+  font-size:11.5px;font-weight:700;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.8);
+}
+.pp-desc{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;position:relative;z-index:1}
+
+/* Panel body */
+.pp-body{padding:0 20px}
+.pp-section{margin-bottom:22px}
+.pp-sec-label{
+  font-size:9.5px;font-weight:800;
+  color:rgba(255,255,255,.3);
+  text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:7px;
+}
+.pp-sec-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.07)}
+
+/* Stat radar */
+.pp-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pp-stat-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:14px;
+}
+.pp-stat-val{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:2px}
+.pp-stat-name{font-size:11px;color:rgba(255,255,255,.4);font-weight:600}
+.pp-stat-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;margin-top:10px;overflow:hidden}
+.pp-stat-fill{height:100%;border-radius:2px;transition:width 1s ease}
+
+/* Trait pills */
+.pp-traits{display:flex;flex-wrap:wrap;gap:8px}
+.pp-trait{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  border-radius:50px;padding:7px 14px;
+  font-size:12.5px;font-weight:600;color:rgba(255,255,255,.8);
+}
+.pp-trait-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* Strength / blind-spot list */
+.pp-insight-list{display:flex;flex-direction:column;gap:8px}
+.pp-insight-row{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(255,255,255,.04);border-radius:12px;
+  padding:12px 14px;
+}
+.pp-insight-ic{font-size:17px;flex-shrink:0;margin-top:2px;color:rgba(255,255,255,.5);line-height:1}
+.pp-insight-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
+.pp-insight-text strong{color:#fff;display:block;font-size:12.5px;margin-bottom:2px}
+
+/* Career match strip */
+.pp-career-strip{display:flex;flex-direction:column;gap:8px}
+.pp-career-row{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:12px 14px;cursor:pointer;
+  transition:background .18s ease;
+}
+.pp-career-row:hover{background:rgba(255,255,255,.08)}
+.pp-career-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.pp-career-name{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:2px}
+.pp-career-desc{font-size:12px;color:rgba(255,255,255,.45)}
+.pp-career-match{font-size:11px;font-weight:800;margin-left:auto;flex-shrink:0;padding:4px 10px;border-radius:50px}
+
+/* Quote card */
+.pp-quote{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-left:3px solid var(--pp-color, #fff);
+  border-radius:0 12px 12px 0;
+  padding:16px 18px;
+}
+.pp-quote-text{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:rgba(255,255,255,.85);line-height:1.5;margin-bottom:8px}
+.pp-quote-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.5}
+.pp-quote-author{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);margin-top:10px;text-transform:uppercase;letter-spacing:.8px}
+
+/* Galaxy Legend */
+.galaxy-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.gl-item{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r);
+  padding:13px 13px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;transition:all var(--dur) var(--ease);
+}
+[data-dark] .gl-item,[data-galaxy-dark] .gl-item{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+.gl-item:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.2);box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.gl-item.dominant{border-color:rgba(255,255,255,.25)!important;background:rgba(255,255,255,.07)!important}
+.gl-planet-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.gl-name{font-size:12px;font-weight:700;color:rgba(255,255,255,.85);flex:1}
+.gl-pct{font-size:12px;font-weight:800;letter-spacing:-.3px}
+
+/* Galaxy Insight */
+.galaxy-insight{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r-lg);padding:20px 22px;
+  margin-bottom:16px;
+}
+.galaxy-insight-hd{font-size:10px;font-weight:800;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.galaxy-insight-text{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:rgba(255,255,255,.9);line-height:1.5;margin-bottom:6px}
+.galaxy-insight-sub{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
+
+/* galaxy section wrapper forces dark bg */
+#pg-galaxy .galaxy-below{
+  background:#0A0F1E;
+  padding-top:24px;
+}
+#pg-galaxy .pvi-section{
+  background:rgba(255,255,255,.03)!important;
+  border-color:rgba(255,255,255,.07)!important;
+}
+#pg-galaxy .pvi-hd{color:rgba(255,255,255,.9)!important}
+#pg-galaxy .pvi-sub{color:rgba(255,255,255,.45)!important}
+#pg-galaxy .pvi-bar-name{color:rgba(255,255,255,.8)!important}
+#pg-galaxy .pvi-conclusion{
+  background:rgba(255,255,255,.05)!important;
+  border-color:rgba(255,255,255,.1)!important;
+}
+#pg-galaxy .pvi-conclusion-title{color:rgba(255,255,255,.9)!important}
+#pg-galaxy .pvi-conclusion-sub{color:rgba(255,255,255,.5)!important}
+#pg-galaxy .pvi-bar-track{background:rgba(255,255,255,.08)!important}
+
+/* Mini galaxy hint text */
+.galaxy-hint{
+  text-align:center;
+  font-size:12px;
+  color:rgba(255,255,255,.3);
+  padding:8px 0 16px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.galaxy-hint i{font-size:14px}
+
+/* Retry button in dark context */
+#pg-galaxy .galaxy-below .btn-ghost-dark{
+  background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.6);
+  padding:12px 24px;border-radius:50px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;
+  transition:all .2s ease;
+}
+#pg-galaxy .galaxy-below .btn-ghost-dark:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9)}
+
+/* ========================================================
+   FITUR — POTENTIAL VS INTEREST (2D CHART)
+   ======================================================== */
+.pvi-section{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);padding:22px 22px 18px;
+  margin-bottom:20px;box-shadow:var(--shadow-sm);
+}
+.pvi-hd{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.pvi-hd i{color:var(--purple)}
+.pvi-sub{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.pvi-chart-wrap{position:relative;width:100%;aspect-ratio:1/1;max-width:320px;margin:0 auto 20px}
+.pvi-canvas{width:100%;height:100%}
+.pvi-conclusion{
+  background:linear-gradient(135deg,var(--blue-l),var(--purple-l));
+  border:1px solid var(--blue-m);
+  border-radius:var(--r);
+  padding:16px 18px;
+  display:flex;align-items:center;gap:12px;
+}
+.pvi-conclusion-ic{width:40px;height:40px;background:var(--blue);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pvi-conclusion-ic i{color:#fff;font-size:20px}
+.pvi-conclusion-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.pvi-conclusion-sub{font-size:12px;color:var(--ink3)}
+.pvi-bars{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.pvi-bar-row{display:flex;flex-direction:column;gap:4px}
+.pvi-bar-label{display:flex;justify-content:space-between;align-items:center}
+.pvi-bar-name{font-size:13px;font-weight:600;color:var(--ink)}
+.pvi-bar-nums{display:flex;gap:12px;font-size:12px}
+.pvi-bar-p{color:var(--blue);font-weight:700}
+.pvi-bar-i{color:var(--orange);font-weight:700}
+.pvi-bar-track{height:8px;background:var(--surf3);border-radius:4px;position:relative;overflow:visible;margin-top:2px}
+.pvi-bar-p-fill{height:100%;border-radius:4px;background:var(--blue);width:0;transition:width 1.2s var(--ease);position:relative}
+.pvi-bar-i-mark{position:absolute;top:-3px;width:3px;height:14px;background:var(--orange);border-radius:2px;transform:translateX(-50%);transition:left 1.2s var(--ease)}
+
+/* ========================================================
+   FITUR — WHAT IF I CHOOSE THIS? (Career Timeline)
+   ======================================================== */
+.ce-whatif-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--ink) 0%,#1a2240 100%);
+  border:none;border-radius:var(--r-lg);
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:all var(--dur) var(--ease);
+  color:#fff;margin-top:14px;
+  box-shadow:var(--shadow);
+}
+.ce-whatif-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+.ce-whatif-btn-l{display:flex;flex-direction:column;gap:3px;text-align:left}
+.ce-whatif-label{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.8px;text-transform:uppercase}
+.ce-whatif-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.2px}
+.ce-whatif-btn-r{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* Career Modal + Timeline */
+.career-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;
+  display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.career-modal-overlay.open{display:flex;animation:fadeIn .22s var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.career-modal-sheet{
+  background:var(--surf);border-radius:24px 24px 0 0;
+  width:100%;max-width:620px;max-height:92vh;overflow-y:auto;
+  padding:0 0 60px;animation:sheetUp .3s var(--ease);
+  scrollbar-width:none;
+}
+.career-modal-sheet::-webkit-scrollbar{display:none}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cm-thumb{width:48px;height:5px;background:var(--surf4);border-radius:3px;margin:14px auto 0}
+.cm-hero{padding:28px 24px 20px;border-bottom:1px solid var(--surf3)}
+.cm-hero-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.cm-ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-ic i{font-size:26px}
+.cm-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:4px}
+.cm-cat{font-size:12px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.cm-desc{font-size:14px;color:var(--ink2);line-height:1.65}
+
+.cm-body{padding:20px 24px}
+.cm-section-hd{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+
+/* Timeline "What If" */
+.whatif-timeline{position:relative;padding-left:36px;margin-bottom:24px}
+.whatif-timeline::before{
+  content:'';position:absolute;left:16px;top:8px;bottom:8px;
+  width:2px;background:linear-gradient(180deg,var(--blue),var(--purple),var(--orange),var(--green));
+  border-radius:2px;
+}
+.wt-step{position:relative;margin-bottom:20px}
+.wt-step:last-child{margin-bottom:0}
+.wt-dot{
+  position:absolute;left:-26px;top:4px;
+  width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;color:#fff;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  border:2px solid var(--surf);
+}
+.wt-card{
+  background:var(--surf2);border:1px solid var(--surf3);
+  border-radius:var(--r);padding:14px 16px;
+  transition:all var(--dur) var(--ease);
+  animation:wt-enter .4s var(--ease) both;
+}
+@keyframes wt-enter{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.wt-card:hover{border-color:var(--blue-m);box-shadow:var(--shadow-sm)}
+.wt-year{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.wt-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.wt-desc{font-size:12.5px;color:var(--ink3);line-height:1.5}
+.wt-milestone{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--green-l);color:var(--green-d);
+  padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-top:7px;
+}
+
+/* Bottom nav galaxy button */
+#nav-galaxy{cursor:pointer}
+
+/* Galaxy Result Entry Point (from result page) */
+.go-galaxy-btn{
+  width:100%;background:linear-gradient(135deg,#0A0F1E 0%,#6D28D9 50%,#1847ED 100%);
+  border:none;border-radius:var(--r-lg);padding:20px 22px;
+  display:flex;align-items:center;gap:16px;
+  cursor:pointer;transition:all var(--dur) var(--ease);
+  margin-bottom:20px;box-shadow:0 6px 24px rgba(109,40,217,.25);
+  text-align:left;
+}
+.go-galaxy-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(109,40,217,.35)}
+.go-galaxy-ic{width:52px;height:52px;background:rgba(255,255,255,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.go-galaxy-ic i{font-size:26px;color:#fff}
+.go-galaxy-text{flex:1}
+.go-galaxy-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.go-galaxy-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:#fff;letter-spacing:-.2px;margin-bottom:3px}
+.go-galaxy-sub{font-size:12px;color:rgba(255,255,255,.55)}
+.go-galaxy-arr{color:rgba(255,255,255,.6);font-size:20px}
+
+@media(max-width:520px){
+  .galaxy-canvas-wrap{max-width:100%}
+  .galaxy-legend{grid-template-columns:repeat(2,1fr)}
+  .pp-stat-grid{grid-template-columns:1fr 1fr}
+  .pvi-chart-wrap{max-width:260px}
+  .career-modal-sheet{max-height:90vh}
+  .cm-hero,.cm-body{padding-left:16px;padding-right:16px}
+  .whatif-timeline{padding-left:28px}
+}
 </style>
 </head>
 <body>
@@ -1067,6 +1473,132 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
   </div>
 </div>
 
+<!-- ===================== PAGE: TALENT GALAXY ===================== -->
+<div id="pg-galaxy" class="page" style="background:#0A0F1E;min-height:100vh">
+  <div class="galaxy-page">
+    <!-- Space header -->
+    <div class="galaxy-space-header">
+      <div class="galaxy-badge"><i class="ti ti-planet"></i>Talent Galaxy · Cermin Dirimu</div>
+      <h2>Semestamu, Dirimu</h2>
+      <p>Setiap planet adalah sisi dirimu. Klik planet untuk membaca insight mendalam — bakat, kepribadian, karir, dan potensi tersembunyimu.</p>
+    </div>
+
+    <!-- Full-bleed canvas -->
+    <div class="galaxy-canvas-wrap">
+      <canvas id="galaxy-canvas"></canvas>
+    </div>
+    <div class="galaxy-hint"><i class="ti ti-hand-click"></i>Tap planet untuk baca insight dirimu · Seret untuk putar</div>
+
+    <!-- Below canvas — dark context -->
+    <div class="galaxy-below">
+      <div class="galaxy-legend" id="galaxy-legend"></div>
+      <div class="galaxy-insight" id="galaxy-insight">
+        <div class="galaxy-insight-hd"><i class="ti ti-sparkles"></i>Insight Galaximu</div>
+        <div class="galaxy-insight-text" id="galaxy-insight-text">Selesaikan tes bakat terlebih dahulu untuk melihat galaxi bakatmu.</div>
+        <div class="galaxy-insight-sub" id="galaxy-insight-sub">Mulai tes dari tab "Tes Bakat" di menu bawah.</div>
+      </div>
+      <div class="pvi-section" id="pvi-section">
+        <div class="pvi-hd"><i class="ti ti-chart-scatter"></i>Potensi vs Minat</div>
+        <div class="pvi-sub">Titik temu potensi dan minatmu menunjukkan jalur terbaik untuk berkembang saat ini.</div>
+        <div class="pvi-bars" id="pvi-bars"></div>
+        <div class="pvi-conclusion" id="pvi-conclusion">
+          <div class="pvi-conclusion-ic"><i class="ti ti-bulb"></i></div>
+          <div>
+            <div class="pvi-conclusion-title" id="pvi-conclusion-title">Titik temu terbaikmu saat ini adalah…</div>
+            <div class="pvi-conclusion-sub" id="pvi-conclusion-sub">Selesaikan tes untuk melihat rekomendasinya.</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <button onclick="go('quiz');setNav('cari')" class="btn-ghost-dark">
+          <i class="ti ti-refresh"></i>Ulangi Tes Bakat
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLANET DEEP DIVE PANEL -->
+<div class="planet-panel-overlay" id="planet-panel-overlay" onclick="closePlanetPanel(event)">
+  <div class="planet-panel" id="planet-panel">
+    <div class="pp-thumb"></div>
+    <div class="pp-hero" id="pp-hero">
+      <div class="pp-hero-bg" id="pp-hero-bg"></div>
+      <div class="pp-hero-top">
+        <div class="pp-planet-orb" id="pp-orb"></div>
+        <div>
+          <div class="pp-name" id="pp-name">—</div>
+          <div class="pp-key" id="pp-key">Planet Bakat</div>
+        </div>
+      </div>
+      <div class="pp-score-row">
+        <div class="pp-score-num" id="pp-score-num">—</div>
+        <div class="pp-score-label">Skor<br>Bakатmu</div>
+      </div>
+      <div class="pp-char-tags" id="pp-char-tags"></div>
+    </div>
+    <div class="pp-body">
+      <!-- desc -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-user-circle"></i>Tentang Dirimu</div>
+        <div class="pp-desc" id="pp-desc"></div>
+      </div>
+      <!-- stats radar -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-chart-radar"></i>Profil Dimensi</div>
+        <div class="pp-stat-grid" id="pp-stat-grid"></div>
+      </div>
+      <!-- personality traits -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-dna"></i>Karakter Khasmu</div>
+        <div class="pp-traits" id="pp-traits"></div>
+      </div>
+      <!-- strengths + blindspots -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-bolt"></i>Kekuatan & Titik Tumbuh</div>
+        <div class="pp-insight-list" id="pp-insights"></div>
+      </div>
+      <!-- career DNA -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-map-2"></i>Karir yang Cocok Untukmu</div>
+        <div class="pp-career-strip" id="pp-careers"></div>
+      </div>
+      <!-- motivational quote -->
+      <div class="pp-section">
+        <div class="pp-sec-label"><i class="ti ti-quote"></i>Kata Buat Kamu</div>
+        <div class="pp-quote" id="pp-quote"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CAREER DETAIL MODAL (What If I Choose This?) -->
+<div class="career-modal-overlay" id="career-modal" onclick="closeCareerModal(event)">
+  <div class="career-modal-sheet" id="career-modal-sheet">
+    <div class="cm-thumb"></div>
+    <div class="cm-hero" id="cm-hero">
+      <div class="cm-hero-top">
+        <div class="cm-ic" id="cm-ic"><i class="ti ti-code"></i></div>
+        <div>
+          <div class="cm-title" id="cm-title">Karir</div>
+          <div class="cm-cat" id="cm-cat">Kategori</div>
+        </div>
+      </div>
+      <div class="cm-desc" id="cm-desc"></div>
+    </div>
+    <div class="cm-body">
+      <div class="cm-section-hd"><i class="ti ti-clock-play"></i>Simulasi Perjalananmu — "What If I Choose This?"</div>
+      <div class="whatif-timeline" id="cm-timeline"></div>
+      <div class="cm-section-hd" style="margin-top:20px"><i class="ti ti-bolt"></i>Skill yang Dibutuhkan</div>
+      <div id="cm-skills" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px"></div>
+      <div class="cm-section-hd"><i class="ti ti-trending-up"></i>Prospek Masa Depan</div>
+      <div id="cm-prospect" style="background:var(--green-l);border-radius:var(--r);padding:14px 16px;margin-bottom:20px;font-size:13.5px;color:var(--green-d);font-weight:600;display:flex;align-items:flex-start;gap:8px"><i class="ti ti-circle-check" style="font-size:16px;flex-shrink:0;margin-top:1px"></i><span></span></div>
+      <div class="cm-section-hd"><i class="ti ti-git-branch"></i>Bidang Terkait</div>
+      <div id="cm-related" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bi on" id="nav-home" onclick="go('home');setNav('home')">
@@ -1080,6 +1612,10 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
   <div class="bi" id="nav-career" onclick="go('career');setNav('career')">
     <div class="bi-ic"><i class="ti ti-map-2"></i></div>
     <div class="bi-lbl">Karir</div>
+  </div>
+  <div class="bi" id="nav-galaxy" onclick="go('galaxy');setNav('galaxy')">
+    <div class="bi-ic" style="position:relative"><i class="ti ti-planet"></i><span style="position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:var(--purple);border-radius:50%;border:2px solid var(--surf2)"></span></div>
+    <div class="bi-lbl">Galaxy</div>
   </div>
   <div class="bi" id="nav-komunitas" onclick="go('komunitas');setNav('komunitas')">
     <div class="bi-ic"><i class="ti ti-users"></i></div>
@@ -2392,6 +2928,13 @@ function renderCareers(){
           <div class="cecard-label"><i class="ti ti-git-branch"></i>Bidang terkait</div>
           <div>${c.related.map(r=>`<span class="cetag" style="background:var(--purple-l);color:var(--purple)">${r}</span>`).join('')}</div>
         </div>
+        <button class="ce-whatif-btn" onclick="openCareerModal('${c.id}')">
+          <div class="ce-whatif-btn-l">
+            <div class="ce-whatif-label">Simulasi Masa Depan</div>
+            <div class="ce-whatif-title">What If I Choose This? 🚀</div>
+          </div>
+          <div class="ce-whatif-btn-r"><i class="ti ti-arrow-right" style="font-size:18px;color:#fff"></i></div>
+        </button>
       </div>
     </div>
   `).join('');
@@ -3087,7 +3630,17 @@ function showResult(){
       <button onclick="go('quiz');setNav('cari')" style="background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px">
         <i class="ti ti-refresh"></i>Ulangi tes
       </button>
-    </div>`;
+    </div>
+    <!-- GALAXY ENTRY POINT -->
+    <button class="go-galaxy-btn" onclick="go('galaxy');setNav('galaxy')" style="margin-top:16px">
+      <div class="go-galaxy-ic"><i class="ti ti-planet"></i></div>
+      <div class="go-galaxy-text">
+        <div class="go-galaxy-label">Fitur Eksklusif</div>
+        <div class="go-galaxy-title">Lihat Talent Galaxy-mu</div>
+        <div class="go-galaxy-sub">Visualisasi bakat sebagai planet interaktif + Potensi vs Minat</div>
+      </div>
+      <i class="ti ti-chevron-right go-galaxy-arr"></i>
+    </button>`;
 
   go('result');
   setNav('cari');
@@ -3097,6 +3650,1079 @@ function showResult(){
   setTimeout(animateHiddenPotBars, 300);
 }
 
+/* ===================================================================
+   MODULE — WHAT IF I CHOOSE THIS? (Career Timeline Data)
+   =================================================================== */
+const CAREER_WHATIF = {
+  'robotics-eng':[
+    {year:'1 Tahun',title:'Belajar Dasar Elektronika & Arduino',desc:'Kenali sensor, aktuator, dan pemrograman mikrokontroler. Buat proyek lampu otomatis pertamamu.',milestone:'Proyek Arduino pertama selesai',color:'#1847ED'},
+    {year:'2 Tahun',title:'Bangun Robot Line Follower',desc:'Integrasikan sensor + motor + logika kontrol. Daftarkan ke kompetisi robotika sekolah.',milestone:'Ikut kompetisi pertama',color:'#F04E23'},
+    {year:'3 Tahun',title:'Ikut WRO atau Kontes Robot Nasional',desc:'Bersaing di level nasional, pelajari teknik advanced seperti computer vision dasar.',milestone:'Finalis kompetisi nasional',color:'#00966A'},
+    {year:'5 Tahun',title:'Kuliah Teknik & Proyek Industri',desc:'Magang di perusahaan manufaktur atau startup IoT. Bangun robot untuk kebutuhan nyata.',milestone:'Proyek industri pertama',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Robotics Engineer Profesional',desc:'Memimpin tim engineering, merancang sistem otomasi untuk pabrik atau pertanian cerdas di Indonesia.',milestone:'Lead Engineer',color:'#D97706'},
+  ],
+  'game-dev':[
+    {year:'1 Tahun',title:'Pelajari Unity + GameDev Dasar',desc:'Install Unity, buat game Flappy Bird tiruan, pelajari fisika 2D dan collision detection.',milestone:'Game pertama selesai',color:'#1847ED'},
+    {year:'2 Tahun',title:'Publish Mobile Game Pertama',desc:'Rilis game sederhana di Google Play. Pelajari monetisasi, UI game, dan feedback pemain.',milestone:'Game di Play Store',color:'#F04E23'},
+    {year:'3 Tahun',title:'Ikut Game Jam & Hackathon',desc:'Global Game Jam 48 jam — desain, coding, dan publish game dalam tim. Jaringan profesional terbentuk.',milestone:'Game Jam Winner',color:'#00966A'},
+    {year:'5 Tahun',title:'Game Dev di Studio Lokal',desc:'Bergabung studio game Indonesia atau freelance. Kerjakan project komersial untuk klien.',milestone:'Senior Game Dev',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Indie Studio Sendiri',desc:'Bangun studio indie, rilis game original yang go international. Kontribusi pada industri game Indonesia.',milestone:'Studio Founder',color:'#D97706'},
+  ],
+  'uiux-designer':[
+    {year:'1 Tahun',title:'Kuasai Figma & Design Thinking',desc:'Pelajari wireframing, prototyping, dan prinsip UX. Redesain 3 aplikasi favorit sebagai latihan.',milestone:'Portofolio mini (5 karya)',color:'#1847ED'},
+    {year:'2 Tahun',title:'Freelance untuk UMKM Lokal',desc:'Desain logo, landing page, dan UI app untuk bisnis kecil. Bangun pengalaman dan testimonial.',milestone:'10 klien pertama',color:'#F04E23'},
+    {year:'3 Tahun',title:'Magang di Startup Tech',desc:'Ikut proses design sprint nyata, riset pengguna, dan iterasi produk bersama tim engineer.',milestone:'Full-time di startup',color:'#00966A'},
+    {year:'5 Tahun',title:'Senior UI/UX Designer',desc:'Lead design di produk yang dipakai ratusan ribu pengguna. Mentoring junior designer.',milestone:'Design System owner',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Head of Design / Design Lead',desc:'Memimpin seluruh arah visual produk. Diundang sebagai speaker di konferensi desain Indonesia.',milestone:'Design Director',color:'#D97706'},
+  ],
+  'data-scientist':[
+    {year:'1 Tahun',title:'Belajar Python + Matematika Statistik',desc:'Kuasai pandas, numpy, matplotlib. Selesaikan kursus gratis Google Data Analytics.',milestone:'Analisis dataset pertama',color:'#1847ED'},
+    {year:'2 Tahun',title:'Ikut Kompetisi Kaggle',desc:'Masuk top 20% di kompetisi data. Bangun portfolio di GitHub dengan proyek nyata.',milestone:'Top Kaggle Competitor',color:'#F04E23'},
+    {year:'3 Tahun',title:'Magang di Perusahaan Data-Driven',desc:'Analisis data transaksi jutaan pengguna, buat dashboard dan model prediksi untuk keputusan bisnis.',milestone:'ML model production',color:'#00966A'},
+    {year:'5 Tahun',title:'Data Scientist Senior',desc:'Memimpin proyek AI/ML untuk prediksi bisnis, churn prevention, atau rekomendasi produk.',milestone:'AI product launched',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Chief Data Officer / AI Researcher',desc:'Menentukan strategi data perusahaan atau berkontribusi pada riset AI yang dipublish internasional.',milestone:'Research published',color:'#D97706'},
+  ],
+  'software-eng':[
+    {year:'1 Tahun',title:'Kuasai 1 Bahasa + Algoritma Dasar',desc:'Python atau JavaScript, data structures, OOP. Selesaikan CS50 Harvard dan 50 soal LeetCode.',milestone:'Portfolio GitHub aktif',color:'#1847ED'},
+    {year:'2 Tahun',title:'Build Full-Stack App',desc:'Buat aplikasi web end-to-end dengan backend, database, dan deployment. Tunjukkan ke dunia.',milestone:'App live di internet',color:'#F04E23'},
+    {year:'3 Tahun',title:'Magang / Junior Dev',desc:'Bergabung tim engineering startup atau tech company. Kontribusi ke codebase produksi nyata.',milestone:'First PR merged',color:'#00966A'},
+    {year:'5 Tahun',title:'Mid-Senior Software Engineer',desc:'Desain arsitektur sistem, review kode junior, dan pimpin pengembangan fitur besar.',milestone:'Tech Lead di squad',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Principal Engineer / CTO',desc:'Menentukan arah teknis perusahaan. Mungkin co-found startup teknologi sendiri.',milestone:'CTO / Founder',color:'#D97706'},
+  ],
+  'content-creator':[
+    {year:'1 Tahun',title:'Konsisten Produksi Konten 3x/Minggu',desc:'Pilih 1 platform, 1 niche. Pelajari editing video dasar, copywriting, dan analitik konten.',milestone:'1.000 followers pertama',color:'#1847ED'},
+    {year:'2 Tahun',title:'Monetisasi Pertama',desc:'YouTube Partner Program, brand deal pertama, atau jualan produk digital. Konten mulai viral.',milestone:'Penghasilan dari konten',color:'#F04E23'},
+    {year:'3 Tahun',title:'Personal Brand Terbentuk',desc:'Dikenal di niche tertentu. Mulai diundang ke kolaborasi, podcast, dan event industri.',milestone:'Kolaborasi brand besar',color:'#00966A'},
+    {year:'5 Tahun',title:'Multi-Platform Creator',desc:'Ekspansi ke multiple platform, punya tim kecil, launch kursus online atau merchandise.',milestone:'10K+ monthly revenue',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Media Entrepreneur',desc:'Memiliki media brand sendiri, studio produksi, atau agensi kreator. Dampak ke jutaan orang.',milestone:'Media Brand Founder',color:'#D97706'},
+  ],
+  'animator':[
+    {year:'1 Tahun',title:'Kuasai Blender + Drawing Fundamentals',desc:'Pelajari rigging, keyframe, dan animasi 2D dasar. Buat animasi pendek 10 detik pertama.',milestone:'Short animation selesai',color:'#1847ED'},
+    {year:'2 Tahun',title:'Buat Animasi Karakter Original',desc:'Desain karakter sendiri, animasikan dialog, ekspresi, dan gerakan. Upload ke YouTube.',milestone:'Karakter original launch',color:'#F04E23'},
+    {year:'3 Tahun',title:'Freelance Animator',desc:'Terima proyek animasi untuk iklan, explainer video, atau game indie. Bangun reel profesional.',milestone:'Demo reel profesional',color:'#00966A'},
+    {year:'5 Tahun',title:'Animator di Studio / Produksi',desc:'Bergabung studio animasi Indonesia atau regional. Kontribusi ke film pendek atau serial.',milestone:'Film festival entry',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Animation Director',desc:'Pimpin tim animasi, direct proyek animasi original, atau bangun studio animasi sendiri.',milestone:'Animation Studio Founder',color:'#D97706'},
+  ],
+  'doctor':[
+    {year:'1 Tahun',title:'Fokus Biologi, Kimia, Matematika',desc:'Kuasai mapel sains untuk SNBT. Ikut olimpiade biologi untuk asah kemampuan analitis.',milestone:'Nilai try-out 90+',color:'#1847ED'},
+    {year:'2 Tahun',title:'Masuk Fakultas Kedokteran',desc:'Adaptasi dengan sistem belajar intensif. Mulai anatomy, biokimia, dan histologi.',milestone:'Semester 1 lulus',color:'#F04E23'},
+    {year:'5 Tahun',title:'Rotasi Klinik (Co-Ass)',desc:'Praktik langsung di berbagai departemen rumah sakit — penyakit dalam, bedah, anak, kandungan.',milestone:'Dokter Muda',color:'#00966A'},
+    {year:'7 Tahun',title:'Dokter Umum',desc:'Internship 1 tahun di RS, praktik mandiri atau bergabung klinik. Mulai pertimbangkan spesialisasi.',milestone:'SIP (Surat Izin Praktik)',color:'#6D28D9'},
+    {year:'12 Tahun',title:'Dokter Spesialis',desc:'Selesaikan PPDS (program spesialisasi), menjadi dokter ahli yang memberikan dampak nyata.',milestone:'Dokter Spesialis',color:'#D97706'},
+  ],
+  'architect':[
+    {year:'1 Tahun',title:'Pelajari AutoCAD + Sketching Tangan',desc:'Latih kemampuan menggambar arsitektur, perspektif, dan denah. Ikuti workshop desain.',milestone:'Portofolio sketsa',color:'#1847ED'},
+    {year:'2 Tahun',title:'Masuk Arsitektur & Studio Desain',desc:'Kerjakan studio projek intensif setiap semester. Explore berbagai gaya arsitektur.',milestone:'Proyek studio terbaik',color:'#F04E23'},
+    {year:'4 Tahun',title:'Magang di Konsultan Arsitektur',desc:'Kontribusi pada proyek nyata, pelajari proses dari konsep hingga gambar kerja.',milestone:'Gambar kerja pertama',color:'#00966A'},
+    {year:'6 Tahun',title:'Arsitek Junior',desc:'Lulus dan mulai karir profesional. Kerjakan proyek residensial dan komersial skala kecil.',milestone:'Proyek pertama dibangun',color:'#6D28D9'},
+    {year:'12 Tahun',title:'Arsitek Senio / Principal',desc:'Pimpin proyek besar, mungkin dirikan firma arsitektur sendiri dengan visi desain yang khas.',milestone:'Firma sendiri',color:'#D97706'},
+  ],
+  'entrepreneur':[
+    {year:'1 Tahun',title:'Identifikasi Masalah Nyata',desc:'Observe masalah sekitar. Baca buku bisnis, ikut program wirausaha muda, dan mulai networking.',milestone:'Business idea canvas',color:'#1847ED'},
+    {year:'2 Tahun',title:'Launch MVP Pertama',desc:'Validasi ide dengan produk minimum. Jual ke 10 customer pertama, minta feedback jujur.',milestone:'10 paying customers',color:'#F04E23'},
+    {year:'3 Tahun',title:'Scale & Cari Pendanaan',desc:'Pitch ke investor atau program akselerator startup Indonesia. Bangun tim inti.',milestone:'Seed funding',color:'#00966A'},
+    {year:'5 Tahun',title:'Startup Berkembang',desc:'Tim 10-50 orang, produk dipakai ribuan user, mulai profit atau growth signifikan.',milestone:'Series A / Profitabel',color:'#6D28D9'},
+    {year:'10 Tahun',title:'Founder yang Berdampak',desc:'Memimpin perusahaan berskala nasional, menciptakan lapangan kerja, dan menginspirasi generasi berikutnya.',milestone:'Impact at Scale',color:'#D97706'},
+  ],
+  'digital-marketer':[
+    {year:'1 Tahun',title:'Kuasai Platform Digital',desc:'Pelajari Meta Ads, Google Ads, dan SEO dasar. Ikuti sertifikasi Google Digital Marketing gratis.',milestone:'Sertifikasi Google',color:'#1847ED'},
+    {year:'2 Tahun',title:'Kelola Campaign Pertama',desc:'Bantu bisnis lokal run ads dengan budget kecil. Optimalkan sampai ROAS positif.',milestone:'Campaign profitable',color:'#F04E23'},
+    {year:'3 Tahun',title:'Digital Marketing Specialist',desc:'Bergabung agensi atau startup sebagai spesialis. Kelola budget jutaan rupiah.',milestone:'Tim marketing bergabung',color:'#00966A'},
+    {year:'5 Tahun',title:'Marketing Manager',desc:'Pimpin strategi marketing multi-channel, kelola tim, dan laporkan ke board direktur.',milestone:'CMO track',color:'#6D28D9'},
+    {year:'10 Tahun',title:'CMO / Founder Marketing Agency',desc:'Chief Marketing Officer atau dirikan agensi digital marketing sendiri dengan klien nasional.',milestone:'Agency / CMO',color:'#D97706'},
+  ],
+};
+
+/* ===================================================================
+   MODULE — GALAXY DATA & PLANET CONFIG
+   =================================================================== */
+const PLANET_CONFIG = {
+  tech:  {label:'Innovator',   color:'#3D7BFF', glow:'rgba(61,123,255,.5)',  ring:true},
+  seni:  {label:'Creator',     color:'#FF5E3A', glow:'rgba(255,94,58,.5)',   ring:false},
+  sains: {label:'Analyst',     color:'#00C98B', glow:'rgba(0,201,139,.5)',   ring:false},
+  tulis: {label:'Storyteller', color:'#A855F7', glow:'rgba(168,85,247,.5)',  ring:false},
+  musik: {label:'Performer',   color:'#EC4899', glow:'rgba(236,72,153,.5)',  ring:true},
+  sport: {label:'Explorer',    color:'#F59E0B', glow:'rgba(245,158,11,.5)',  ring:false},
+  robot: {label:'Builder',     color:'#7C3AED', glow:'rgba(124,58,237,.5)',  ring:true},
+  foto:  {label:'Observer',    color:'#F97316', glow:'rgba(249,115,22,.5)',  ring:false},
+};
+
+// Deep insight data per planet — ini yang muncul di panel klik
+const PLANET_INSIGHT = {
+  tech: {
+    char:['Logika tajam','Problem-solver','Sistematis','Builder'],
+    desc:'Kamu melihat dunia sebagai sistem yang bisa dioptimasi. Otak kamu bekerja paling baik ketika ada masalah yang harus dipecahkan — kamu suka menemukan "cara paling efisien" dari segala sesuatu.',
+    stats:[
+      {name:'Logika Analitis', val:92, color:'#3D7BFF'},
+      {name:'Kreativitas Teknis', val:78, color:'#A855F7'},
+      {name:'Fokus & Detail', val:85, color:'#00C98B'},
+      {name:'Adaptasi Digital', val:90, color:'#F59E0B'},
+    ],
+    traits:[
+      {text:'Berpikir sebelum bertindak', color:'#3D7BFF'},
+      {text:'Suka tantangan kompleks', color:'#7C3AED'},
+      {text:'Mandiri & self-directed', color:'#00C98B'},
+      {text:'Perfeksionis terstruktur', color:'#EC4899'},
+    ],
+    strengths:[
+      {ic:'ti-bolt', title:'Kekuatan Utama', text:'Bisa melihat pola yang orang lain lewatkan. Kalau ada masalah besar, kamu yang pertama cari solusi sistematis.'},
+      {ic:'ti-zoom-in', title:'Kekuatan Tersembunyi', text:'Kemampuan belajar mandiri yang luar biasa — kamu bisa kuasai skill baru lebih cepat dari rata-rata.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Kadang terlalu dalam berpikir sampai lupa mulai. "Done is better than perfect" adalah mantra yang perlu kamu latih.'},
+    ],
+    careers:[
+      {name:'Software Engineer', desc:'Membangun sistem digital skala besar', match:96, color:'#3D7BFF'},
+      {name:'Data Scientist', desc:'Mengubah data menjadi keputusan strategis', match:88, color:'#00C98B'},
+      {name:'Product Manager', desc:'Mengelola produk dari ide sampai market', match:82, color:'#A855F7'},
+    ],
+    quote:'Kamu tidak harus jadi jenius untuk membangun sesuatu yang luar biasa. Kamu hanya perlu mulai — satu baris kode, satu proyek kecil, satu langkah nyata.',
+    quoteSub:'Setiap developer hebat pernah di posisimu sekarang.',
+    quoteAuthor:'Kevin Systrom · Co-founder Instagram',
+  },
+  seni: {
+    char:['Visual thinker','Ekspresif','Inovatif','Penuh perasaan'],
+    desc:'Kamu melihat keindahan di tempat yang orang lain lewati begitu saja. Estetika dan ekspresi adalah bahasamu yang paling jujur — kamu berkomunikasi paling kuat lewat karya, bukan kata.',
+    stats:[
+      {name:'Kreativitas Visual', val:94, color:'#FF5E3A'},
+      {name:'Ekspresi Diri', val:88, color:'#EC4899'},
+      {name:'Kepekaan Estetika', val:91, color:'#A855F7'},
+      {name:'Storytelling', val:82, color:'#F59E0B'},
+    ],
+    traits:[
+      {text:'Melihat dunia secara visual', color:'#FF5E3A'},
+      {text:'Emosi yang dalam & kaya', color:'#EC4899'},
+      {text:'Suka membuat sesuatu dari nol', color:'#A855F7'},
+      {text:'Punya selera yang kuat', color:'#F97316'},
+    ],
+    strengths:[
+      {ic:'ti-palette', title:'Kekuatan Utama', text:'Mampu menciptakan karya yang membuat orang merasakan sesuatu. Inilah yang paling langka dan paling dicari di era konten.'},
+      {ic:'ti-bulb', title:'Kekuatan Tersembunyi', text:'Kemampuan berpikir lateral — kamu bisa melihat solusi kreatif yang orang lain tidak bayangkan sama sekali.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Kepekaan tinggi bisa jadi pedang bermata dua. Belajar menerima kritik sebagai bahan bakar, bukan serangan.'},
+    ],
+    careers:[
+      {name:'UI/UX Designer', desc:'Merancang pengalaman digital yang indah', match:95, color:'#FF5E3A'},
+      {name:'Content Creator', desc:'Konten visual yang membangun audiens', match:90, color:'#F97316'},
+      {name:'Brand Creative', desc:'Identitas visual untuk brand besar', match:86, color:'#EC4899'},
+    ],
+    quote:'Di era digital, kreativitas bukan hobi — ini adalah modal bisnis yang paling liquid. Satu karya yang viral bisa mengubah hidupmu dalam semalam.',
+    quoteSub:'Tapi yang lebih penting: buat karya yang jujur, bukan yang viral.',
+    quoteAuthor:'Diela Maharanie · Ilustrator Internasional',
+  },
+  sains: {
+    char:['Analitis mendalam','Rasa ingin tahu tinggi','Teliti','Berbasis data'],
+    desc:'Kamu tidak cukup tahu "apa" — kamu harus tahu "mengapa". Pikiranmu terus berputar mencari penjelasan di balik fenomena. Ini bukan cuma karakter akademik, ini cara kamu melihat dunia.',
+    stats:[
+      {name:'Pemikiran Analitis', val:93, color:'#00C98B'},
+      {name:'Ketelitian Data', val:89, color:'#3D7BFF'},
+      {name:'Rasa Ingin Tahu', val:87, color:'#F59E0B'},
+      {name:'Critical Thinking', val:91, color:'#A855F7'},
+    ],
+    traits:[
+      {text:'Selalu bertanya "mengapa?"', color:'#00C98B'},
+      {text:'Berbasis fakta & evidence', color:'#3D7BFF'},
+      {text:'Sabar dengan proses panjang', color:'#F59E0B'},
+      {text:'Tidak suka asumsi tanpa data', color:'#7C3AED'},
+    ],
+    strengths:[
+      {ic:'ti-microscope', title:'Kekuatan Utama', text:'Kemampuan berpikir kritis yang sangat tajam. Kamu bisa mengurai masalah kompleks jadi bagian-bagian yang bisa dipecahkan.'},
+      {ic:'ti-chart-bar', title:'Kekuatan Tersembunyi', text:'Naluri riset yang alami — kamu bisa menggali informasi lebih dalam dari siapapun, dan menemukan pola yang tersembunyi.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Terkadang terlalu lama di fase analisis dan ragu untuk mengambil keputusan. "Good data beats perfect data" — terapkan ini.'},
+    ],
+    careers:[
+      {name:'Data Scientist', desc:'Mengubah data menjadi insight bisnis', match:97, color:'#00C98B'},
+      {name:'Research Scientist', desc:'Menemukan pengetahuan baru untuk dunia', match:92, color:'#3D7BFF'},
+      {name:'Dokter / Specialist', desc:'Profesi sains terapan yang mulia', match:85, color:'#F59E0B'},
+    ],
+    quote:'Satu pertanyaan yang tepat lebih berharga dari seribu jawaban yang salah. Rasa ingin tahumu adalah senjata — jangan biarkan ia berkarat.',
+    quoteSub:'Ilmu pengetahuan dimulai dari keberanian untuk tidak tahu.',
+    quoteAuthor:'Tri Mumpuni · Ilmuwan & Pioneer Energi Terbarukan',
+  },
+  tulis: {
+    char:['Empatik','Komunikatif','Penutur cerita alami','Observan'],
+    desc:'Kata-kata adalah senjatamu yang paling kuat. Kamu bisa mengubah emosi yang rumit menjadi kalimat yang tepat — ini skill yang langka dan jauh lebih berharga dari yang kamu kira.',
+    stats:[
+      {name:'Ekspresi Verbal', val:91, color:'#A855F7'},
+      {name:'Empati & Koneksi', val:88, color:'#EC4899'},
+      {name:'Kreativitas Narasi', val:85, color:'#FF5E3A'},
+      {name:'Observasi Mendalam', val:83, color:'#00C98B'},
+    ],
+    traits:[
+      {text:'Merasakan apa yang orang lain rasakan', color:'#EC4899'},
+      {text:'Kata-kata adalah rumahmu', color:'#A855F7'},
+      {text:'Suka mengamati sebelum bicara', color:'#00C98B'},
+      {text:'Punya cara pandang unik', color:'#F59E0B'},
+    ],
+    strengths:[
+      {ic:'ti-pencil', title:'Kekuatan Utama', text:'Kemampuan bercerita yang membuat orang terhenti dan mau membaca sampai habis. Ini adalah skill yang tidak bisa di-automate AI.'},
+      {ic:'ti-target', title:'Kekuatan Tersembunyi', text:'Kemampuan persuasi yang natural — kamu bisa menggerakkan orang melalui tulisan, tanpa terasa memaksa.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Perfeksionisme dalam menulis bisa jadi penghambat. Ingat: tulisan pertama tidak perlu sempurna, yang penting ada di halaman.'},
+    ],
+    careers:[
+      {name:'Content Strategist', desc:'Strategi konten untuk brand digital', match:93, color:'#A855F7'},
+      {name:'Jurnalis / Penulis', desc:'Menceritakan dunia lewat kata yang kuat', match:90, color:'#EC4899'},
+      {name:'Copywriter / UX Writer', desc:'Kata-kata yang menggerakkan pengguna', match:88, color:'#3D7BFF'},
+    ],
+    quote:'Dee Lestari menulis Supernova pertamanya saat kuliah, tanpa background sastra. Andrea Hirata menulis Laskar Pelangi tanpa pengalaman formal. Kamu tidak perlu siap — kamu perlu mulai.',
+    quoteSub:'Ceritamu sudah ada. Tinggal kamu tulis.',
+    quoteAuthor:'Dee Lestari · Penulis & Musisi',
+  },
+  musik: {
+    char:['Kepekaan tinggi','Ekspresif','Kreatif','Jiwa seniman'],
+    desc:'Musik mengalir dalam cara kamu berpikir dan merasakan dunia. Entah kamu bermain, menciptakan, atau sekadar mendengarkan — kepekaan artistikmu adalah modal yang lebih besar dari yang kamu sadari.',
+    stats:[
+      {name:'Kepekaan Musikal', val:94, color:'#EC4899'},
+      {name:'Kreativitas Artistik', val:90, color:'#A855F7'},
+      {name:'Ekspresi Emosional', val:88, color:'#FF5E3A'},
+      {name:'Kolaborasi & Vibe', val:82, color:'#F59E0B'},
+    ],
+    traits:[
+      {text:'Merasakan emosi lebih dalam', color:'#EC4899'},
+      {text:'Ekspresif & autentik', color:'#FF5E3A'},
+      {text:'Suka menciptakan sesuatu baru', color:'#A855F7'},
+      {text:'Koneksi kuat dengan audiens', color:'#00C98B'},
+    ],
+    strengths:[
+      {ic:'ti-music', title:'Kekuatan Utama', text:'Kemampuan menyentuh hati orang lewat karya. Musik adalah bahasa universal — dan kamu bisa berbicara dalam bahasa itu.'},
+      {ic:'ti-headphones', title:'Kekuatan Tersembunyi', text:'Kepekaan emosional yang tinggi membuatmu bisa memahami dan mengekspresikan nuansa yang orang lain tidak perhatikan.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Jangan tunggu sampai "siap tampil". Pamungkas mulai dari kamar dengan laptop murah. Mulailah dari mana kamu berada.'},
+    ],
+    careers:[
+      {name:'Music Producer', desc:'Produksi lagu untuk artis & konten digital', match:94, color:'#EC4899'},
+      {name:'Content Creator', desc:'Konten musik yang membangun komunitas', match:89, color:'#F97316'},
+      {name:'Komposer / Arranger', desc:'Menciptakan musik untuk film, game, iklan', match:86, color:'#A855F7'},
+    ],
+    quote:'Rich Brian memulai rap dari kamarnya di Jakarta. Pamungkas merekam lagu pertama di laptop pinjaman. Alatmu tidak menentukan hasilmu — intensitasmu yang menentukan.',
+    quoteSub:'Kamarmu sudah cukup sebagai studio.',
+    quoteAuthor:'Pamungkas · Musisi Indonesia Go International',
+  },
+  sport: {
+    char:['Disiplin baja','Daya juang tinggi','Natural leader','Kompetitif'],
+    desc:'Kamu hidup untuk bergerak, bersaing, dan terus berkembang. Mentalitasmu dalam olahraga — pantang menyerah, kerja keras, fokus — adalah aset yang dibawa ke semua aspek hidupmu.',
+    stats:[
+      {name:'Daya Juang', val:95, color:'#F59E0B'},
+      {name:'Disiplin Latihan', val:89, color:'#00C98B'},
+      {name:'Leadership & Tim', val:87, color:'#3D7BFF'},
+      {name:'Mental Kompetisi', val:92, color:'#EC4899'},
+    ],
+    traits:[
+      {text:'Tidak kenal kata menyerah', color:'#F59E0B'},
+      {text:'Memimpin lewat tindakan', color:'#3D7BFF'},
+      {text:'Kompetitif tapi sportif', color:'#00C98B'},
+      {text:'Tubuh dan pikiran yang terlatih', color:'#EC4899'},
+    ],
+    strengths:[
+      {ic:'ti-trophy', title:'Kekuatan Utama', text:'Mental kompetisi yang luar biasa. Kamu tahu cara mempersiapkan diri, fokus di bawah tekanan, dan bangkit setelah gagal.'},
+      {ic:'ti-users', title:'Kekuatan Tersembunyi', text:'Kemampuan memimpin dan menginspirasi tim. Seorang atlet yang baik tahu cara mengangkat orang-orang di sekitarnya.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Jangan hanya andalkan fisik — kombinasikan dengan pemahaman taktis dan analitik untuk naik ke level berikutnya.'},
+    ],
+    careers:[
+      {name:'Atlet Profesional', desc:'Mewakili Indonesia di kompetisi internasional', match:96, color:'#F59E0B'},
+      {name:'Sport Scientist', desc:'Analisis performa & ilmu olahraga modern', match:87, color:'#3D7BFF'},
+      {name:'Pelatih Profesional', desc:'Membentuk generasi atlet berikutnya', match:83, color:'#00C98B'},
+    ],
+    quote:'Jonatan Christie mulai dari klub kecil Jakarta. Greysia Polii pernah ditolak pelatnas. Yang membedakan mereka dengan yang lain bukan bakat — tapi mereka tidak pernah berhenti.',
+    quoteSub:'Latihan hari ini adalah medali dua tahun ke depan.',
+    quoteAuthor:'Greysia Polii · Medali Emas Olimpiade Tokyo',
+  },
+  robot: {
+    char:['Inovatif','Sistematis','Pemecah masalah','Visioner'],
+    desc:'Kamu suka merancang, merakit, dan membuat sesuatu bergerak dari nol. Kemampuan berpikir sistem dan kreativitas teknis adalah kombinasi langka — persis yang dibutuhkan untuk membangun masa depan.',
+    stats:[
+      {name:'Pemikiran Sistematis', val:94, color:'#7C3AED'},
+      {name:'Kreativitas Teknis', val:88, color:'#3D7BFF'},
+      {name:'Problem Solving', val:92, color:'#00C98B'},
+      {name:'Inovasi & Iterasi', val:86, color:'#F59E0B'},
+    ],
+    traits:[
+      {text:'Senang membangun dari nol', color:'#7C3AED'},
+      {text:'Berpikir dalam sistem & logika', color:'#3D7BFF'},
+      {text:'Gagal = data baru untuk dicoba', color:'#00C98B'},
+      {text:'Visi jangka panjang', color:'#F97316'},
+    ],
+    strengths:[
+      {ic:'ti-robot', title:'Kekuatan Utama', text:'Kemampuan berpikir end-to-end — dari konsep, desain, build, sampai test. Ini skill yang langka bahkan di industri tech.'},
+      {ic:'ti-tool', title:'Kekuatan Tersembunyi', text:'Kreativitas teknis yang bisa diterapkan lintas bidang: robotika, AI, IoT, bahkan produk hardware masa depan.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Jangan terjebak perfeksionisme teknis. Prototype kasar yang bekerja jauh lebih berharga dari blueprint sempurna yang tidak ada.'},
+    ],
+    careers:[
+      {name:'Robotics Engineer', desc:'Rancang robot untuk industri & riset', match:97, color:'#7C3AED'},
+      {name:'AI/ML Engineer', desc:'Kembangkan kecerdasan buatan masa depan', match:91, color:'#3D7BFF'},
+      {name:'Hardware Startup Founder', desc:'Bangun produk hardware yang mengubah dunia', match:85, color:'#00C98B'},
+    ],
+    quote:'Pelajar Indonesia sudah menang World Robot Olympiad dari kit robotik sederhana. Bukan karena peralatannya — tapi karena mereka terus mencoba dan tidak menyerah saat gagal.',
+    quoteSub:'Robotmu yang pertama tidak harus sempurna. Yang penting ia bergerak.',
+    quoteAuthor:'Tim WRO Indonesia · World Robot Olympiad Champions',
+  },
+  foto: {
+    char:['Observan','Estetis','Penuh perhatian','Storyteller visual'],
+    desc:'Kamu melihat dunia dalam bingkai — setiap momen, cahaya, dan sudut pandang punya cerita. Matamu adalah kamera paling canggih, dan insting visualmu adalah aset yang sangat berharga di era konten.',
+    stats:[
+      {name:'Kepekaan Visual', val:93, color:'#F97316'},
+      {name:'Storytelling Gambar', val:89, color:'#A855F7'},
+      {name:'Observasi Detail', val:91, color:'#00C98B'},
+      {name:'Kreativitas Komposisi', val:87, color:'#EC4899'},
+    ],
+    traits:[
+      {text:'Melihat keindahan di tempat biasa', color:'#F97316'},
+      {text:'Sabar menunggu momen yang tepat', color:'#00C98B'},
+      {text:'Bercerita tanpa kata-kata', color:'#A855F7'},
+      {text:'Perhatian terhadap detail kecil', color:'#EC4899'},
+    ],
+    strengths:[
+      {ic:'ti-camera', title:'Kekuatan Utama', text:'Kemampuan menangkap momen dan emosi yang orang lain lewatkan. Sebuah foto yang tepat bisa bicara lebih kuat dari 1000 kata.'},
+      {ic:'ti-eye', title:'Kekuatan Tersembunyi', text:'Kemampuan observasi yang tinggi membuatmu bisa "membaca" situasi, orang, dan lingkungan dengan sangat akurat.'},
+      {ic:'ti-plant', title:'Titik Tumbuh', text:'Jangan tunggu kamera sempurna. Darwis Triadi mulai dengan kamera biasa. Matamu jauh lebih penting dari alatmu.'},
+    ],
+    careers:[
+      {name:'Fotografer Profesional', desc:'Brand deals, wedding, karya seni murni', match:95, color:'#F97316'},
+      {name:'UI/UX Designer', desc:'Estetika foto sangat berguna di desain digital', match:87, color:'#A855F7'},
+      {name:'Creative Director', desc:'Pimpin arah visual untuk brand besar', match:84, color:'#EC4899'},
+    ],
+    quote:'Kamera termahal tidak akan menghasilkan foto terbaik — mata yang terlatih dan kepekaan yang diasah setiap hari itulah yang menghasilkan karya abadi.',
+    quoteSub:'Foto terbaikmu belum pernah kamu ambil.',
+    quoteAuthor:'Darwis Triadi · Fotografer Indonesia Bertaraf Internasional',
+  },
+};
+
+// Global galaxy state
+let galaxyScores = null;
+let galaxyAnimFrame = null;
+let planets = [];
+let hoveredPlanet = null;
+let galaxyDragAngle = 0;
+let galaxyDragStart = null;
+let galaxyDragStartAngle = 0;
+
+const PVI_DATA = {
+  tech:  {potential:90, interest:75, sweet:'UI/UX Development', why:'Logika tinggi + minat visual → full-stack atau UI/UX Engineering'},
+  seni:  {potential:85, interest:92, sweet:'UI/UX Design & Branding', why:'Minat tinggi melampaui potensi → fokus passion, bangun portofolio'},
+  sains: {potential:88, interest:70, sweet:'Data Science', why:'Potensi analitis kuat → arahkan ke data + riset terapan'},
+  tulis: {potential:80, interest:88, sweet:'Content Strategy', why:'Minat menulis tinggi → kembangkan ke konten profesional'},
+  musik: {potential:78, interest:94, sweet:'Music Production', why:'Passion musik luar biasa → ekspansi ke produksi digital'},
+  sport: {potential:85, interest:90, sweet:'Sport Science & Coaching', why:'Cinta olahraga → gabungkan dengan ilmu untuk karir profesional'},
+  robot: {potential:92, interest:82, sweet:'Robotics & IoT Engineering', why:'Potensi teknis sangat tinggi → kembangkan di edge computing'},
+  foto:  {potential:82, interest:89, sweet:'Visual Storytelling', why:'Minat foto tinggi → arahkan ke jurnalistik visual atau brand photography'},
+};
+
+/* ===================================================================
+   MODULE — TALENT GALAXY RENDERER (Canvas) — CINEMATIC REBUILD
+   =================================================================== */
+function initGalaxyCanvas(scores){
+  galaxyScores = scores;
+  const canvas = document.getElementById('galaxy-canvas');
+  if(!canvas) return;
+  const wrap = canvas.parentElement;
+  const size = wrap.clientWidth || 400;
+  canvas.width = size * window.devicePixelRatio;
+  canvas.height = size * window.devicePixelRatio;
+  canvas.style.width = size+'px';
+  canvas.style.height = size+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  const cx = size/2, cy = size/2;
+  const maxScore = Math.max(...Object.values(scores));
+  const keys = Object.keys(scores);
+  const total = keys.length;
+
+  // Compute planet sizes and orbits
+  planets = keys.map((k, i) => {
+    const sc = scores[k] || 0;
+    const norm = maxScore > 0 ? sc / maxScore : 0;
+    const baseR = 14 + norm * 28;
+    const minOrbit = size * 0.14;
+    const maxOrbit = size * 0.42;
+    const orbitR = minOrbit + i * ((maxOrbit - minOrbit) / (total - 1 || 1));
+    const cfg = PLANET_CONFIG[k];
+    const angleOffset = (i / total) * Math.PI * 2;
+    return {
+      key: k, label: cfg.label, color: cfg.color, glow: cfg.glow, ring: cfg.ring,
+      r: baseR, orbitR, score: sc, norm,
+      angle: angleOffset,
+      speed: 0.00035 + 0.00015 * (1 - norm),
+      isDominant: sc === maxScore,
+      moons: norm > 0.7 ? Math.floor(norm * 2) : 0,
+      cloudOffset: Math.random() * Math.PI * 2,
+    };
+  });
+
+  planets.sort((a,b) => b.orbitR - a.orbitR);
+
+  // Remove old listeners before adding new ones
+  canvas.replaceWith(canvas.cloneNode(false));
+  const c2 = document.getElementById('galaxy-canvas');
+  if(!c2) return;
+  // re-scale after clone
+  c2.width = size * window.devicePixelRatio;
+  c2.height = size * window.devicePixelRatio;
+  c2.style.width = size+'px';
+  c2.style.height = size+'px';
+  const ctx2 = c2.getContext('2d');
+  ctx2.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  // Events
+  c2.addEventListener('mousemove', onGalaxyMouse);
+  c2.addEventListener('touchstart', onGalaxyTouchStart, {passive:true});
+  c2.addEventListener('touchmove', onGalaxyTouchMove, {passive:true});
+  c2.addEventListener('touchend', onGalaxyTouchEnd, {passive:true});
+  c2.addEventListener('mousedown', onGalaxyMouseDown);
+  c2.addEventListener('mouseup', onGalaxyMouseUp);
+  c2.addEventListener('mouseleave', ()=>{ hoveredPlanet=null; galaxyDragStart=null; });
+  c2.addEventListener('click', onGalaxyClick);
+
+  // Nebula colors (generated once)
+  const nebulaPoints = Array.from({length:5}, (_,i) => ({
+    x: cx + (Math.sin(i*2.1)*0.35 + (Math.random()-.5)*.3) * size,
+    y: cy + (Math.cos(i*1.7)*0.35 + (Math.random()-.5)*.3) * size,
+    r: size * (0.12 + Math.random() * 0.18),
+    color: ['#1847ED','#6D28D9','#9D174D','#F04E23','#00966A'][i % 5],
+    alpha: 0.03 + Math.random() * 0.04,
+  }));
+
+  // Shooting stars
+  let shootingStars = [];
+  function spawnShootingStar(){
+    const edge = Math.random() < 0.5 ? 0 : size;
+    shootingStars.push({
+      x: Math.random() * size,
+      y: edge === 0 ? -10 : size + 10,
+      vx: (Math.random() - 0.5) * 4,
+      vy: edge === 0 ? 2 + Math.random() * 3 : -(2 + Math.random() * 3),
+      len: 40 + Math.random() * 60,
+      alpha: 1,
+      life: 0,
+      maxLife: 40 + Math.random() * 30,
+    });
+  }
+
+  if(galaxyAnimFrame) cancelAnimationFrame(galaxyAnimFrame);
+  let t = 0;
+  let shootTimer = 0;
+
+  function draw(){
+    ctx2.clearRect(0,0,size,size);
+
+    // ── Background: true deep space ──
+    ctx2.fillStyle = '#030509';
+    ctx2.fillRect(0,0,size,size);
+
+    // radial center glow
+    const bgGlow = ctx2.createRadialGradient(cx,cy,0,cx,cy,size*.55);
+    bgGlow.addColorStop(0,'rgba(20,30,80,.6)');
+    bgGlow.addColorStop(1,'transparent');
+    ctx2.fillStyle = bgGlow;
+    ctx2.fillRect(0,0,size,size);
+
+    // ── Nebulae ──
+    nebulaPoints.forEach(n => {
+      const ng = ctx2.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+      ng.addColorStop(0, n.color + Math.floor(n.alpha * 255).toString(16).padStart(2,'0'));
+      ng.addColorStop(1,'transparent');
+      ctx2.beginPath();
+      ctx2.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx2.fillStyle = ng;
+      ctx2.fill();
+    });
+
+    // ── Stars (3 layers: tiny/medium/bright) ──
+    drawCinematicStars(ctx2, size, t);
+
+    // ── Shooting stars ──
+    shootTimer++;
+    if(shootTimer > 180 + Math.random()*120){ shootTimer=0; spawnShootingStar(); }
+    shootingStars = shootingStars.filter(s => s.life < s.maxLife);
+    shootingStars.forEach(s => {
+      s.x += s.vx; s.y += s.vy; s.life++;
+      const progress = s.life / s.maxLife;
+      const alpha = Math.sin(progress * Math.PI) * 0.8;
+      const grad = ctx2.createLinearGradient(s.x, s.y, s.x - s.vx*(s.len/4), s.y - s.vy*(s.len/4));
+      grad.addColorStop(0, `rgba(255,255,255,${alpha})`);
+      grad.addColorStop(1, 'transparent');
+      ctx2.beginPath();
+      ctx2.moveTo(s.x, s.y);
+      ctx2.lineTo(s.x - s.vx * (s.len/Math.abs(s.vy||1)), s.y - s.vy * (s.len/Math.abs(s.vy||1)));
+      ctx2.strokeStyle = grad;
+      ctx2.lineWidth = 1.5;
+      ctx2.stroke();
+    });
+
+    // ── Cosmic dust particles ──
+    for(let d=0; d<20; d++){
+      const dx = (Math.sin(d*432.1+t*.002)*0.5+0.5)*size;
+      const dy = (Math.cos(d*876.3+t*.003)*0.5+0.5)*size;
+      const dalpha = 0.03 + Math.sin(t*.02+d)*0.02;
+      ctx2.beginPath();
+      ctx2.arc(dx,dy,0.8,0,Math.PI*2);
+      ctx2.fillStyle=`rgba(255,255,255,${dalpha})`;
+      ctx2.fill();
+    }
+
+    // ── Center star (dominant bakat) ──
+    const dominant = planets.find(p=>p.isDominant) || planets[0];
+    drawCinematicCenterStar(ctx2, cx, cy, dominant, t, size);
+
+    // ── Orbit rings ──
+    planets.forEach(p => {
+      ctx2.beginPath();
+      ctx2.arc(cx, cy, p.orbitR, 0, Math.PI*2);
+      ctx2.strokeStyle = p.isDominant ? `${p.color}22` : 'rgba(255,255,255,.03)';
+      ctx2.lineWidth = p.isDominant ? 1.5 : 1;
+      ctx2.setLineDash(p.isDominant ? [] : [4, 8]);
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+    });
+
+    // ── Planets ──
+    const rotAngle = galaxyDragAngle;
+    planets.forEach(p => {
+      p.angle += p.speed;
+      const px = cx + Math.cos(p.angle + rotAngle) * p.orbitR;
+      const py = cy + Math.sin(p.angle + rotAngle) * p.orbitR;
+      p.currentX = px; p.currentY = py;
+
+      // Moons
+      if(p.moons > 0){
+        for(let m=0; m<p.moons; m++){
+          const moonAngle = p.angle * 4 + (m * Math.PI) + t*0.015;
+          const moonOrbit = p.r * 1.8;
+          const mx = px + Math.cos(moonAngle) * moonOrbit;
+          const my = py + Math.sin(moonAngle) * moonOrbit;
+          ctx2.beginPath();
+          ctx2.arc(mx, my, p.r * 0.28, 0, Math.PI*2);
+          ctx2.fillStyle = p.color + '66';
+          ctx2.fill();
+        }
+      }
+
+      const isHover = hoveredPlanet?.key === p.key;
+      const scaleFactor = isHover ? 1.12 : 1;
+
+      // Outer atmosphere
+      const atmSize = p.r * 2.8 * scaleFactor;
+      const atm = ctx2.createRadialGradient(px,py,p.r*0.5,px,py,atmSize);
+      atm.addColorStop(0, p.color + (isHover ? '44' : '22'));
+      atm.addColorStop(1,'transparent');
+      ctx2.beginPath();
+      ctx2.arc(px,py,atmSize,0,Math.PI*2);
+      ctx2.fillStyle=atm;
+      ctx2.fill();
+
+      // Planet body gradient (3D sphere look)
+      const pr = p.r * scaleFactor;
+      const pGrad = ctx2.createRadialGradient(px - pr*0.35, py - pr*0.35, 0, px, py, pr);
+      pGrad.addColorStop(0, lightenColor(p.color, 60));
+      pGrad.addColorStop(0.45, p.color);
+      pGrad.addColorStop(0.85, darkenColor(p.color, 40));
+      pGrad.addColorStop(1, darkenColor(p.color, 60));
+      ctx2.beginPath();
+      ctx2.arc(px, py, pr, 0, Math.PI*2);
+      ctx2.fillStyle = pGrad;
+      ctx2.fill();
+
+      // Surface texture bands
+      ctx2.save();
+      ctx2.beginPath();
+      ctx2.arc(px,py,pr,0,Math.PI*2);
+      ctx2.clip();
+      for(let band=0; band<3; band++){
+        const by = py - pr + (pr*2/(3+1))*(band+1);
+        const bh = pr*0.15;
+        const bAlpha = 0.06 + band*0.02;
+        ctx2.fillStyle = `rgba(255,255,255,${bAlpha})`;
+        ctx2.fillRect(px-pr, by-bh/2, pr*2, bh);
+      }
+      ctx2.restore();
+
+      // Highlight (light reflection)
+      const hl = ctx2.createRadialGradient(px-pr*.3, py-pr*.35, 0, px-pr*.2, py-pr*.2, pr*.55);
+      hl.addColorStop(0,'rgba(255,255,255,.35)');
+      hl.addColorStop(1,'transparent');
+      ctx2.beginPath();
+      ctx2.arc(px,py,pr,0,Math.PI*2);
+      ctx2.fillStyle=hl;
+      ctx2.fill();
+
+      // Saturn-style ring for ring planets
+      if(p.ring){
+        ctx2.save();
+        ctx2.translate(px,py);
+        ctx2.rotate(0.35);
+        ctx2.scale(1,0.28);
+        const ringInner = pr*1.3, ringOuter = pr*2.0;
+        const rg = ctx2.createRadialGradient(0,0,ringInner,0,0,ringOuter);
+        rg.addColorStop(0,p.color+'00');
+        rg.addColorStop(0.2,p.color+'88');
+        rg.addColorStop(0.6,p.color+'44');
+        rg.addColorStop(1,p.color+'00');
+        ctx2.beginPath();
+        ctx2.arc(0,0,ringOuter,0,Math.PI*2);
+        ctx2.arc(0,0,ringInner,0,Math.PI*2,true);
+        ctx2.fillStyle=rg;
+        ctx2.fill();
+        ctx2.restore();
+      }
+
+      // Dominant crown glow
+      if(p.isDominant){
+        const dGlow = ctx2.createRadialGradient(px,py,pr,px,py,pr*3.5);
+        dGlow.addColorStop(0, p.color+'44');
+        dGlow.addColorStop(0.5, p.color+'11');
+        dGlow.addColorStop(1,'transparent');
+        ctx2.beginPath();
+        ctx2.arc(px,py,pr*3.5,0,Math.PI*2);
+        ctx2.fillStyle=dGlow;
+        ctx2.fill();
+      }
+
+      // Label
+      ctx2.save();
+      const labelY = py + pr*scaleFactor + 14;
+      const labelAlpha = isHover ? 1 : (p.isDominant ? 0.9 : 0.55);
+      ctx2.font = `${p.isDominant?'700':'600'} ${Math.max(9,Math.min(13,pr*.55))}px "DM Sans",sans-serif`;
+      ctx2.fillStyle = `rgba(255,255,255,${labelAlpha})`;
+      ctx2.textAlign='center';
+      ctx2.fillText(p.label, px, labelY);
+      // score under label for hover
+      if(isHover){
+        ctx2.font=`700 11px "DM Sans",sans-serif`;
+        ctx2.fillStyle = p.color;
+        ctx2.fillText(p.score+'%', px, labelY+14);
+      }
+      ctx2.restore();
+    });
+
+    t += 0.6;
+    galaxyAnimFrame = requestAnimationFrame(draw);
+  }
+  draw();
+
+  renderGalaxyLegend(scores, maxScore);
+  renderGalaxyInsight(scores);
+  renderPVI(scores);
+}
+
+function drawCinematicStars(ctx, size, t){
+  ctx.save();
+  // Tiny stars
+  for(let i=0;i<120;i++){
+    const sx=(Math.sin(i*2345.6)*0.5+0.5)*size;
+    const sy=(Math.cos(i*8765.4)*0.5+0.5)*size;
+    const alpha=0.15+Math.sin(t*0.02+i)*0.1;
+    ctx.beginPath();ctx.arc(sx,sy,0.6,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
+  }
+  // Medium stars with twinkle
+  for(let i=0;i<40;i++){
+    const sx=(Math.sin(i*9876.5)*0.5+0.5)*size;
+    const sy=(Math.cos(i*5432.1)*0.5+0.5)*size;
+    const sr=0.8+Math.sin(t*0.05+i)*0.5;
+    const alpha=0.3+Math.sin(t*0.04+i*0.7)*0.2;
+    ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
+  }
+  // Bright accent stars
+  for(let i=0;i<8;i++){
+    const sx=(Math.sin(i*6543.2)*0.5+0.5)*size;
+    const sy=(Math.cos(i*3210.9)*0.5+0.5)*size;
+    const sr=1.2+Math.sin(t*0.03+i)*0.4;
+    const alpha=0.6+Math.sin(t*0.06+i)*0.3;
+    ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
+    ctx.fillStyle=`rgba(200,220,255,${alpha})`;ctx.fill();
+    // cross flare
+    ctx.strokeStyle=`rgba(200,220,255,${alpha*0.4})`;
+    ctx.lineWidth=0.5;
+    const fl=sr*5;
+    ctx.beginPath();ctx.moveTo(sx-fl,sy);ctx.lineTo(sx+fl,sy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(sx,sy-fl);ctx.lineTo(sx,sy+fl);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawCinematicCenterStar(ctx, cx, cy, dominant, t, size){
+  const pulse = 1 + Math.sin(t*0.05)*0.1;
+  const r = (size*0.028) * pulse;
+
+  // Corona rings
+  for(let ring=3; ring>=1; ring--){
+    const rr = r * (1 + ring*0.8);
+    const alpha = 0.06 / ring;
+    const rg = ctx.createRadialGradient(cx,cy,r,cx,cy,rr);
+    rg.addColorStop(0, dominant.color+Math.floor(alpha*255).toString(16).padStart(2,'0'));
+    rg.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(cx,cy,rr,0,Math.PI*2);
+    ctx.fillStyle=rg;ctx.fill();
+  }
+  // Body
+  const sg = ctx.createRadialGradient(cx-r*.3,cy-r*.3,0,cx,cy,r);
+  sg.addColorStop(0,'#ffffff');
+  sg.addColorStop(0.3,lightenColor(dominant.color,60));
+  sg.addColorStop(0.7,dominant.color);
+  sg.addColorStop(1,darkenColor(dominant.color,20));
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.fillStyle=sg;ctx.fill();
+
+  // 4-point flare
+  ctx.save();
+  const fl = r * 3.5;
+  const fAlpha = 0.25 + Math.sin(t*0.04)*0.1;
+  [[0,1],[1,0],[-1,0],[0,-1]].forEach(([dx,dy])=>{
+    const fg = ctx.createLinearGradient(cx,cy,cx+dx*fl,cy+dy*fl);
+    fg.addColorStop(0,dominant.color+Math.floor(fAlpha*255).toString(16).padStart(2,'0'));
+    fg.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+dx*fl,cy+dy*fl);
+    ctx.strokeStyle=fg;ctx.lineWidth=1.5;ctx.stroke();
+  });
+  ctx.restore();
+
+  // "★" text
+  ctx.save();
+  ctx.font=`bold ${Math.max(8,r*.8)}px sans-serif`;
+  ctx.fillStyle='rgba(255,255,255,.9)';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('★',cx,cy);
+  ctx.restore();
+}
+
+function lightenColor(hex, amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.min(255,(n>>16)+amt);
+  const g=Math.min(255,((n>>8)&0xff)+amt);
+  const b=Math.min(255,(n&0xff)+amt);
+  return `rgb(${r},${g},${b})`;
+}
+function darkenColor(hex, amt){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.max(0,(n>>16)-amt);
+  const g=Math.max(0,((n>>8)&0xff)-amt);
+  const b=Math.max(0,(n&0xff)-amt);
+  return `rgb(${r},${g},${b})`;
+}
+
+/* ── Galaxy interaction: hover, drag, click ── */
+function onGalaxyMouse(e){
+  const c = document.getElementById('galaxy-canvas'); if(!c) return;
+  const rect = c.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  if(galaxyDragStart){
+    galaxyDragAngle = galaxyDragStartAngle + (mx - galaxyDragStart.x) * 0.008;
+  } else {
+    checkPlanetHover(mx, my);
+  }
+}
+function onGalaxyMouseDown(e){
+  const c = document.getElementById('galaxy-canvas'); if(!c) return;
+  const rect = c.getBoundingClientRect();
+  galaxyDragStart = {x: e.clientX - rect.left, y: e.clientY - rect.top};
+  galaxyDragStartAngle = galaxyDragAngle;
+}
+function onGalaxyMouseUp(){ galaxyDragStart = null; }
+
+function onGalaxyTouchStart(e){
+  if(!e.touches[0]) return;
+  const c = document.getElementById('galaxy-canvas'); if(!c) return;
+  const rect = c.getBoundingClientRect();
+  galaxyDragStart = {x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top};
+  galaxyDragStartAngle = galaxyDragAngle;
+}
+function onGalaxyTouchMove(e){
+  if(!e.touches[0] || !galaxyDragStart) return;
+  const c = document.getElementById('galaxy-canvas'); if(!c) return;
+  const rect = c.getBoundingClientRect();
+  const mx = e.touches[0].clientX - rect.left;
+  galaxyDragAngle = galaxyDragStartAngle + (mx - galaxyDragStart.x) * 0.008;
+}
+function onGalaxyTouchEnd(e){
+  const c = document.getElementById('galaxy-canvas'); if(!c||!galaxyDragStart) return;
+  const rect = c.getBoundingClientRect();
+  const t = e.changedTouches[0];
+  const mx = t.clientX - rect.left, my = t.clientY - rect.top;
+  const moved = Math.abs(mx - galaxyDragStart.x) + Math.abs(my - galaxyDragStart.y);
+  if(moved < 10) checkPlanetClick(mx, my);
+  galaxyDragStart = null;
+}
+function onGalaxyClick(e){
+  const c = document.getElementById('galaxy-canvas'); if(!c) return;
+  const rect = c.getBoundingClientRect();
+  checkPlanetClick(e.clientX - rect.left, e.clientY - rect.top);
+}
+
+function checkPlanetHover(mx, my){
+  let found = null;
+  planets.forEach(p => {
+    if(p.currentX == null) return;
+    const dx = mx - p.currentX, dy = my - p.currentY;
+    if(Math.sqrt(dx*dx+dy*dy) < p.r + 12) found = p;
+  });
+  hoveredPlanet = found;
+  document.getElementById('galaxy-canvas').style.cursor = found ? 'pointer' : 'grab';
+}
+
+function checkPlanetClick(mx, my){
+  let found = null;
+  planets.forEach(p => {
+    if(p.currentX == null) return;
+    const dx = mx - p.currentX, dy = my - p.currentY;
+    if(Math.sqrt(dx*dx+dy*dy) < p.r + 16) found = p;
+  });
+  if(found) openPlanetPanel(found.key, found.score, found.isDominant);
+}
+
+/* ── Planet Deep Dive Panel ── */
+function openPlanetPanel(key, score, isDominant){
+  const cfg = PLANET_CONFIG[key];
+  const insight = PLANET_INSIGHT[key];
+  const res = RES[key] || {};
+  if(!insight) return;
+
+  // Hero bg
+  const heroBg = document.getElementById('pp-hero-bg');
+  heroBg.style.background = `radial-gradient(ellipse at 30% 50%, ${cfg.color}30 0%, transparent 70%)`;
+
+  // Orb
+  const orb = document.getElementById('pp-orb');
+  orb.style.background = `radial-gradient(circle at 35% 35%, ${lightenColor(cfg.color,50)}, ${cfg.color} 60%, ${darkenColor(cfg.color,30)})`;
+  orb.style.boxShadow = `0 0 32px ${cfg.color}66`;
+  orb.textContent = isDominant ? '★' : (score >= 60 ? '◆' : '●');
+  orb.style.setProperty('--pp-color', cfg.color);
+
+  // panel color var
+  document.getElementById('planet-panel').style.setProperty('--pp-color', cfg.color);
+  document.querySelector('.pp-quote').style.borderLeftColor = cfg.color;
+
+  document.getElementById('pp-name').textContent = cfg.label;
+  document.getElementById('pp-key').textContent = isDominant ? '🌟 Planet Dominan — Bakat Terkuatmu' : `Skor ${score}% · Planet Bakатmu`;
+  document.getElementById('pp-score-num').textContent = score + '%';
+  document.getElementById('pp-score-num').style.color = cfg.color;
+
+  // char tags
+  document.getElementById('pp-char-tags').innerHTML = insight.char.map(c =>
+    `<span class="pp-ctag">${c}</span>`).join('');
+
+  // desc
+  document.getElementById('pp-desc').textContent = insight.desc;
+
+  // stats
+  document.getElementById('pp-stat-grid').innerHTML = insight.stats.map(s =>
+    `<div class="pp-stat-card">
+      <div class="pp-stat-val" style="color:${s.color}">${s.val}%</div>
+      <div class="pp-stat-name">${s.name}</div>
+      <div class="pp-stat-bar"><div class="pp-stat-fill" data-target="${s.val}" style="background:${s.color};width:0"></div></div>
+    </div>`).join('');
+
+  // traits
+  document.getElementById('pp-traits').innerHTML = insight.traits.map(tr =>
+    `<div class="pp-trait"><div class="pp-trait-dot" style="background:${tr.color}"></div>${tr.text}</div>`).join('');
+
+  // strengths
+  document.getElementById('pp-insights').innerHTML = insight.strengths.map(s =>
+    `<div class="pp-insight-row">
+      <div class="pp-insight-ic"><i class="ti ${s.ic}"></i></div>
+      <div class="pp-insight-text"><strong>${s.title}</strong>${s.text}</div>
+    </div>`).join('');
+
+  // careers
+  document.getElementById('pp-careers').innerHTML = insight.careers.map(c =>
+    `<div class="pp-career-row">
+      <div class="pp-career-ic" style="background:${c.color}22;color:${c.color}"><i class="ti ti-briefcase"></i></div>
+      <div>
+        <div class="pp-career-name">${c.name}</div>
+        <div class="pp-career-desc">${c.desc}</div>
+      </div>
+      <div class="pp-career-match" style="background:${c.color}22;color:${c.color}">${c.match}%</div>
+    </div>`).join('');
+
+  // quote
+  document.getElementById('pp-quote').innerHTML =
+    `<div class="pp-quote-text">"${insight.quote}"</div>
+     <div class="pp-quote-sub">${insight.quoteSub}</div>
+     <div class="pp-quote-author">— ${insight.quoteAuthor}</div>`;
+
+  // open
+  document.getElementById('planet-panel-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // animate stat bars
+  setTimeout(() => {
+    document.querySelectorAll('.pp-stat-fill').forEach(bar => {
+      bar.style.width = bar.getAttribute('data-target') + '%';
+    });
+  }, 350);
+}
+
+function closePlanetPanel(e){
+  const overlay = document.getElementById('planet-panel-overlay');
+  if(!overlay) return;
+  if(e && e.target !== overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderGalaxyLegend(scores, maxScore){
+  const el = document.getElementById('galaxy-legend');
+  if(!el) return;
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  el.innerHTML = sorted.map(([k,v])=>{
+    const cfg = PLANET_CONFIG[k];
+    const isDom = v === maxScore;
+    return `<div class="gl-item${isDom?' dominant':''}" style="${isDom?`border-color:${cfg.color}55;box-shadow:0 0 0 1px ${cfg.color}22`:''}" onclick="openPlanetPanel('${k}',${v},${isDom})">
+      <div class="gl-planet-dot" style="background:${cfg.color};box-shadow:0 0 8px ${cfg.color}88"></div>
+      <div class="gl-name">${cfg.label}</div>
+      <div class="gl-pct" style="color:${cfg.color}">${v}%</div>
+    </div>`;
+  }).join('');
+}
+
+function renderGalaxyInsight(scores){
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const top = sorted[0][0];
+  const second = sorted[1][0];
+  const cfg1 = PLANET_CONFIG[top];
+  const cfg2 = PLANET_CONFIG[second];
+  document.getElementById('galaxy-insight-text').textContent =
+    `Planet dominanmu adalah ${cfg1.label} — ini kekuatan terbesar yang kamu miliki saat ini.`;
+  document.getElementById('galaxy-insight-sub').textContent =
+    `${cfg2.label} adalah planet sekundermu. Kombinasi ${cfg1.label} + ${cfg2.label} adalah kombinasi yang sangat langka dan powerful — tap planet untuk insight mendalam tentang dirimu.`;
+}
+
+function renderPVI(scores){
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const top = sorted[0][0];
+  const pvi = PVI_DATA[top];
+
+  const barsEl = document.getElementById('pvi-bars');
+  if(!barsEl) return;
+
+  const top3 = sorted.slice(0,3);
+  barsEl.innerHTML = top3.map(([k,v])=>{
+    const pcfg = PLANET_CONFIG[k];
+    const pdata = PVI_DATA[k];
+    return `<div class="pvi-bar-row">
+      <div class="pvi-bar-label">
+        <div class="pvi-bar-name">${pcfg.label}</div>
+        <div class="pvi-bar-nums">
+          <span class="pvi-bar-p">P: ${pdata.potential}%</span>
+          <span class="pvi-bar-i">M: ${pdata.interest}%</span>
+        </div>
+      </div>
+      <div class="pvi-bar-track">
+        <div class="pvi-bar-p-fill" data-target="${pdata.potential}" style="background:${pcfg.color}"></div>
+        <div class="pvi-bar-i-mark" data-target="${pdata.interest}"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  setTimeout(() => {
+    document.querySelectorAll('.pvi-bar-p-fill').forEach(bar => {
+      bar.style.width = bar.getAttribute('data-target') + '%';
+    });
+    document.querySelectorAll('.pvi-bar-i-mark').forEach(mark => {
+      mark.style.left = mark.getAttribute('data-target') + '%';
+    });
+  }, 300);
+
+  const titleEl = document.getElementById('pvi-conclusion-title');
+  const subEl = document.getElementById('pvi-conclusion-sub');
+  if(titleEl) titleEl.textContent = `Titik temu terbaikmu saat ini: ${pvi.sweet}`;
+  if(subEl) subEl.textContent = pvi.why;
+}
+
+/* ===================================================================
+   MODULE — CAREER MODAL (What If I Choose This?)
+   =================================================================== */
+function openCareerModal(careerId){
+  const c = CAREERS.find(x=>x.id===careerId);
+  if(!c) return;
+  const wif = CAREER_WHATIF[careerId] || CAREER_WHATIF['software-eng'];
+
+  // Set hero
+  document.getElementById('cm-ic').innerHTML = `<i class="ti ${c.icon}" style="color:${c.iconColor}"></i>`;
+  document.getElementById('cm-ic').style.background = c.iconBg;
+  document.getElementById('cm-title').textContent = c.name;
+  document.getElementById('cm-cat').textContent = c.category.charAt(0).toUpperCase()+c.category.slice(1);
+  document.getElementById('cm-desc').textContent = c.desc;
+
+  // Timeline
+  const tlEl = document.getElementById('cm-timeline');
+  const stepColors = ['#1847ED','#F04E23','#00966A','#6D28D9','#D97706'];
+  tlEl.innerHTML = wif.map((step,i) => `
+    <div class="wt-step" style="animation-delay:${i*0.08}s">
+      <div class="wt-dot" style="background:${step.color||stepColors[i%stepColors.length]}">${i+1}</div>
+      <div class="wt-card">
+        <div class="wt-year" style="color:${step.color||stepColors[i%stepColors.length]}">${step.year}</div>
+        <div class="wt-title">${step.title}</div>
+        <div class="wt-desc">${step.desc}</div>
+        ${step.milestone ? `<div class="wt-milestone"><i class="ti ti-trophy" style="font-size:11px"></i>${step.milestone}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // Skills
+  document.getElementById('cm-skills').innerHTML = c.skills.map(s =>
+    `<span class="cetag">${s}</span>`
+  ).join('');
+
+  // Prospect
+  document.getElementById('cm-prospect').querySelector('span').textContent = c.prospect;
+
+  // Related
+  document.getElementById('cm-related').innerHTML = c.related.map(r =>
+    `<span class="cetag" style="background:var(--purple-l);color:var(--purple)">${r}</span>`
+  ).join('');
+
+  document.getElementById('career-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCareerModal(e){
+  const overlay = document.getElementById('career-modal');
+  if(!overlay) return;
+  if(e && e.target !== overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ===================================================================
+   PATCH: go() to handle galaxy page
+   =================================================================== */
+const _origGo = go;
+window._goGalaxyPatch = function(page){
+  _origGo(page);
+  if(page === 'galaxy'){
+    if(galaxyScores){
+      setTimeout(()=>initGalaxyCanvas(galaxyScores), 80);
+    } else {
+      if(galaxyAnimFrame){ cancelAnimationFrame(galaxyAnimFrame); galaxyAnimFrame=null; }
+    }
+  } else {
+    if(galaxyAnimFrame){ cancelAnimationFrame(galaxyAnimFrame); galaxyAnimFrame=null; }
+  }
+};
+
+/* ===================================================================
+   PATCH: showResult() to also store scores for galaxy
+   =================================================================== */
+const __origShowResult = showResult;
+window._showResultGalaxyPatch = function(){
+  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
+  const mp=[
+    ['tech','seni','tulis','sport'],
+    ['seni','seni','tech','tulis'],
+    ['tech','musik','sains','tulis'],
+    ['tech','seni','sport','tulis'],
+    ['tech','foto','sains','sport'],
+    ['tech','sport','seni','sains'],
+  ];
+  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
+  const maxRaw = Math.max(...Object.values(sc));
+  const pctScores = {};
+  Object.keys(sc).forEach(k => {
+    pctScores[k] = maxRaw > 0 ? Math.round((sc[k]/maxRaw)*100) : 10;
+    if(pctScores[k] < 10) pctScores[k] = 10;
+  });
+  galaxyScores = pctScores;
+  __origShowResult();
+};
+
 document.addEventListener('DOMContentLoaded',function(){
   renderCats();
   filterEvs();
@@ -3104,6 +4730,43 @@ document.addEventListener('DOMContentLoaded',function(){
   loadDarkPref();
   loadBookmarks();
   initFirebase();
+
+  // Monkey-patch go and showResult after all definitions are done
+  const _goOriginal = go;
+  window.go = function(page){
+    _goOriginal(page);
+    if(page === 'galaxy'){
+      if(galaxyScores){
+        setTimeout(()=>initGalaxyCanvas(galaxyScores), 80);
+      } else {
+        if(galaxyAnimFrame){ cancelAnimationFrame(galaxyAnimFrame); galaxyAnimFrame=null; }
+      }
+    } else {
+      if(galaxyAnimFrame){ cancelAnimationFrame(galaxyAnimFrame); galaxyAnimFrame=null; }
+    }
+  };
+
+  const _showOriginal = showResult;
+  window.showResult = function(){
+    const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
+    const mp=[
+      ['tech','seni','tulis','sport'],
+      ['seni','seni','tech','tulis'],
+      ['tech','musik','sains','tulis'],
+      ['tech','seni','sport','tulis'],
+      ['tech','foto','sains','sport'],
+      ['tech','sport','seni','sains'],
+    ];
+    ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
+    const maxRaw = Math.max(...Object.values(sc));
+    const pctScores = {};
+    Object.keys(sc).forEach(k => {
+      pctScores[k] = maxRaw > 0 ? Math.round((sc[k]/maxRaw)*100) : 10;
+      if(pctScores[k] < 10) pctScores[k] = 10;
+    });
+    galaxyScores = pctScores;
+    _showOriginal();
+  };
 });
 </script>
 </body>
