@@ -45,7 +45,7 @@
 }
 
 html,body{min-height:100%;overscroll-behavior:none}
-body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);overflow-x:hidden;font-size:15px;line-height:1.6;transition:background var(--dur) var(--ease),color var(--dur) var(--ease);isolation:isolate}
+body{font-family:'DM Sans',sans-serif;background:var(--surf2);color:var(--ink);overflow-x:hidden;font-size:15px;line-height:1.6;transition:background var(--dur) var(--ease),color var(--dur) var(--ease);isolation:isolate;background-image:radial-gradient(ellipse 120% 60% at 50% -10%,rgba(24,71,237,.04) 0%,transparent 60%),radial-gradient(ellipse 80% 50% at 95% 30%,rgba(240,78,35,.03) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 5% 70%,rgba(0,150,106,.03) 0%,transparent 50%)}
 h1,h2,h3,h4,.brand{font-family:'Bricolage Grotesque',sans-serif;line-height:1.15}
 a{text-decoration:none;color:inherit}
 input,button,textarea,select{font-family:'DM Sans',sans-serif}
@@ -60,7 +60,8 @@ input,button,textarea,select{font-family:'DM Sans',sans-serif}
 /* ========================================================
    NAV
    ======================================================== */
-nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;transition:background var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
+nav{background:rgba(255,255,255,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.06);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;transition:background var(--dur) var(--ease);box-shadow:0 1px 0 rgba(0,0,0,.05),0 2px 12px rgba(0,0,0,.04)}
+[data-dark] nav{background:rgba(20,24,36,.88);border-bottom-color:rgba(255,255,255,.06)}
 .brand{font-size:19px;font-weight:800;color:var(--ink);letter-spacing:-.5px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
 .brand-mark{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .brand-mark i{display:none}
@@ -1159,7 +1160,7 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 #recaptcha-container-lp iframe{border-radius:8px}
 
 /* ========================================================
-   ANIMATED BACKGROUND — ULTRA MODE
+   ANIMATED BACKGROUND — REFINED EDITION
    ======================================================== */
 
 /* ── Z-index layering ── */
@@ -1176,11 +1177,10 @@ nav{z-index:200!important}
   pointer-events:none;z-index:0;opacity:1;
 }
 
-/* ── ORB SYSTEM ── */
+/* ── ORB SYSTEM — subtle & refined ── */
 .lp-orb{
   position:fixed;border-radius:50%;
   pointer-events:none;z-index:0;
-  mix-blend-mode:normal;
   will-change:transform;
 }
 /* ── AURORA ── */
@@ -1188,74 +1188,75 @@ nav{z-index:200!important}
   position:fixed;z-index:0;
 }
 
-/* Orb 1 — massive blue, top-left */
+/* Light mode: soft, barely-there orbs */
 .lp-orb:nth-child(1){
-  width:900px;height:900px;
+  width:800px;height:800px;
   background:radial-gradient(circle at 40% 40%,
-    rgba(24,71,237,.55) 0%,
-    rgba(24,71,237,.3) 25%,
-    rgba(24,71,237,.1) 55%,
+    rgba(24,71,237,.12) 0%,
+    rgba(24,71,237,.06) 40%,
     transparent 70%);
-  top:-280px;left:-220px;
-  filter:blur(40px);
-  animation:orb1 18s ease-in-out infinite;
+  top:-300px;left:-180px;
+  filter:blur(60px);
+  animation:orb1 22s ease-in-out infinite;
 }
-/* Orb 2 — orange, right */
 .lp-orb:nth-child(2){
-  width:700px;height:700px;
+  width:600px;height:600px;
   background:radial-gradient(circle at 60% 40%,
-    rgba(240,78,35,.5) 0%,
-    rgba(240,78,35,.25) 30%,
-    rgba(240,78,35,.08) 60%,
-    transparent 75%);
-  top:30%;right:-200px;
-  filter:blur(44px);
-  animation:orb2 13s ease-in-out infinite;
+    rgba(240,78,35,.10) 0%,
+    rgba(240,78,35,.05) 40%,
+    transparent 70%);
+  top:25%;right:-160px;
+  filter:blur(70px);
+  animation:orb2 17s ease-in-out infinite;
 }
-/* Orb 3 — green, bottom-left */
 .lp-orb:nth-child(3){
-  width:580px;height:580px;
+  width:500px;height:500px;
   background:radial-gradient(circle at 35% 55%,
-    rgba(0,150,106,.45) 0%,
-    rgba(0,150,106,.2) 35%,
+    rgba(0,150,106,.09) 0%,
+    rgba(0,150,106,.04) 40%,
     transparent 65%);
   bottom:0;left:5%;
-  filter:blur(50px);
-  animation:orb3 20s ease-in-out infinite;
+  filter:blur(70px);
+  animation:orb3 26s ease-in-out infinite;
 }
-/* Orb 4 — purple, center */
 .lp-orb:nth-child(4){
-  width:480px;height:480px;
+  width:420px;height:420px;
   background:radial-gradient(circle,
-    rgba(109,40,217,.48) 0%,
-    rgba(109,40,217,.2) 35%,
+    rgba(109,40,217,.10) 0%,
+    rgba(109,40,217,.05) 40%,
     transparent 65%);
-  top:15%;left:40%;
-  filter:blur(55px);
-  animation:orb4 15s ease-in-out infinite;
+  top:20%;left:42%;
+  filter:blur(80px);
+  animation:orb4 19s ease-in-out infinite;
 }
+
+/* Dark mode: dramatically more visible */
+[data-dark] .lp-orb:nth-child(1){background:radial-gradient(circle at 40% 40%,rgba(24,71,237,.42) 0%,rgba(24,71,237,.28) 30%,rgba(24,71,237,.08) 60%,transparent 75%);filter:blur(50px)}
+[data-dark] .lp-orb:nth-child(2){background:radial-gradient(circle at 60% 40%,rgba(240,78,35,.36) 0%,rgba(240,78,35,.22) 35%,rgba(240,78,35,.06) 60%,transparent 78%);filter:blur(54px)}
+[data-dark] .lp-orb:nth-child(3){background:radial-gradient(circle at 35% 55%,rgba(0,150,106,.32) 0%,rgba(0,150,106,.18) 38%,transparent 65%);filter:blur(60px)}
+[data-dark] .lp-orb:nth-child(4){background:radial-gradient(circle,rgba(109,40,217,.38) 0%,rgba(109,40,217,.22) 38%,transparent 65%);filter:blur(60px)}
 
 @keyframes orb1{
   0%,100%{transform:translate(0,0) scale(1)}
-  25%{transform:translate(60px,-80px) scale(1.1)}
-  50%{transform:translate(-40px,60px) scale(.92)}
-  75%{transform:translate(80px,40px) scale(1.06)}
+  25%{transform:translate(50px,-70px) scale(1.08)}
+  50%{transform:translate(-30px,50px) scale(.94)}
+  75%{transform:translate(70px,30px) scale(1.04)}
 }
 @keyframes orb2{
   0%,100%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(-70px,-60px) scale(1.12)}
-  66%{transform:translate(50px,80px) scale(.9)}
+  33%{transform:translate(-60px,-50px) scale(1.1)}
+  66%{transform:translate(40px,70px) scale(.92)}
 }
 @keyframes orb3{
-  0%,100%{transform:translate(0,0) scale(1) rotate(0deg)}
-  40%{transform:translate(80px,-70px) scale(1.08) rotate(5deg)}
-  70%{transform:translate(-50px,50px) scale(.94) rotate(-3deg)}
+  0%,100%{transform:translate(0,0) scale(1)}
+  40%{transform:translate(70px,-60px) scale(1.06)}
+  70%{transform:translate(-40px,40px) scale(.96)}
 }
 @keyframes orb4{
   0%,100%{transform:translate(0,0) scale(1)}
-  20%{transform:translate(-60px,80px) scale(1.15)}
-  50%{transform:translate(90px,-50px) scale(.88)}
-  80%{transform:translate(-30px,-80px) scale(1.1)}
+  20%{transform:translate(-50px,70px) scale(1.12)}
+  50%{transform:translate(80px,-40px) scale(.9)}
+  80%{transform:translate(-25px,-70px) scale(1.08)}
 }
 
 /* Dark mode orbs — brighter */
@@ -1264,28 +1265,28 @@ nav{z-index:200!important}
 [data-dark] .lp-orb:nth-child(3){background:radial-gradient(circle at 35% 55%,rgba(0,150,106,.65) 0%,rgba(0,150,106,.3) 35%,transparent 65%)}
 [data-dark] .lp-orb:nth-child(4){background:radial-gradient(circle,rgba(109,40,217,.7) 0%,rgba(109,40,217,.32) 35%,transparent 65%)}
 
-/* ── GRID MESH ── */
+/* ── GRID MESH — dark mode only ── */
 body::before{
   content:'';
   position:fixed;inset:0;z-index:0;
   pointer-events:none;
   background-image:
-    linear-gradient(rgba(24,71,237,.11) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(24,71,237,.11) 1px,transparent 1px);
-  background-size:56px 56px;
-  animation:gridPulse 8s ease-in-out infinite;
-}
-@keyframes gridPulse{
-  0%,100%{opacity:.6}
-  50%{opacity:1}
+    linear-gradient(rgba(24,71,237,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(24,71,237,.045) 1px,transparent 1px);
+  background-size:64px 64px;
+  animation:gridPulse 10s ease-in-out infinite;
 }
 [data-dark] body::before{
   background-image:
-    linear-gradient(rgba(100,140,255,.16) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(100,140,255,.16) 1px,transparent 1px);
+    linear-gradient(rgba(100,140,255,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(100,140,255,.09) 1px,transparent 1px);
+}
+@keyframes gridPulse{
+  0%,100%{opacity:.5}
+  50%{opacity:.9}
 }
 
-/* ── SPARKLES — filled glowing shapes ── */
+/* ── SPARKLES — dark mode only ── */
 .lp-spark{
   position:fixed;pointer-events:none;z-index:1;
   border-radius:0;
@@ -1293,87 +1294,98 @@ body::before{
   opacity:0;
   will-change:transform,opacity;
 }
+[data-dark] .lp-spark{
+  filter:brightness(1.4) saturate(1.2);
+}
 @keyframes sparkRise{
   0%  {opacity:0;transform:translateY(0) scale(0) rotate(0deg)}
-  6%  {opacity:1;transform:translateY(-10px) scale(1.1) rotate(30deg)}
-  50% {opacity:.85;transform:translateY(-60px) scale(.95) rotate(160deg)}
-  85% {opacity:.5;transform:translateY(-110px) scale(.75) rotate(220deg)}
-  100%{opacity:0;transform:translateY(-145px) scale(.1) rotate(280deg)}
-}
-[data-dark] .lp-spark{
-  filter:brightness(1.6) saturate(1.4);
+  6%  {opacity:.45;transform:translateY(-10px) scale(.9) rotate(30deg)}
+  50% {opacity:.35;transform:translateY(-55px) scale(.8) rotate(160deg)}
+  85% {opacity:.18;transform:translateY(-100px) scale(.65) rotate(220deg)}
+  100%{opacity:0;transform:translateY(-135px) scale(.1) rotate(280deg)}
 }
 
-/* ── SHOOTING STARS ── */
+/* ── SHOOTING STARS — dark mode only ── */
 .lp-star{
   position:fixed;pointer-events:none;z-index:1;
-  height:2px;border-radius:2px;
-  background:linear-gradient(90deg,transparent,#fff,rgba(24,71,237,.9));
+  height:1.5px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(180,200,255,.6),rgba(24,71,237,.5));
   opacity:0;
   animation:shootingStar linear forwards;
   transform-origin:right center;
   will-change:transform,opacity;
 }
+[data-dark] .lp-star{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),rgba(24,71,237,.8));
+  box-shadow:0 0 4px rgba(255,255,255,.6),0 0 12px rgba(150,190,255,.4)!important;
+}
 @keyframes shootingStar{
   0%  {opacity:0;transform:translateX(0) scaleX(0)}
-  4%  {opacity:1}
-  65% {opacity:.75}
+  4%  {opacity:.9}
+  65% {opacity:.6}
   100%{opacity:0;transform:translateX(-500px) scaleX(1)}
-}
-[data-dark] .lp-star{
-  box-shadow:0 0 6px rgba(255,255,255,.9),0 0 16px rgba(150,190,255,.7),0 0 30px rgba(100,140,255,.4)!important;
 }
 
 /* ── HERO TOP BEAM ── */
 .hero{position:relative}
 .hero::before{
   content:'';
-  position:absolute;top:0;left:10%;right:10%;
+  position:absolute;top:0;left:15%;right:15%;
   height:1px;
+  background:linear-gradient(90deg,transparent,rgba(24,71,237,.25),rgba(240,78,35,.2),rgba(24,71,237,.25),transparent);
+  animation:beamPulse 5s ease-in-out infinite;
+  opacity:.6;
+}
+[data-dark] .hero::before{
   background:linear-gradient(90deg,transparent,var(--blue),rgba(240,78,35,.8),var(--blue),transparent);
-  animation:beamPulse 4s ease-in-out infinite;
-  box-shadow:0 0 20px rgba(24,71,237,.6),0 0 40px rgba(24,71,237,.3);
+  box-shadow:0 0 20px rgba(24,71,237,.5),0 0 40px rgba(24,71,237,.25);
+  opacity:1;
 }
 .hero::after{
   content:'';
-  position:absolute;top:0;left:30%;right:30%;
+  position:absolute;top:0;left:32%;right:32%;
   height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);
-  animation:beamPulse 4s ease-in-out infinite .6s;
+  background:linear-gradient(90deg,transparent,rgba(24,71,237,.15),transparent);
+  animation:beamPulse 5s ease-in-out infinite .5s;
+}
+[data-dark] .hero::after{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);
 }
 @keyframes beamPulse{
-  0%,100%{opacity:.3;transform:scaleX(.4)}
+  0%,100%{opacity:.3;transform:scaleX(.5)}
   50%{opacity:1;transform:scaleX(1)}
 }
 
 /* ── AURORA BAND ── */
 .lp-aurora{
   position:fixed;
-  left:-10%;width:120%;height:300px;
+  left:-10%;width:120%;height:280px;
   pointer-events:none;z-index:0;
   border-radius:50%;
-  filter:blur(60px);
-  opacity:.22;
-  animation:auroraDrift 25s ease-in-out infinite;
+  filter:blur(70px);
+  opacity:0;
+  animation:auroraDrift 28s ease-in-out infinite;
+  transition:opacity .4s ease;
 }
 .lp-aurora:nth-child(1){
   top:-80px;
   background:linear-gradient(90deg,#1847ED,#6D28D9,#F04E23,#1847ED);
-  animation-duration:22s;
+  animation-duration:24s;
 }
 .lp-aurora:nth-child(2){
-  top:40%;
+  top:38%;
   background:linear-gradient(90deg,#00966A,#1847ED,#D97706,#00966A);
-  opacity:.14;
-  animation-duration:30s;animation-delay:-12s;
+  animation-duration:32s;animation-delay:-14s;
 }
+.lp-aurora:nth-child(1){opacity:.06}
+.lp-aurora:nth-child(2){opacity:.04}
+[data-dark] .lp-aurora:nth-child(1){opacity:.28}
+[data-dark] .lp-aurora:nth-child(2){opacity:.18}
 @keyframes auroraDrift{
   0%,100%{transform:translateX(0) scaleY(1)}
-  30%{transform:translateX(5%) scaleY(1.3)}
-  60%{transform:translateX(-4%) scaleY(.8)}
+  30%{transform:translateX(4%) scaleY(1.25)}
+  60%{transform:translateX(-3%) scaleY(.82)}
 }
-[data-dark] .lp-aurora:nth-child(1){opacity:.38}
-[data-dark] .lp-aurora:nth-child(2){opacity:.26}
 </style>
 </head>
 <body>
@@ -5444,9 +5456,9 @@ function initSparkles(){
   }
 
   // Initial burst — more shapes
-  for(let i=0;i<22;i++) setTimeout(spawnShape,i*120);
+  for(let i=0;i<4;i++) setTimeout(spawnShape,i*300);
   // Continuous — faster spawn rate
-  setInterval(spawnShape,280);
+  setInterval(spawnShape,1200);
 
   /* ── Shooting stars — more dramatic, with color variants ── */
   const starColors=[
@@ -5485,7 +5497,7 @@ function initSparkles(){
       setTimeout(spawnStar,80);
       if(Math.random()<.15) setTimeout(spawnStar,180);
     }
-    setTimeout(schedStar,800+Math.random()*1600);
+    setTimeout(schedStar,4000+Math.random()*5000);
   }
   setTimeout(schedStar,500);
 
@@ -5512,7 +5524,7 @@ function initSparkles(){
   function initBgStars(){
     bgStars=[];
     // Micro stars
-    for(let i=0;i<300;i++){
+    for(let i=0;i<180;i++){
       bgStars.push({
         x:(Math.sin(i*2347.61)*0.5+0.5)*W,
         y:(Math.cos(i*8761.43)*0.5+0.5)*H,
@@ -5525,7 +5537,7 @@ function initSparkles(){
     }
     // Colored accent stars
     const accentCols=['rgba(180,200,255,','rgba(255,200,160,','rgba(160,255,210,','rgba(220,180,255,'];
-    for(let i=0;i<60;i++){
+    for(let i=0;i<30;i++){
       bgStars.push({
         x:(Math.sin(i*6543.2)*0.5+0.5)*W,
         y:(Math.cos(i*3210.9)*0.5+0.5)*H,
@@ -5538,7 +5550,7 @@ function initSparkles(){
       });
     }
     // Featured bright stars with cross flare
-    for(let i=0;i<12;i++){
+    for(let i=0;i<6;i++){
       bgStars.push({
         x:(Math.sin(i*1111.1+7)*0.5+0.5)*W,
         y:(Math.cos(i*2222.2+3)*0.5+0.5)*H,
@@ -5644,7 +5656,7 @@ function initSparkles(){
       n.drift+=n.driftSpeed;
       const nx=n.x+Math.sin(n.drift)*30;
       const ny=n.y+Math.cos(n.drift*1.3)*20;
-      const boost=dark?2.8:1;
+      const boost=dark?1.8:.4;
       const ng=ctx.createRadialGradient(nx,ny,0,nx,ny,n.r);
       ng.addColorStop(0,n.color+Math.floor(n.alpha*boost*255).toString(16).padStart(2,'0'));
       ng.addColorStop(0.5,n.color+Math.floor(n.alpha*boost*.4*255).toString(16).padStart(2,'0'));
@@ -5656,7 +5668,7 @@ function initSparkles(){
     bgStars.forEach(s=>{
       s.twinkle+=s.twinkleSpeed;
       const tFactor=0.5+0.5*Math.sin(s.twinkle);
-      const a=s.baseAlpha*(dark?1.7:1)*tFactor;
+      const a=s.baseAlpha*(dark?1.2:.35)*tFactor;
       const r=s.r*(0.7+0.3*tFactor);
 
       if(s.bigFlare){
@@ -5691,7 +5703,7 @@ function initSparkles(){
 
       const pulse=0.5+0.5*Math.sin(n.pulse);
       const col=colors[n.colorIdx];
-      const alphaMul=dark?2.4:1.2;
+      const alphaMul=dark?1.6:.3;
       const a=Math.min(1,n.baseAlpha*alphaMul*(0.5+pulse*.5));
       const sz=n.size*(0.85+pulse*.15);
 
@@ -5735,7 +5747,7 @@ function initSparkles(){
         const dist=Math.sqrt(dx*dx+dy*dy);
         const maxDist=dark?130:100;
         if(dist<maxDist){
-          const a=(1-dist/maxDist)*(dark?.14:.07);
+          const a=(1-dist/maxDist)*(dark?.10:.04);
           ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
           ctx.strokeStyle=`rgba(120,160,255,${a})`;ctx.lineWidth=.7;ctx.stroke();
         }
