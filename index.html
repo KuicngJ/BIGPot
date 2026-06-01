@@ -2024,14 +2024,14 @@ const firebaseConfig = {
   storageBucket:"bigpot-e2532.firebasestorage.app",
   messagingSenderId:"116427136357",
   appId:"1:116427136357:web:a81c157fac9eccf9c2558c",
-  developerEmail:"kuicngj@gmail.com // ← ganti dengan email developer kamu
+  developerEmail:"kuicngj@gmail.com" // ← ganti dengan email developer kamu
 };
 
 let app, auth, db, firebaseReady = false;
 
 function initFirebase() {
   try {
-    if (firebaseConfig.apiKey === 'AIzaSyBGxPXnpZqwi1jBtzuUWX-oSfJxIpPfAFU') {
+    if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
       firebaseReady = false; checkAuthState(); return;
     }
     app = firebase.initializeApp(firebaseConfig);
