@@ -562,6 +562,11 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 .ce-empty{text-align:center;padding:60px 20px;color:var(--ink3);grid-column:1/-1}
 .ce-empty i{font-size:40px;display:block;margin-bottom:12px;opacity:.35}
 
+/* Result page career card */
+.res-career-card{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--surf3);border-radius:var(--r);margin-bottom:8px;cursor:pointer;transition:all var(--dur) var(--ease);background:var(--surf2)}
+.res-career-card:last-child{margin-bottom:0}
+.res-career-card:hover{border-color:var(--blue-m);background:var(--blue-l);transform:translateX(3px)}
+
 /* ========================================================
    FITUR BARU — LEARNING PATH (di result page)
    ======================================================== */
@@ -1257,7 +1262,12 @@ const RES = {
       {name:'Nadiem Makarim', desc:'Pelajar Indonesia → founder Gojek → Menteri', color:'#00966A'},
     ],
     coms:['ti-code','ti-robot'], comN:['CodeKid Indonesia','Robotika Pelajar ID'], comM:['3.240 anggota','1.320 anggota'],
-    evs:['National Olympiad Informatika 2025','Hackathon Pelajar Nasional: Build for ID'],
+    evs:['OSN Bidang Informatika/Komputer (Puspresnas)','World Robot Olympiad (WRO) Indonesia'],
+    kariRek:[
+      {name:'Software Engineer',icon:'ti-code',color:'#1847ED',bg:'#EEF2FD',desc:'Membangun aplikasi & sistem digital'},
+      {name:'Data Scientist',icon:'ti-chart-dots',color:'#00966A',bg:'#E5F7F2',desc:'Analisis data untuk keputusan bisnis'},
+      {name:'Game Developer',icon:'ti-device-gamepad-2',color:'#4C1D95',bg:'#F0EEFF',desc:'Membuat dunia virtual yang dimainkan jutaan orang'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Install VS Code + buat "Hello World"', desc:'Download VS Code, pilih 1 bahasa (Python atau JS), ikuti 1 tutorial YouTube', output:'📁 File kode pertamamu'},
       {day:'Hari 2–3', title:'Latihan 30 menit/hari di freeCodeCamp', desc:'Selesaikan 3 challenge dasar — fokus pada logika, bukan hafalan syntax', output:'✅ 3 challenge selesai'},
@@ -1278,7 +1288,12 @@ const RES = {
       {name:'Diela Maharanie', desc:'Ilustrator Indonesia → kolaborasi brand internasional', color:'#9D174D'},
     ],
     coms:['ti-palette','ti-music'], comN:['Desainer Muda ID','Nada & Rima'], comM:['1.890 anggota','1.450 anggota'],
-    evs:['Lomba Desain Poster Kemerdekaan RI','Young Designer Award 2025'],
+    evs:['FLS2N Bidang Seni Rupa (Puspresnas)','FLS2N Bidang Ilustrasi (Puspresnas)'],
+    kariRek:[
+      {name:'UI/UX Designer',icon:'ti-layout-2',color:'#C43C14',bg:'#FEF0EC',desc:'Merancang tampilan digital yang indah & intuitif'},
+      {name:'Animator',icon:'ti-movie',color:'#9D174D',bg:'#FDF0F6',desc:'Menghidupkan karakter dan cerita lewat gerakan'},
+      {name:'Content Creator',icon:'ti-camera',color:'#D97706',bg:'#FEF0EC',desc:'Menciptakan konten kreatif di platform digital'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Buat 1 karya dengan tema bebas', desc:'Gunakan alat apa pun yang kamu punya — kertas, Canva, atau Procreate', output:'🎨 Karya pertamamu'},
       {day:'Hari 2–3', title:'Pelajari 1 teknik baru di YouTube', desc:'Typography, color theory, atau komposisi. Coba langsung terapkan', output:'✍️ Sketsa eksperimen'},
@@ -1299,7 +1314,12 @@ const RES = {
       {name:'Khoirul Anwar', desc:'Pelajar Indonesia → Penemu teknologi 4G LTE', color:'#1847ED'},
     ],
     coms:['ti-microscope','ti-code'], comN:['Saintis Cilik','Olimpiade Math ID'], comM:['2.100 anggota','2.560 anggota'],
-    evs:['Karya Ilmiah Remaja Tingkat Provinsi','Olimpiade Sains Nasional (OSN) 2025'],
+    evs:['OSN Bidang Sains (Biologi/Fisika/Kimia — Puspresnas)','LKIR (Lomba Karya Ilmiah Remaja — BRIN)'],
+    kariRek:[
+      {name:'Data Scientist',icon:'ti-chart-dots',color:'#006B4C',bg:'#E5F7F2',desc:'Mengubah data menjadi keputusan besar'},
+      {name:'Dokter',icon:'ti-stethoscope',color:'#00966A',bg:'#E5F7F2',desc:'Profesi mulia yang selalu dibutuhkan masyarakat'},
+      {name:'Researcher / Ilmuwan',icon:'ti-microscope',color:'#1847ED',bg:'#EEF2FD',desc:'Menemukan hal baru yang mengubah dunia'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Pilih 1 topik sains yang paling kamu suka', desc:'Biologi, kimia, fisika, atau matematika. Baca 1 artikel tentangnya', output:'📝 Catatan topik'},
       {day:'Hari 2–3', title:'Lakukan eksperimen sederhana di rumah', desc:'Contoh: uji pH air berbeda, pertumbuhan tanaman, atau rangkaian listrik sederhana', output:'🔬 Data eksperimen'},
@@ -1320,7 +1340,12 @@ const RES = {
       {name:'Andrea Hirata', desc:'Menulis Laskar Pelangi → Novel terjemah 40+ bahasa', color:'#9D174D'},
     ],
     coms:['ti-pencil','ti-palette'], comN:['Pena Muda','English Debaters Club'], comM:['980 anggota','1.150 anggota'],
-    evs:['Cerpen Nasional "Suara Generasi"','Olimpiade Bahasa Indonesia Tingkat SMA'],
+    evs:['FLS2N Bidang Cipta Puisi / Cerpen (Puspresnas)','OSN Bidang Bahasa Indonesia (Puspresnas)'],
+    kariRek:[
+      {name:'Jurnalis / Penulis',icon:'ti-pencil',color:'#5B21B6',bg:'#F0EEFF',desc:'Menceritakan dunia lewat kata yang kuat'},
+      {name:'Content Strategist',icon:'ti-brand-instagram',color:'#9D174D',bg:'#FDF0F6',desc:'Strategi konten untuk brand digital'},
+      {name:'Digital Marketer',icon:'ti-trending-up',color:'#D97706',bg:'#FEF9EC',desc:'Membantu brand menjangkau audiens yang tepat'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Tulis 300 kata tentang pengalamanmu hari ini', desc:'Tidak harus bagus. Yang penting tulis — tanpa menghapus selama 10 menit', output:'📝 Tulisan pertamamu'},
       {day:'Hari 2–3', title:'Baca 1 cerpen pendek & analisis strukturnya', desc:'Perhatikan cara pengarang membuka cerita dan membuat pembaca penasaran', output:'✍️ Catatan analisis'},
@@ -1341,7 +1366,12 @@ const RES = {
       {name:'Rich Brian', desc:'Remaja Jakarta → rapper signed label AS 88rising', color:'#1847ED'},
     ],
     coms:['ti-music','ti-pencil'], comN:['Nada & Rima','Pena Muda'], comM:['1.450 anggota','980 anggota'],
-    evs:['Kompetisi Musik Indie Pelajar 2025','FLS2N Bidang Musik'],
+    evs:['FLS2N Bidang Vokal Grup & Ansambel Musik (Puspresnas)','FLS2N Bidang Cipta Lagu (Puspresnas)'],
+    kariRek:[
+      {name:'Musisi / Komposer',icon:'ti-music',color:'#9D174D',bg:'#FDF0F6',desc:'Menciptakan dan mempertunjukkan karya musik'},
+      {name:'Music Producer',icon:'ti-vinyl',color:'#4C1D95',bg:'#F0EEFF',desc:'Memproduksi lagu untuk artis dan konten digital'},
+      {name:'Content Creator',icon:'ti-camera',color:'#D97706',bg:'#FEF0EC',desc:'Konten musik yang menghibur jutaan penonton'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Rekam 1 menit dirimu bermain/bernyanyi', desc:'Pakai HP saja. Ini bukan untuk orang lain — ini untuk kamu dengar sendiri', output:'🎵 Rekaman pertama'},
       {day:'Hari 2–3', title:'Cover 1 lagu favoritmu', desc:'Boleh pakai karaoke YouTube. Upload di IG Story atau private dulu kalau belum siap', output:'🎤 Cover lagu'},
@@ -1362,7 +1392,12 @@ const RES = {
       {name:'Greysia Polii', desc:'Pelajar biasa → Medali Emas Olimpiade Tokyo', color:'#00966A'},
     ],
     coms:['ti-ball-football','ti-microscope'], comN:['Atlet Remaja','Saintis Cilik'], comM:['4.120 anggota','2.100 anggota'],
-    evs:['Turnamen Futsal Pelajar Se-Jawa','O2SN Tingkat Nasional'],
+    evs:['O2SN (Olimpiade Olahraga Siswa Nasional — Puspresnas)','Pekan Olahraga Pelajar Daerah (POPDA)'],
+    kariRek:[
+      {name:'Atlet Profesional',icon:'ti-medal',color:'#D97706',bg:'#FEF9EC',desc:'Mewakili daerah/Indonesia di kompetisi resmi'},
+      {name:'Pelatih Olahraga',icon:'ti-whistle',color:'#00966A',bg:'#E5F7F2',desc:'Membentuk atlet generasi berikutnya'},
+      {name:'Sport Analyst',icon:'ti-chart-bar',color:'#1847ED',bg:'#EEF2FD',desc:'Analisis data performa atlet modern'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Catat program latihan 7 hari ke depan', desc:'Jam berapa, apa yang dilatih, target spesifik. Buat di buku atau Notes HP', output:'📋 Program latihanmu'},
       {day:'Hari 2–3', title:'Latihan 45 menit sesuai program + ukur performa', desc:'Catat waktu, jarak, atau repetisi. Ini data pertumbuhan kamu', output:'📊 Data latihan'},
@@ -1383,7 +1418,12 @@ const RES = {
       {name:'Elon Musk', desc:'Tertarik robotika sejak remaja → founder SpaceX & Tesla', color:'#1847ED'},
     ],
     coms:['ti-robot','ti-code'], comN:['Robotika Pelajar ID','CodeKid Indonesia'], comM:['1.320 anggota','3.240 anggota'],
-    evs:['Indonesia Robot Contest (IRC) 2025','National Olympiad Informatika 2025'],
+    evs:['World Robot Olympiad (WRO) Indonesia — wroindonesia.org','OSN Bidang Informatika/Komputer (Puspresnas)'],
+    kariRek:[
+      {name:'Robotics Engineer',icon:'ti-robot',color:'#4C1D95',bg:'#F0EEFF',desc:'Merancang robot untuk industri & riset'},
+      {name:'Software Engineer',icon:'ti-code',color:'#1847ED',bg:'#EEF2FD',desc:'Membangun sistem & aplikasi skala besar'},
+      {name:'AI/ML Engineer',icon:'ti-brain',color:'#006B4C',bg:'#E5F7F2',desc:'Mengembangkan kecerdasan buatan masa depan'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Pelajari dasar-dasar Arduino atau Raspberry Pi', desc:'Tonton 1 video YouTube tentang mikrokontroler dan komponen dasar robotika', output:'📝 Catatan konsep dasar'},
       {day:'Hari 2–3', title:'Buat rangkaian LED sederhana atau sensor', desc:'Gunakan simulator online (Tinkercad) jika belum punya komponen fisik', output:'💡 Rangkaian pertamamu'},
@@ -1404,7 +1444,12 @@ const RES = {
       {name:'Agus Leonardi', desc:'Pelajar biasa → Fotografer wildlife internasional', color:'#00966A'},
     ],
     coms:['ti-camera','ti-palette'], comN:['Lensa Pelajar','Desainer Muda ID'], comM:['870 anggota','1.890 anggota'],
-    evs:['Lomba Foto Pelajar Tema Alam Nusantara','Young Designer Award 2025 — Kategori Pelajar'],
+    evs:['FLS2N Bidang Fotografi (Puspresnas)','Lomba Foto Pelajar belum tersedia secara nasional'],
+    kariRek:[
+      {name:'Fotografer Profesional',icon:'ti-camera',color:'#D97706',bg:'#FEF0EC',desc:'Brand deals, wedding, hingga karya seni murni'},
+      {name:'Content Creator',icon:'ti-brand-instagram',color:'#C43C14',bg:'#FEF0EC',desc:'Konten visual yang menghibur jutaan orang'},
+      {name:'UI/UX Designer',icon:'ti-layout-2',color:'#5B21B6',bg:'#F0EEFF',desc:'Estetika foto sangat berguna di dunia desain digital'},
+    ],
     plan7:[
       {day:'Hari 1', title:'Ambil 20 foto dengan HP di sekitarmu', desc:'Fokus pada cahaya, komposisi, dan momen. Tidak perlu kamera mahal untuk mulai', output:'📸 20 foto pertamamu'},
       {day:'Hari 2–3', title:'Pelajari rule of thirds dan golden hour', desc:'Tonton tutorial 15 menit lalu praktikkan saat matahari terbit atau terbenam', output:'🌅 Foto dengan komposisi baik'},
@@ -2943,26 +2988,85 @@ function showResult(){
       ${planHTML}
     </div>
 
-    <!-- COMMUNITY & EVENTS -->
-    <div class="rgrid">
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-users"></i>Komunitas untukmu</div>
-        ${r.coms.map((ic,i)=>{
-          const k=KOMS.find(k=>k.ic===ic);
-          return `<div class="com-row">
-            <div class="com-av" style="background:${k?k.bg:'#EEF2FD'}"><i class="ti ${ic}" style="color:${k?k.bgi:'#1239C4'}"></i></div>
-            <div><div class="com-name">${r.comN[i]}</div><div class="com-meta">${r.comM[i]}</div></div>
+    <!-- COMMUNITY & EVENTS — dari data EVS & KOMS yang diisi admin -->
+    ${(()=>{
+      // Kategori yang relevan dengan hasil bakat ini
+      const catMap={tech:'tech',seni:'seni',sains:'sains',tulis:'tulis',musik:'musik',sport:'sport',robot:'robot',foto:'foto'};
+      const relevantCat = catMap[top] || top;
+
+      // Filter komunitas yang cocok
+      const matchedKoms = KOMS.filter(k=>(k.kategori||'')===relevantCat);
+      // Filter lomba yang cocok
+      const matchedEvs = EVS.filter(e=>(e.kategori||e.cat||'')===relevantCat);
+
+      const komHTML = matchedKoms.length > 0
+        ? matchedKoms.map(k=>{
+            const m = KOM_META[k.kategori]||KOM_META['tech'];
+            return `<div class="com-row" style="cursor:pointer" onclick="go('komunitas');setNav('komunitas')">
+              ${k.thumbnail
+                ? `<div class="com-av" style="background:${m.bg};overflow:hidden;padding:0"><img src="${k.thumbnail}" style="width:100%;height:100%;object-fit:cover;border-radius:9px" onerror="this.outerHTML='<i class=\\'ti ${m.ic}\\' style=\\'color:${m.bgi};font-size:18px\\'></i>'"></div>`
+                : `<div class="com-av" style="background:${m.bg}"><i class="ti ${m.ic}" style="color:${m.bgi}"></i></div>`}
+              <div>
+                <div class="com-name">${k.nama||k.name}</div>
+                <div class="com-meta">Komunitas pelajar · Klik untuk bergabung</div>
+              </div>
+            </div>`;
+          }).join('')
+        : `<div style="text-align:center;padding:20px 0;color:var(--ink3)">
+            <i class="ti ti-users" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>
+            <div style="font-size:13px;font-weight:600">Komunitas belum tersedia</div>
+            <div style="font-size:12px;margin-top:4px">Admin belum menambahkan komunitas untuk bidang ini</div>
           </div>`;
-        }).join('')}
+
+      const evHTML = matchedEvs.length > 0
+        ? matchedEvs.map((e,i)=>{
+            const m=CAT_META[e.kategori||e.cat||'tech']||CAT_META['tech'];
+            const ne=normEv(e,i);
+            return `<div class="ev-row" style="cursor:pointer" onclick="openLombaModal(${EVS.indexOf(e)})">
+              <div class="ev-name"><i class="ti ti-trophy" style="color:var(--amber)"></i>${ne.title}</div>
+              <div class="ev-meta">${ne.deskripsi||'Klik untuk detail lomba'}</div>
+            </div>`;
+          }).join('')
+        : `<div style="text-align:center;padding:20px 0;color:var(--ink3)">
+            <i class="ti ti-trophy" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>
+            <div style="font-size:13px;font-weight:600">Lomba belum tersedia</div>
+            <div style="font-size:12px;margin-top:4px">Admin belum menambahkan lomba untuk bidang ini</div>
+          </div>`;
+
+      // Karir rekomendasi dari data CAREERS
+      const catToCareerCat={tech:'teknologi',seni:'kreatif',sains:'sains',tulis:'kreatif',musik:'kreatif',sport:'semua',robot:'teknologi',foto:'kreatif'};
+      const careerCat = catToCareerCat[top]||'semua';
+      const matchedCareers = CAREERS.filter(c=>careerCat==='semua'||c.category===careerCat).slice(0,3);
+
+      const kariHTML = matchedCareers.map(c=>`
+        <div class="res-career-card" onclick="go('career');setNav('career')">
+          <div style="width:38px;height:38px;border-radius:10px;background:${c.iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="ti ${c.icon}" style="color:${c.iconColor};font-size:18px"></i>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:2px">${c.name}</div>
+            <div style="font-size:12px;color:var(--ink3);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.desc}</div>
+          </div>
+          <i class="ti ti-chevron-right" style="color:var(--ink4);font-size:14px;flex-shrink:0"></i>
+        </div>`).join('');
+
+      return `
+      <div class="rgrid">
+        <div class="rcard">
+          <div class="rcard-hd"><i class="ti ti-users"></i>Komunitas untukmu</div>
+          ${komHTML}
+        </div>
+        <div class="rcard">
+          <div class="rcard-hd"><i class="ti ti-trophy"></i>Lomba rekomendasi</div>
+          ${evHTML}
+        </div>
       </div>
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-trophy"></i>Lomba rekomendasi</div>
-        ${r.evs.map(e=>`<div class="ev-row">
-          <div class="ev-name"><i class="ti ti-trophy"></i>${e}</div>
-          <div class="ev-meta">Pelajar SMP–SMA · Indonesia</div>
-        </div>`).join('')}
-      </div>
-    </div>
+      <div class="rcard" style="margin-bottom:16px">
+        <div class="rcard-hd"><i class="ti ti-map-2" style="color:var(--blue)"></i>Rekomendasi Karir Untukmu</div>
+        <div style="font-size:12.5px;color:var(--ink3);margin-bottom:14px">Berdasarkan bakat dan minatmu — klik untuk eksplorasi lebih lanjut</div>
+        ${kariHTML}
+      </div>`;
+    })()}
 
     <!-- CTA -->
     <div class="rcta">
