@@ -1449,6 +1449,9 @@ body::before{
       <button class="btn-logout-sm" onclick="doLogout()">Keluar</button>
     </div>
     <!-- Login button (saat belum login) -->
+    <button class="btn-ghost" onclick="go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)">
+      <i class="ti ti-trophy" aria-hidden="true"></i><span>Lomba</span>
+    </button>
     <button class="btn-ghost" id="nav-btn-login" onclick="openAuthModal()">
       <i class="ti ti-user" aria-hidden="true"></i><span>Masuk</span>
     </button>
@@ -1476,18 +1479,7 @@ body::before{
       </div>
     </div>
 
-    <div class="auth-divider">atau masuk dengan nomor HP</div>
-
-    <!-- Phone / OTP -->
-    <div id="auth-phone-section">
-      <input id="auth-phone-input" class="auth-input" placeholder="+62812xxxxxx (format internasional)" type="tel">
-      <div id="recaptcha-container-lp"></div>
-      <button class="auth-btn-main" onclick="authSendOTP()">Kirim OTP via SMS</button>
-    </div>
-    <div id="auth-otp-section">
-      <input id="auth-otp-input" class="auth-input" placeholder="Masukkan kode OTP">
-      <button class="auth-btn-main" onclick="authVerifyOTP()">Verifikasi OTP</button>
-    </div>
+    <div id="recaptcha-container-lp"></div>
   </div>
 </div>
 
@@ -2756,7 +2748,16 @@ function renderKoms(){
         <div class="kft">
           <div class="kmem">${nk.mem!=='—'?`<i class="ti ti-users"></i>${nk.mem}`:''}</div>
           <div class="kft-btns">
-            <a class="btn-wa" href="${nk.wa}" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp"></i>Join</a>
+            ${(()=>{
+              const isWA = nk.wa && (nk.wa.includes('wa.me')||nk.wa.includes('whatsapp.com'));
+              const icon = isWA ? 'ti-brand-whatsapp' : 'ti-external-link';
+              const label = isWA ? 'Join WA' : 'Buka';
+              const bg = isWA ? 'var(--wa-green)' : 'var(--blue)';
+              const bgHov = isWA ? 'var(--wa-green-d)' : 'var(--blue-d)';
+              return nk.wa && nk.wa !== '#'
+                ? `<a class="btn-join" href="${nk.wa}" target="_blank" rel="noopener" style="background:${bg};text-decoration:none" onmouseover="this.style.background='${bgHov}'" onmouseout="this.style.background='${bg}'"><i class="ti ${icon}"></i>${label}</a>`
+                : '';
+            })()}
           </div>
         </div>
       </div>
@@ -5964,7 +5965,7 @@ const FOOTER_KONTAK = [
 (function renderFooter(){
   const navLinks = [
     { label:'Beranda',          page:'home'      },
-    { label:'Lomba & Kompetisi',page:'lomba'     },
+    { label:'Lomba & Kompetisi', page:'lomba-scroll' },
     { label:'Komunitas',        page:'komunitas' },
     { label:'Tes Bakat',        page:'quiz'      },
   ];
@@ -5993,7 +5994,7 @@ const FOOTER_KONTAK = [
   }).join('');
 
   const navHTML = navLinks.map(n=>`
-    <a onclick="go('${n.page}');setNav('${n.page}')" style="${linkStyle}" ${hov}>${n.label}</a>`).join('');
+    <a onclick="${n.page==='lomba-scroll' ? "go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)" : `go('${n.page}');setNav('${n.page}')`}" style="${linkStyle}" ${hov}>${n.label}</a>`).join('');
 
   const timHTML = FOOTER_TIM.map(t=>`
     <div style="display:flex;align-items:center;gap:10px">
