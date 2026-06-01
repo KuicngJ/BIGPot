@@ -5914,5 +5914,152 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 });
 </script>
+
+<!-- Credit Footer -->
+<footer id="site-footer" style="background:#0A0F1E;color:#fff;margin-top:0"></footer>
+
+<script>
+/* ===================================================================
+   DATA: FOOTER
+   -------------------------------------------------------------------
+   Edit bagian ini untuk mengubah isi footer.
+   =================================================================== */
+
+/* -- Sosial media --
+   Isi url dengan link profil kamu.
+   Hapus // untuk mengaktifkan, atau hapus baris yang tidak dipakai. */
+const FOOTER_SOSMED = [
+  { platform:'instagram', url:'#' },
+  { platform:'tiktok',    url:'#' },
+  { platform:'whatsapp',  url:'#' },
+  // { platform:'twitter',  url:'#' },
+  // { platform:'facebook', url:'#' },
+  // { platform:'youtube',  url:'#' },
+  // { platform:'linkedin', url:'#' },
+];
+
+/* -- Tim / pembuat --
+   nama  : nama orang
+   peran : role / jabatan
+   warna : warna avatar (gradient CSS)                      */
+const FOOTER_TIM = [
+  { nama:'Ahza', peran:'Co-founder · Developer', warna:'linear-gradient(135deg,#1847ED,#7BA2F5)' },
+  { nama:'Wara', peran:'Co-founder · Designer',  warna:'linear-gradient(135deg,#6D28D9,#A78BFA)' },
+  // { nama:'Nama', peran:'Role', warna:'linear-gradient(135deg,#F04E23,#ff6b3d)' },
+];
+
+/* -- Kontak --
+   icon  : nama icon Tabler Icons
+   label : teks yang tampil
+   url   : href link (mailto:, https://, https://wa.me/...)  */
+const FOOTER_KONTAK = [
+  { icon:'ti-mail',            label:'hello@lostpotential.id', url:'mailto:hello@lostpotential.id' },
+  { icon:'ti-brand-whatsapp',  label:'WhatsApp Kami',          url:'#' },
+  // { icon:'ti-world',         label:'lostpotential.id',       url:'https://lostpotential.id' },
+];
+
+/* ===================================================================
+   RENDER FOOTER — tidak perlu diedit
+   =================================================================== */
+(function renderFooter(){
+  const navLinks = [
+    { label:'Beranda',          page:'home'      },
+    { label:'Lomba & Kompetisi',page:'lomba'     },
+    { label:'Komunitas',        page:'komunitas' },
+    { label:'Tes Bakat',        page:'quiz'      },
+  ];
+
+  const linkStyle = `font-size:13.5px;color:#A8B0C8;cursor:pointer;transition:color .15s ease;text-decoration:none`;
+  const hov = `onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#A8B0C8'"`;
+
+  const SOSMED_META = {
+    instagram: { icon:'ti-brand-instagram', color:'#E1306C' },
+    tiktok:    { icon:'ti-brand-tiktok',    color:'#FF0050' },
+    whatsapp:  { icon:'ti-brand-whatsapp',  color:'#25D366' },
+    twitter:   { icon:'ti-brand-twitter',   color:'#1DA1F2' },
+    facebook:  { icon:'ti-brand-facebook',  color:'#1877F2' },
+    youtube:   { icon:'ti-brand-youtube',   color:'#FF0000' },
+    linkedin:  { icon:'ti-brand-linkedin',  color:'#0A66C2' },
+  };
+
+  const sosmedHTML = FOOTER_SOSMED.map(s=>{
+    const m = SOSMED_META[s.platform] || { icon:'ti-world', color:'#8891AB' };
+    return `<a href="${s.url}" target="_blank" rel="noopener"
+       style="width:34px;height:34px;border-radius:50%;background:#1C2130;border:1px solid #2E3650;display:flex;align-items:center;justify-content:center;color:#8891AB;transition:all .2s ease;text-decoration:none;flex-shrink:0"
+       onmouseover="this.style.background='${m.color}';this.style.borderColor='${m.color}';this.style.color='#fff'"
+       onmouseout="this.style.background='#1C2130';this.style.borderColor='#2E3650';this.style.color='#8891AB'">
+      <i class="ti ${m.icon}" style="font-size:15px"></i>
+    </a>`;
+  }).join('');
+
+  const navHTML = navLinks.map(n=>`
+    <a onclick="go('${n.page}');setNav('${n.page}')" style="${linkStyle}" ${hov}>${n.label}</a>`).join('');
+
+  const timHTML = FOOTER_TIM.map(t=>`
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:50%;background:${t.warna};display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.3)">${t.nama[0].toUpperCase()}</div>
+      <div>
+        <div style="font-size:13.5px;font-weight:700;color:#F0F2FA">${t.nama}</div>
+        <div style="font-size:11px;color:#636A84">${t.peran}</div>
+      </div>
+    </div>`).join('');
+
+  const kontakHTML = FOOTER_KONTAK.map(k=>`
+    <a href="${k.url}" style="font-size:13px;color:#A8B0C8;display:flex;align-items:center;gap:7px;text-decoration:none;transition:color .15s" ${hov}>
+      <i class="ti ${k.icon}" style="font-size:14px;color:#636A84"></i>${k.label}
+    </a>`).join('');
+
+  document.getElementById('site-footer').innerHTML = `
+    <div style="max-width:1100px;margin:0 auto;padding:52px 28px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px">
+
+      <!-- Brand -->
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#F04E23,#ff6b3d);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(240,78,35,.4);flex-shrink:0">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="22" height="22"><path d="M50 8 A42 42 0 0 0 8 50" stroke="rgba(255,255,255,0.9)" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M50 92 A42 42 0 0 0 92 50" stroke="rgba(255,255,255,0.9)" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M50 13 C50 13 55 37 73 50 C55 63 50 87 50 87 C50 87 45 63 27 50 C45 37 50 13 50 13 Z" fill="#fff"/><circle cx="77" cy="19" r="5.5" fill="#fff"/><circle cx="87" cy="10" r="3.5" fill="#fff"/></svg>
+          </div>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px">LostPotential</span>
+        </div>
+        <p style="font-size:13.5px;color:#8891AB;line-height:1.7;margin-bottom:20px">Platform bakat pelajar Indonesia.<br>Temukan, kembangkan, dan buktikan<br>potensimu bersama ribuan pelajar lain.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">${sosmedHTML}</div>
+      </div>
+
+      <!-- Platform -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#636A84;margin-bottom:16px">Platform</div>
+        <div style="display:flex;flex-direction:column;gap:10px">${navHTML}</div>
+      </div>
+
+      <!-- Tim -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#636A84;margin-bottom:16px">Tim Kami</div>
+        <div style="display:flex;flex-direction:column;gap:14px">${timHTML}</div>
+      </div>
+
+      <!-- Kontak -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#636A84;margin-bottom:16px">Kontak</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${kontakHTML}
+          <div style="margin-top:6px;background:#1C2130;border:1px solid #2E3650;border-radius:12px;padding:12px 14px">
+            <div style="font-size:11px;color:#636A84;margin-bottom:4px;font-weight:600">Berbasis di</div>
+            <div style="font-size:13px;color:#A8B0C8;display:flex;align-items:center;gap:6px"><span style="font-size:15px">🇮🇩</span> Indonesia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #1C2130;max-width:1100px;margin:0 auto"></div>
+
+    <div style="max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div style="font-size:12px;color:#3A3F55">© 2025 LostPotential · All rights reserved · Made with <span style="color:#e05">♥</span> in Indonesia</div>
+      <div style="display:flex;gap:20px">
+        <a href="#" style="font-size:12px;color:#3A3F55;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#636A84'" onmouseout="this.style.color='#3A3F55'">Kebijakan Privasi</a>
+        <a href="#" style="font-size:12px;color:#3A3F55;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#636A84'" onmouseout="this.style.color='#3A3F55'">Syarat & Ketentuan</a>
+      </div>
+    </div>`;
+})();
+</script>
+
 </body>
 </html>
