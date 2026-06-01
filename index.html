@@ -1452,7 +1452,7 @@ body::before{
     <button class="btn-ghost" id="nav-btn-login" onclick="openAuthModal()">
       <i class="ti ti-user" aria-hidden="true"></i><span>Masuk</span>
     </button>
-    <button class="btn-primary" onclick="go('quiz');setNav('cari')">
+    <button class="btn-primary" id="nav-quiz-btn" onclick="go('quiz');setNav('cari')">
       Mulai Tes Bakat<i class="ti ti-arrow-right" aria-hidden="true"></i>
     </button>
   </div>
@@ -1526,11 +1526,11 @@ body::before{
     </div>
 
     <!-- SINGLE CTA -->
-    <div class="hero-cta-wrap">
-      <button class="cta-main" onclick="go('quiz');setNav('cari')">
+    <div class="hero-cta-wrap" id="hero-cta-wrap">
+      <button class="cta-main" id="hero-cta-btn" onclick="go('quiz');setNav('cari')">
         <i class="ti ti-brain" aria-hidden="true"></i>Mulai Tes Bakat — Gratis & 3 Menit
       </button>
-      <div class="cta-trust"><i class="ti ti-shield-check"></i>Tanpa registrasi. Hasilnya langsung personal untukmu.</div>
+      <div class="cta-trust" id="hero-cta-trust"><i class="ti ti-shield-check"></i>Tanpa registrasi. Hasilnya langsung personal untukmu.</div>
     </div>
 
     <!-- Stats -->
@@ -1990,7 +1990,7 @@ body::before{
     <div class="bi-ic"><i class="ti ti-home"></i></div>
     <div class="bi-lbl">Home</div>
   </div>
-  <div class="bi" id="nav-cari" onclick="go('quiz');setNav('cari')">
+  <div class="bi" id="nav-cari" onclick="galaxyScores?go('result'):go('quiz');setNav('cari')">
     <div class="bi-ic"><i class="ti ti-brain"></i></div>
     <div class="bi-lbl">Tes Bakat</div>
   </div>
@@ -4496,6 +4496,41 @@ const PLANET_INSIGHT = {
 
 // Global galaxy state
 let galaxyScores = null;
+
+// ── Update hero & nav CTA based on quiz completion ──
+function updateQuizCTA(){
+  const done = galaxyScores !== null;
+  const btn = document.getElementById('hero-cta-btn');
+  const navBtn = document.getElementById('nav-quiz-btn');
+  const trust = document.getElementById('hero-cta-trust');
+  if(!btn) return;
+  if(done){
+    btn.innerHTML = '<i class="ti ti-chart-bar" aria-hidden="true"></i>Lihat Hasil Tesmu';
+    btn.onclick = function(){ go('result'); setNav('cari'); };
+    if(trust) trust.innerHTML = '<i class="ti ti-check" aria-hidden="true" style="color:var(--green)"></i>Tes selesai — hasil sudah tersimpan untuk kamu.';
+    if(navBtn) navBtn.style.display = 'none';
+    const bnavCari = document.getElementById('nav-cari');
+    if(bnavCari){
+      bnavCari.querySelector('.bi-lbl').textContent = 'Hasil Tes';
+      bnavCari.onclick = function(){ go('result'); setNav('cari'); };
+    }
+  } else {
+    btn.innerHTML = '<i class="ti ti-brain" aria-hidden="true"></i>Mulai Tes Bakat — Gratis & 3 Menit';
+    btn.onclick = function(){ go('quiz'); setNav('cari'); };
+    if(trust) trust.innerHTML = '<i class="ti ti-shield-check"></i>Tanpa registrasi. Hasilnya langsung personal untukmu.';
+    if(navBtn){
+      navBtn.style.display = '';
+      navBtn.innerHTML = 'Mulai Tes Bakat<i class="ti ti-arrow-right" aria-hidden="true"></i>';
+      navBtn.onclick = function(){ go('quiz'); setNav('cari'); };
+    }
+    const bnavCari = document.getElementById('nav-cari');
+    if(bnavCari){
+      bnavCari.querySelector('.bi-lbl').textContent = 'Tes Bakat';
+      bnavCari.onclick = function(){ go('quiz'); setNav('cari'); };
+    }
+  }
+}
+
 let galaxyAnimFrame = null;
 let planets = [];
 let hoveredPlanet = null;
@@ -5782,6 +5817,7 @@ document.addEventListener('DOMContentLoaded',function(){
   loadBookmarks();
   initFirebase();
   initSparkles();
+  updateQuizCTA();
 
   // Monkey-patch go and showResult after all definitions are done
   const _goOriginal = go;
@@ -5818,6 +5854,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     galaxyScores = pctScores;
     _showOriginal();
+    updateQuizCTA();
   };
 });
 </script>
