@@ -349,8 +349,9 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
 .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .kcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm);position:relative}
 .kcard:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-.kban{height:68px;display:flex;align-items:center;justify-content:center;position:relative}
+.kban{min-height:68px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .kban i{font-size:30px}
+.kban img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
 .kcard-bm{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:14px;transition:all var(--dur) var(--ease)}
 .kcard-bm:hover{background:rgba(255,255,255,.95);color:var(--blue)}
 .kcard-bm.saved{color:var(--blue);background:rgba(255,255,255,.95)}
@@ -996,15 +997,26 @@ const EVS = [
    -------------------------------------------------------------------
    Tambahkan komunitas kamu di sini. Satu baris = satu komunitas.
    Kolom yang tersedia:
-     nama     → nama komunitas (string)
-     kategori → salah satu dari: 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
-     link     → link WhatsApp grup/channel komunitas (string URL)
+     nama      → nama komunitas (string)
+     kategori  → salah satu dari: 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
+     link      → link WhatsApp grup/channel komunitas (string URL)
+     thumbnail → URL gambar thumbnail (opsional — kalau kosong pakai icon kategori, ukuran fleksibel)
+     btw cara nambah thumbanil pergi ke imgur(nama web) habis itu convert gambarmu ke url
    =================================================================== */
 const KOMS = [
-  // Contoh format (hapus // di depan untuk mengaktifkan):
-   { nama:'DRGBT', kategori:'tech',  link:'https://chat.whatsapp.com/Ko5r4P4uZQq8V4SsCBXJiO?s=cl&p=a&mlu=3' },
-  // { nama:'Nama Komunitas 2', kategori:'seni',  link:'https://chat.whatsapp.com/...' },
-  // { nama:'Nama Komunitas 3', kategori:'sains', link:'https://wa.me/...' },
+
+  // ✅ CONTOH LENGKAP (dengan thumbnail):
+  // { nama:'Nama Komunitas', kategori:'tech', link:'https://chat.whatsapp.com/xxxxx', thumbnail:'https://url-gambar.jpg' },
+
+  // ✅ CONTOH TANPA THUMBNAIL (pakai icon otomatis):
+  // { nama:'Nama Komunitas', kategori:'seni', link:'https://chat.whatsapp.com/xxxxx' },
+
+  // 📌 KATEGORI YANG TERSEDIA:
+  // 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
+
+  // ⬇️ TAMBAHKAN KOMUNITAS KAMU DI SINI:
+   { nama:'D.R.G.B.T', kategori:'seni',  link:'https://chat.whatsapp.com/Ko5r4P4uZQq8V4SsCBXJiO?s=cl&p=a&mlu=3', thumbnail:'https://i.imgur.com/UUPMtT5.jpeg' },
+
 ];
 
 /* ===================================================================
@@ -1530,6 +1542,7 @@ function normKom(k, idx){
     mem: '—',
     tags: [k.kategori],
     wa: k.link || '#',
+    thumbnail: k.thumbnail || '',
   };
 }
 
@@ -1549,8 +1562,13 @@ function renderKoms(){
   el.innerHTML=filtered.map((k,i)=>{
     const nk=normKom(k,i);
     const saved=bookmarks.komunitas.has(nk.id);
+    const banStyle = nk.thumbnail ? '' : `background:${nk.bg}`;
+    const banContent = nk.thumbnail
+      ? `<img src="${nk.thumbnail}" alt="${nk.name}" style="width:100%;display:block;max-height:160px;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div style="display:none;width:100%;height:68px;align-items:center;justify-content:center;background:${nk.bg}"><i class="ti ${nk.ic}" style="color:${nk.bgi};font-size:28px"></i></div>`
+      : `<i class="ti ${nk.ic}" style="color:${nk.bgi};font-size:28px"></i>`;
     return `<div class="kcard">
-      <div class="kban" style="background:${nk.bg}"><i class="ti ${nk.ic}" style="color:${nk.bgi};font-size:28px"></i>
+      <div class="kban" style="${banStyle}">${banContent}
         <button class="kcard-bm${saved?' saved':''}" onclick="toggleBmKom('${nk.id}',this)"><i class="ti ${saved?'ti-bookmark-filled':'ti-bookmark'}"></i></button>
       </div>
       <div class="kbody">
