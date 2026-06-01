@@ -1285,34 +1285,43 @@ body::before{
     linear-gradient(90deg,rgba(100,140,255,.16) 1px,transparent 1px);
 }
 
-/* ── SPARKLES ── */
+/* ── SPARKLES — filled glowing shapes ── */
 .lp-spark{
   position:fixed;pointer-events:none;z-index:1;
-  border-radius:50%;
+  border-radius:0;
   animation:sparkRise linear forwards;
   opacity:0;
+  will-change:transform,opacity;
 }
 @keyframes sparkRise{
   0%  {opacity:0;transform:translateY(0) scale(0) rotate(0deg)}
-  8%  {opacity:1;transform:translateY(-12px) scale(1) rotate(45deg)}
-  85% {opacity:.6;transform:translateY(-100px) scale(.8) rotate(200deg)}
-  100%{opacity:0;transform:translateY(-130px) scale(0) rotate(260deg)}
+  6%  {opacity:1;transform:translateY(-10px) scale(1.1) rotate(30deg)}
+  50% {opacity:.85;transform:translateY(-60px) scale(.95) rotate(160deg)}
+  85% {opacity:.5;transform:translateY(-110px) scale(.75) rotate(220deg)}
+  100%{opacity:0;transform:translateY(-145px) scale(.1) rotate(280deg)}
+}
+[data-dark] .lp-spark{
+  filter:brightness(1.6) saturate(1.4);
 }
 
 /* ── SHOOTING STARS ── */
 .lp-star{
   position:fixed;pointer-events:none;z-index:1;
   height:2px;border-radius:2px;
-  background:linear-gradient(90deg,transparent,#fff,rgba(24,71,237,.8));
+  background:linear-gradient(90deg,transparent,#fff,rgba(24,71,237,.9));
   opacity:0;
   animation:shootingStar linear forwards;
   transform-origin:right center;
+  will-change:transform,opacity;
 }
 @keyframes shootingStar{
   0%  {opacity:0;transform:translateX(0) scaleX(0)}
-  5%  {opacity:.9}
-  70% {opacity:.6}
-  100%{opacity:0;transform:translateX(-400px) scaleX(1)}
+  4%  {opacity:1}
+  65% {opacity:.75}
+  100%{opacity:0;transform:translateX(-500px) scaleX(1)}
+}
+[data-dark] .lp-star{
+  box-shadow:0 0 6px rgba(255,255,255,.9),0 0 16px rgba(150,190,255,.7),0 0 30px rgba(100,140,255,.4)!important;
 }
 
 /* ── HERO TOP BEAM ── */
@@ -4645,14 +4654,26 @@ function initGalaxyCanvas(scores){
       ctx2.lineWidth=1;
     });
 
-    // ── Cosmic dust particles ──
-    for(let d=0; d<30; d++){
+    // ── Cosmic dust particles — dense, colorful ──
+    const dustCols=['rgba(200,220,255,','rgba(255,200,180,','rgba(180,255,220,','rgba(220,180,255,','rgba(255,240,180,'];
+    for(let d=0; d<55; d++){
       const dx = (Math.sin(d*432.1+t*.0015)*0.5+0.5)*W;
       const dy = (Math.cos(d*876.3+t*.002)*0.5+0.5)*H;
-      const dalpha = 0.04 + Math.sin(t*.025+d)*0.03;
-      const dr = .5+Math.sin(t*.03+d*2)*.3;
-      ctx2.beginPath();ctx2.arc(dx,dy,dr,0,Math.PI*2);
-      ctx2.fillStyle=`rgba(200,220,255,${dalpha})`;ctx2.fill();
+      const dalpha = 0.04 + Math.sin(t*.025+d)*0.035;
+      const dr = .4+Math.sin(t*.03+d*2)*.4;
+      const dcol=dustCols[d%5];
+      ctx2.beginPath();ctx2.arc(dx,dy,Math.max(.2,dr),0,Math.PI*2);
+      ctx2.fillStyle=dcol+Math.max(0.01,dalpha)+')';ctx2.fill();
+    }
+    // Extra swirling dust trail
+    for(let d=0;d<20;d++){
+      const angle=t*.003+d*Math.PI*2/20;
+      const dist=refSize*.08+Math.sin(t*.005+d)*refSize*.05;
+      const dx=cx+Math.cos(angle)*dist;
+      const dy=cy+Math.sin(angle)*dist;
+      const da=0.06+Math.sin(t*.04+d)*.04;
+      ctx2.beginPath();ctx2.arc(dx,dy,.8,0,Math.PI*2);
+      ctx2.fillStyle=`rgba(200,230,255,${da})`;ctx2.fill();
     }
 
     // ── Orbit rings — glowing, gradient ──
@@ -4809,58 +4830,76 @@ function initGalaxyCanvas(scores){
 
 function drawCinematicStars(ctx, W, H, t){
   ctx.save();
-  // Layer 1: micro stars
-  for(let i=0;i<180;i++){
+  // Layer 1: micro star field — dense
+  for(let i=0;i<280;i++){
     const sx=(Math.sin(i*2345.6)*0.5+0.5)*W;
     const sy=(Math.cos(i*8765.4)*0.5+0.5)*H;
-    const alpha=0.1+Math.sin(t*0.018+i)*0.08;
-    ctx.beginPath();ctx.arc(sx,sy,0.5,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
+    const alpha=0.08+Math.sin(t*0.018+i)*0.1;
+    ctx.beginPath();ctx.arc(sx,sy,0.4+Math.random()*.35,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${Math.max(0.03,alpha)})`;ctx.fill();
   }
-  // Layer 2: medium twinkle
-  for(let i=0;i<55;i++){
+  // Layer 2: medium twinkle — colored
+  const midCols=['rgba(200,215,255,','rgba(255,235,200,','rgba(200,255,230,','rgba(240,200,255,'];
+  for(let i=0;i<80;i++){
     const sx=(Math.sin(i*9876.5)*0.5+0.5)*W;
     const sy=(Math.cos(i*5432.1)*0.5+0.5)*H;
-    const sr=0.7+Math.sin(t*0.05+i)*0.45;
-    const alpha=0.25+Math.sin(t*0.04+i*0.7)*0.2;
-    ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
-    ctx.fillStyle=`rgba(210,225,255,${alpha})`;ctx.fill();
+    const sr=0.6+Math.sin(t*0.05+i)*0.5;
+    const alpha=0.2+Math.sin(t*0.04+i*0.7)*0.22;
+    const col=midCols[i%4];
+    ctx.beginPath();ctx.arc(sx,sy,Math.max(.3,sr),0,Math.PI*2);
+    ctx.fillStyle=col+Math.max(0,alpha)+')';ctx.fill();
   }
-  // Layer 3: colored accent stars
-  const starColors=['rgba(200,210,255,','rgba(255,220,200,','rgba(200,255,230,'];
-  for(let i=0;i<18;i++){
+  // Layer 3: colored accent stars with cross flares
+  const starColors=['rgba(200,210,255,','rgba(255,220,200,','rgba(200,255,230,','rgba(220,180,255,','rgba(255,240,180,'];
+  for(let i=0;i<28;i++){
     const sx=(Math.sin(i*6543.2)*0.5+0.5)*W;
     const sy=(Math.cos(i*3210.9)*0.5+0.5)*H;
-    const sr=1.0+Math.sin(t*0.035+i)*0.5;
-    const alpha=0.5+Math.sin(t*0.055+i)*0.3;
-    const col=starColors[i%3];
-    ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
+    const sr=0.9+Math.sin(t*0.035+i)*0.55;
+    const alpha=0.45+Math.sin(t*0.055+i)*0.35;
+    const col=starColors[i%5];
+    ctx.beginPath();ctx.arc(sx,sy,Math.max(.5,sr),0,Math.PI*2);
     ctx.fillStyle=col+alpha+')';ctx.fill();
     // 4-point cross flare
-    ctx.strokeStyle=col+(alpha*.35)+')';ctx.lineWidth=0.6;
-    const fl=sr*6;
+    ctx.save();ctx.strokeStyle=col+(alpha*.4)+')';ctx.lineWidth=0.7;
+    const fl=sr*7;
     ctx.beginPath();ctx.moveTo(sx-fl,sy);ctx.lineTo(sx+fl,sy);ctx.stroke();
     ctx.beginPath();ctx.moveTo(sx,sy-fl);ctx.lineTo(sx,sy+fl);ctx.stroke();
+    ctx.restore();
   }
-  // Layer 4: super bright featured stars with halo
-  for(let i=0;i<4;i++){
+  // Layer 4: super bright featured stars with multi-ray halo
+  for(let i=0;i<8;i++){
     const sx=(Math.sin(i*1111.1+7)*0.5+0.5)*W;
     const sy=(Math.cos(i*2222.2+3)*0.5+0.5)*H;
-    const sr=1.8+Math.sin(t*0.025+i)*.5;
-    const alpha=0.8+Math.sin(t*0.04+i)*.15;
-    // halo
-    const hg=ctx.createRadialGradient(sx,sy,0,sx,sy,sr*8);
-    hg.addColorStop(0,'rgba(200,220,255,.15)');hg.addColorStop(1,'transparent');
-    ctx.beginPath();ctx.arc(sx,sy,sr*8,0,Math.PI*2);ctx.fillStyle=hg;ctx.fill();
+    const sr=1.8+Math.sin(t*0.025+i)*.7;
+    const alpha=0.75+Math.sin(t*0.04+i)*.2;
+    // outer halo
+    const hg2=ctx.createRadialGradient(sx,sy,0,sx,sy,sr*16);
+    hg2.addColorStop(0,'rgba(200,220,255,.08)');hg2.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(sx,sy,sr*16,0,Math.PI*2);ctx.fillStyle=hg2;ctx.fill();
+    // inner halo
+    const hg=ctx.createRadialGradient(sx,sy,0,sx,sy,sr*7);
+    hg.addColorStop(0,'rgba(220,235,255,.18)');hg.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(sx,sy,sr*7,0,Math.PI*2);ctx.fillStyle=hg;ctx.fill();
+    // star body
     ctx.beginPath();ctx.arc(sx,sy,sr,0,Math.PI*2);
     ctx.fillStyle=`rgba(255,255,255,${alpha})`;ctx.fill();
-    // diagonal cross
-    ctx.strokeStyle=`rgba(200,220,255,${alpha*.4})`;ctx.lineWidth=.7;
+    // 8-point cross
+    ctx.save();ctx.strokeStyle=`rgba(210,230,255,${alpha*.5})`;
     [[1,0],[0,1],[.7,.7],[-.7,.7]].forEach(([dx,dy])=>{
-      const fl=sr*10;
-      ctx.beginPath();ctx.moveTo(sx-dx*fl,sy-dy*fl);ctx.lineTo(sx+dx*fl,sy+dy*fl);ctx.stroke();
+      const fl2=sr*14;ctx.lineWidth=(dx===1||dy===1)?1:.6;
+      ctx.beginPath();ctx.moveTo(sx-dx*fl2,sy-dy*fl2);ctx.lineTo(sx+dx*fl2,sy+dy*fl2);ctx.stroke();
     });
+    ctx.restore();
   }
+  // Layer 5: milky way band (subtle horizontal density)
+  const mwGrad=ctx.createLinearGradient(0,H*.3,0,H*.7);
+  mwGrad.addColorStop(0,'transparent');
+  mwGrad.addColorStop(0.3,'rgba(180,200,255,.025)');
+  mwGrad.addColorStop(0.5,'rgba(200,210,255,.04)');
+  mwGrad.addColorStop(0.7,'rgba(180,200,255,.025)');
+  mwGrad.addColorStop(1,'transparent');
+  ctx.fillStyle=mwGrad;ctx.fillRect(0,0,W,H);
+
   ctx.restore();
 }
 
@@ -5323,180 +5362,401 @@ window._showResultGalaxyPatch = function(){
 };
 
 /* ===================================================================
-   ANIMATED BACKGROUND — diverse floating elements + shooting stars
+   ANIMATED BACKGROUND — EPIC FILLED SHAPES + GALAXY STARFIELD
    =================================================================== */
 function initSparkles(){
-  const colors=['#1847ED','#F04E23','#00966A','#6D28D9','#D97706','#7BA2F5','#fff'];
+  const colors=['#1847ED','#F04E23','#00966A','#6D28D9','#D97706','#7BA2F5','#EC4899','#06B6D4','#F59E0B'];
+  const isDark=()=>document.body.hasAttribute('data-dark');
 
-  /* ── Shape types: star4, star6, diamond, ring, cross, triangle ── */
-  function makeSVG(type, sz, col){
+  /* ── SVG Shape builder — ALL FILLED, solid, vibrant ── */
+  function makeSVG(type, sz, col, opacity){
     const h=sz, r=sz/2;
+    const op=opacity||1;
     let path='';
+    const fill=col;
     if(type==='star4'){
-      const s=r*.4;
-      path=`<polygon points="${r},0 ${r+s},${r-s} ${h},${r} ${r+s},${r+s} ${r},${h} ${r-s},${r+s} 0,${r} ${r-s},${r-s}" fill="${col}"/>`;
+      const s=r*.38;
+      path=`<polygon points="${r},0 ${r+s},${r-s} ${h},${r} ${r+s},${r+s} ${r},${h} ${r-s},${r+s} 0,${r} ${r-s},${r-s}" fill="${fill}" opacity="${op}"/>`;
     } else if(type==='star6'){
       const pts=[];
       for(let i=0;i<6;i++){
-        const angle=i*60*(Math.PI/180);
-        pts.push(`${r+r*Math.cos(angle)},${r+r*Math.sin(angle)}`);
-        pts.push(`${r+r*.45*Math.cos(angle+30*(Math.PI/180))},${r+r*.45*Math.sin(angle+30*(Math.PI/180))}`);
+        const a=i*60*Math.PI/180;
+        pts.push(`${r+r*.95*Math.cos(a)},${r+r*.95*Math.sin(a)}`);
+        pts.push(`${r+r*.42*Math.cos(a+30*Math.PI/180)},${r+r*.42*Math.sin(a+30*Math.PI/180)}`);
       }
-      path=`<polygon points="${pts.join(' ')}" fill="${col}"/>`;
+      path=`<polygon points="${pts.join(' ')}" fill="${fill}" opacity="${op}"/>`;
     } else if(type==='diamond'){
-      path=`<polygon points="${r},0 ${h},${r} ${r},${h} 0,${r}" fill="${col}"/>`;
-    } else if(type==='ring'){
-      path=`<circle cx="${r}" cy="${r}" r="${r*.9}" fill="none" stroke="${col}" stroke-width="${r*.25}"/>`;
+      path=`<polygon points="${r},0 ${h},${r} ${r},${h} 0,${r}" fill="${fill}" opacity="${op}"/>`;
+    } else if(type==='square'){
+      const pad=sz*.08;
+      path=`<rect x="${pad}" y="${pad}" width="${sz-pad*2}" height="${sz-pad*2}" rx="${sz*.12}" fill="${fill}" opacity="${op}"/>`;
+    } else if(type==='rect'){
+      const pad=sz*.06;
+      path=`<rect x="${pad}" y="${pad*2.5}" width="${sz-pad*2}" height="${sz-pad*5}" rx="${sz*.1}" fill="${fill}" opacity="${op}"/>`;
+    } else if(type==='triangle'){
+      path=`<polygon points="${r},${sz*.05} ${h*.95},${h*.95} ${sz*.05},${h*.95}" fill="${fill}" opacity="${op}"/>`;
+    } else if(type==='hex'){
+      const pts=[];
+      for(let i=0;i<6;i++){const a=i*Math.PI/3-Math.PI/6;pts.push(`${r+r*.9*Math.cos(a)},${r+r*.9*Math.sin(a)}`);}
+      path=`<polygon points="${pts.join(' ')}" fill="${fill}" opacity="${op}"/>`;
     } else if(type==='cross'){
-      const t2=r*.22;
-      path=`<rect x="${r-t2}" y="0" width="${t2*2}" height="${h}" rx="${t2}" fill="${col}"/>
-            <rect x="0" y="${r-t2}" width="${h}" height="${t2*2}" rx="${t2}" fill="${col}"/>`;
-    } else { // triangle
-      path=`<polygon points="${r},0 ${h},${h} 0,${h}" fill="${col}"/>`;
+      const t2=r*.28;
+      path=`<rect x="${r-t2}" y="${sz*.05}" width="${t2*2}" height="${sz*.9}" rx="${t2}" fill="${fill}" opacity="${op}"/>
+            <rect x="${sz*.05}" y="${r-t2}" width="${sz*.9}" height="${t2*2}" rx="${t2}" fill="${fill}" opacity="${op}"/>`;
+    } else { // circle dot
+      path=`<circle cx="${r}" cy="${r}" r="${r*.88}" fill="${fill}" opacity="${op}"/>`;
     }
-    return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='${h}' height='${h}'>${path}</svg>`;
+    // Add inner highlight for 3D sheen
+    const innerR=r*.35,innerX=r*.35,innerY=r*.28;
+    const shine=`<ellipse cx="${innerX}" cy="${innerY}" rx="${innerR}" ry="${innerR*.55}" fill="rgba(255,255,255,.35)" opacity="${op*.7}"/>`;
+    return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='${h}' height='${h}'>${path}${shine}</svg>`;
   }
 
-  const types=['star4','star6','diamond','ring','cross','triangle','star4','diamond'];
+  const types=['star4','star6','diamond','square','rect','triangle','hex','cross','circle'];
 
   function spawnShape(){
     const el=document.createElement('div');
     el.className='lp-spark';
-    const sz=10+Math.floor(Math.random()*14);
-    const col=encodeURIComponent(colors[Math.floor(Math.random()*colors.length)]);
+    const sz=8+Math.floor(Math.random()*20); // 8–28px, bigger shapes
+    const colRaw=colors[Math.floor(Math.random()*colors.length)];
+    const col=encodeURIComponent(colRaw);
     const type=types[Math.floor(Math.random()*types.length)];
-    const dur=3.5+Math.random()*5;
-    const glow=colors[Math.floor(Math.random()*colors.length)];
+    const dur=2+Math.random()*3;
+    const glowCol=colors[Math.floor(Math.random()*colors.length)];
+    const glowSz=sz*(isDark()?1.4:0.9);
     el.style.cssText=`
       width:${sz}px;height:${sz}px;
       background:transparent;
       background-image:url("${makeSVG(type,sz,col)}");
       background-size:contain;background-repeat:no-repeat;
       border-radius:0;
-      left:${5+Math.random()*88}vw;
-      bottom:${Math.random()*65}vh;
-      filter:drop-shadow(0 0 ${sz*.4}px ${decodeURIComponent(col)}) drop-shadow(0 0 ${sz*.9}px ${glow}88);
+      left:${3+Math.random()*92}vw;
+      bottom:${Math.random()*70}vh;
+      filter:
+        drop-shadow(0 0 ${glowSz*.5}px ${colRaw})
+        drop-shadow(0 0 ${glowSz*1.2}px ${glowCol}cc)
+        drop-shadow(0 0 ${glowSz*2.2}px ${glowCol}55)
+        brightness(${isDark()?1.4:1.15});
       animation-duration:${dur}s;
     `;
     document.body.appendChild(el);
     setTimeout(()=>el.remove(),dur*1000+100);
   }
-  for(let i=0;i<16;i++) setTimeout(spawnShape,i*180);
-  setInterval(spawnShape,400);
 
-  /* ── Shooting stars ── */
+  // Initial burst — more shapes
+  for(let i=0;i<22;i++) setTimeout(spawnShape,i*120);
+  // Continuous — faster spawn rate
+  setInterval(spawnShape,280);
+
+  /* ── Shooting stars — more dramatic, with color variants ── */
+  const starColors=[
+    'linear-gradient(90deg,transparent,#fff,rgba(24,71,237,.9))',
+    'linear-gradient(90deg,transparent,#fff,rgba(240,78,35,.9))',
+    'linear-gradient(90deg,transparent,#E0EAFF,rgba(109,40,217,.8))',
+    'linear-gradient(90deg,transparent,#FFF9C4,rgba(217,119,6,.8))',
+  ];
   function spawnStar(){
     const el=document.createElement('div');
     el.className='lp-star';
-    const len=100+Math.random()*200;
-    const dur=0.7+Math.random()*1.2;
-    const top=Math.random()*55;
-    const left=10+Math.random()*75;
-    const angle=-8+Math.random()*16;
+    const len=80+Math.random()*260;
+    const dur=0.4+Math.random()*0.8;
+    const top=Math.random()*60;
+    const left=8+Math.random()*78;
+    const angle=-12+Math.random()*24;
+    const grad=starColors[Math.floor(Math.random()*starColors.length)];
+    const thickness=1+Math.random()*2;
     el.style.cssText=`
       width:${len}px;
+      height:${thickness}px;
       top:${top}vh;left:${left}vw;
       transform:rotate(${angle}deg);
       animation-duration:${dur}s;
       opacity:0;
+      background:${grad};
+      box-shadow:0 0 ${thickness*4}px rgba(255,255,255,.8),0 0 ${thickness*10}px rgba(120,160,255,.5);
     `;
     document.body.appendChild(el);
-    setTimeout(()=>el.remove(),(dur+.2)*1000);
+    setTimeout(()=>el.remove(),(dur+.3)*1000);
   }
   function schedStar(){
     spawnStar();
-    setTimeout(schedStar,1600+Math.random()*2800);
+    // Occasional double/triple burst
+    if(Math.random()<.3){
+      setTimeout(spawnStar,80);
+      if(Math.random()<.15) setTimeout(spawnStar,180);
+    }
+    setTimeout(schedStar,800+Math.random()*1600);
   }
-  setTimeout(schedStar,800);
+  setTimeout(schedStar,500);
 
-  /* ── Canvas: floating geometry + ambient glow (replaces dot constellation) ── */
+  /* ══════════════════════════════════════════════════════════════════
+     CONSTELLATION CANVAS — EPIC FILLED SHAPES + STAR FIELD + NEBULA
+     ══════════════════════════════════════════════════════════════════ */
   const canvas=document.createElement('canvas');
   canvas.id='lp-constellation';
   canvas.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
   document.body.insertBefore(canvas,document.body.firstChild);
   const ctx=canvas.getContext('2d');
-  let W,H,nodes=[];
+  let W,H,nodes=[],bgStars=[],nebulaBlobs=[];
 
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+    initBgStars();
+    initNebula();
+  }
   resize();
   window.addEventListener('resize',()=>{resize();initNodes();});
 
-  const isDark=()=>document.body.hasAttribute('data-dark');
+  /* ── Static background stars (seeded, don't re-init each frame) ── */
+  function initBgStars(){
+    bgStars=[];
+    // Micro stars
+    for(let i=0;i<300;i++){
+      bgStars.push({
+        x:(Math.sin(i*2347.61)*0.5+0.5)*W,
+        y:(Math.cos(i*8761.43)*0.5+0.5)*H,
+        r:0.3+Math.random()*.7,
+        twinkle:Math.random()*Math.PI*2,
+        twinkleSpeed:0.008+Math.random()*.025,
+        color:'rgba(255,255,255,',
+        baseAlpha:0.08+Math.random()*.25
+      });
+    }
+    // Colored accent stars
+    const accentCols=['rgba(180,200,255,','rgba(255,200,160,','rgba(160,255,210,','rgba(220,180,255,'];
+    for(let i=0;i<60;i++){
+      bgStars.push({
+        x:(Math.sin(i*6543.2)*0.5+0.5)*W,
+        y:(Math.cos(i*3210.9)*0.5+0.5)*H,
+        r:0.8+Math.random()*1.4,
+        twinkle:Math.random()*Math.PI*2,
+        twinkleSpeed:0.015+Math.random()*.04,
+        color:accentCols[i%4],
+        baseAlpha:0.3+Math.random()*.5,
+        flare:true
+      });
+    }
+    // Featured bright stars with cross flare
+    for(let i=0;i<12;i++){
+      bgStars.push({
+        x:(Math.sin(i*1111.1+7)*0.5+0.5)*W,
+        y:(Math.cos(i*2222.2+3)*0.5+0.5)*H,
+        r:1.5+Math.random()*2,
+        twinkle:Math.random()*Math.PI*2,
+        twinkleSpeed:0.02+Math.random()*.03,
+        color:'rgba(255,255,255,',
+        baseAlpha:0.7+Math.random()*.3,
+        bigFlare:true
+      });
+    }
+  }
 
-  // Each node is a geometric shape with slow drift
-  const nodeTypes=['hex','tri','sq','dia'];
+  /* ── Nebula blobs (static positions, painted each frame softly) ── */
+  function initNebula(){
+    nebulaBlobs=[];
+    const nebCols=['#1847ED','#6D28D9','#9D174D','#F04E23','#00966A','#D97706'];
+    for(let i=0;i<7;i++){
+      nebulaBlobs.push({
+        x:(Math.sin(i*1234.5+2)*0.5+0.5)*W,
+        y:(Math.cos(i*5678.9+1)*0.5+0.5)*H,
+        r:100+Math.random()*200,
+        color:nebCols[i%nebCols.length],
+        alpha:0.018+Math.random()*.025,
+        drift:Math.random()*Math.PI*2,
+        driftSpeed:0.0012+Math.random()*.0015
+      });
+    }
+  }
+
+  /* ── Geometric constellation nodes — ALL FILLED ── */
+  const nodeTypes=['hex','tri','sq','dia','star','rect','pent'];
   function initNodes(){
-    const count=Math.floor((W*H)/28000);
+    const count=Math.max(18,Math.floor((W*H)/18000));
     nodes=Array.from({length:count},()=>({
       x:Math.random()*W,y:Math.random()*H,
-      vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
-      size:4+Math.random()*8,
+      vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,
+      size:3+Math.random()*9,
       rot:Math.random()*Math.PI*2,
-      rotV:(Math.random()-.5)*.008,
+      rotV:(Math.random()-.5)*.018,
       type:nodeTypes[Math.floor(Math.random()*nodeTypes.length)],
       colorIdx:Math.floor(Math.random()*colors.length),
       pulse:Math.random()*Math.PI*2,
-      alpha:0.12+Math.random()*.18
+      baseAlpha:0.18+Math.random()*.28,
+      scale:1
     }));
   }
   initNodes();
 
-  function drawHex(ctx,x,y,r,rot){
-    ctx.beginPath();
-    for(let i=0;i<6;i++){const a=rot+i*Math.PI/3;ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));}
-    ctx.closePath();
+  /* ── Shape drawers — all filled, all beautiful ── */
+  function drawHex(cx,x,y,r,rot,col,a){
+    cx.beginPath();
+    for(let i=0;i<6;i++){const ang=rot+i*Math.PI/3;cx.lineTo(x+r*Math.cos(ang),y+r*Math.sin(ang));}
+    cx.closePath();
+    cx.fillStyle=col;cx.globalAlpha=a;cx.fill();
+    cx.globalAlpha=1;
   }
-  function drawTri(ctx,x,y,r,rot){
-    ctx.beginPath();
-    for(let i=0;i<3;i++){const a=rot+i*Math.PI*2/3;ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));}
-    ctx.closePath();
+  function drawTri(cx,x,y,r,rot,col,a){
+    cx.beginPath();
+    for(let i=0;i<3;i++){const ang=rot+i*Math.PI*2/3-Math.PI/2;cx.lineTo(x+r*Math.cos(ang),y+r*Math.sin(ang));}
+    cx.closePath();
+    cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;
   }
-  function drawSq(ctx,x,y,r,rot){
-    ctx.beginPath();
-    for(let i=0;i<4;i++){const a=rot+i*Math.PI/2+Math.PI/4;ctx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a));}
-    ctx.closePath();
+  function drawSq(cx,x,y,r,rot,col,a){
+    cx.save();cx.translate(x,y);cx.rotate(rot);
+    cx.beginPath();cx.rect(-r*.78,-r*.78,r*1.56,r*1.56);
+    cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;cx.restore();
   }
-  function drawDia(ctx,x,y,r,rot){
-    ctx.beginPath();
-    ctx.moveTo(x,y-r);ctx.lineTo(x+r*.6,y);ctx.lineTo(x,y+r);ctx.lineTo(x-r*.6,y);
-    ctx.closePath();
+  function drawRect(cx,x,y,r,rot,col,a){
+    cx.save();cx.translate(x,y);cx.rotate(rot);
+    cx.beginPath();cx.rect(-r*.55,-r*.95,r*1.1,r*1.9);
+    cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;cx.restore();
+  }
+  function drawDia(cx,x,y,r,rot,col,a){
+    cx.save();cx.translate(x,y);cx.rotate(rot);
+    cx.beginPath();cx.moveTo(0,-r);cx.lineTo(r*.65,0);cx.lineTo(0,r);cx.lineTo(-r*.65,0);
+    cx.closePath();cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;cx.restore();
+  }
+  function drawStar(cx,x,y,r,rot,col,a,points){
+    const pts=points||5;
+    cx.beginPath();
+    for(let i=0;i<pts*2;i++){
+      const ang=rot+i*Math.PI/pts-Math.PI/2;
+      const rr=i%2===0?r:r*.42;
+      cx.lineTo(x+rr*Math.cos(ang),y+rr*Math.sin(ang));
+    }
+    cx.closePath();cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;
+  }
+  function drawPent(cx,x,y,r,rot,col,a){
+    cx.beginPath();
+    for(let i=0;i<5;i++){const ang=rot+i*Math.PI*2/5-Math.PI/2;cx.lineTo(x+r*Math.cos(ang),y+r*Math.sin(ang));}
+    cx.closePath();cx.fillStyle=col;cx.globalAlpha=a;cx.fill();cx.globalAlpha=1;
   }
 
+  /* ── Main draw loop ── */
+  let animT=0;
   function draw(){
     ctx.clearRect(0,0,W,H);
     const dark=isDark();
-    nodes.forEach(n=>{
-      n.x+=n.vx;n.y+=n.vy;n.rot+=n.rotV;
-      n.pulse+=.012;
-      if(n.x<-20)n.x=W+20;if(n.x>W+20)n.x=-20;
-      if(n.y<-20)n.y=H+20;if(n.y>H+20)n.y=-20;
-      const pulse=.5+.5*Math.sin(n.pulse);
-      const col=colors[n.colorIdx];
-      const a=(dark?n.alpha*1.8:n.alpha)*(.5+pulse*.5);
-      ctx.strokeStyle=col+(Math.floor(a*255).toString(16).padStart(2,'0'));
-      ctx.lineWidth=dark?1.2:.9;
-      ctx.shadowBlur=dark?14:8;
-      ctx.shadowColor=col;
-      if(n.type==='hex') drawHex(ctx,n.x,n.y,n.size,n.rot);
-      else if(n.type==='tri') drawTri(ctx,n.x,n.y,n.size,n.rot);
-      else if(n.type==='sq') drawSq(ctx,n.x,n.y,n.size,n.rot);
-      else drawDia(ctx,n.x,n.y,n.size,n.rot);
-      ctx.stroke();
-      ctx.shadowBlur=0;
+
+    /* ── 1. NEBULA LAYER ── */
+    nebulaBlobs.forEach(n=>{
+      n.drift+=n.driftSpeed;
+      const nx=n.x+Math.sin(n.drift)*30;
+      const ny=n.y+Math.cos(n.drift*1.3)*20;
+      const boost=dark?2.8:1;
+      const ng=ctx.createRadialGradient(nx,ny,0,nx,ny,n.r);
+      ng.addColorStop(0,n.color+Math.floor(n.alpha*boost*255).toString(16).padStart(2,'0'));
+      ng.addColorStop(0.5,n.color+Math.floor(n.alpha*boost*.4*255).toString(16).padStart(2,'0'));
+      ng.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(nx,ny,n.r,0,Math.PI*2);ctx.fillStyle=ng;ctx.fill();
     });
 
-    // Soft connecting lines between nearby nodes
+    /* ── 2. BACKGROUND STARS ── */
+    bgStars.forEach(s=>{
+      s.twinkle+=s.twinkleSpeed;
+      const tFactor=0.5+0.5*Math.sin(s.twinkle);
+      const a=s.baseAlpha*(dark?1.7:1)*tFactor;
+      const r=s.r*(0.7+0.3*tFactor);
+
+      if(s.bigFlare){
+        // Radial glow
+        const hg=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,r*9);
+        hg.addColorStop(0,`rgba(200,220,255,${a*.2})`);hg.addColorStop(1,'transparent');
+        ctx.beginPath();ctx.arc(s.x,s.y,r*9,0,Math.PI*2);ctx.fillStyle=hg;ctx.fill();
+        // Cross flares
+        ctx.save();ctx.strokeStyle=`rgba(220,235,255,${a*.5})`;ctx.lineWidth=.8;
+        [[1,0],[0,1],[.7,.7],[-.7,.7]].forEach(([dx,dy])=>{
+          const fl=r*14;
+          ctx.beginPath();ctx.moveTo(s.x-dx*fl,s.y-dy*fl);ctx.lineTo(s.x+dx*fl,s.y+dy*fl);ctx.stroke();
+        });
+        ctx.restore();
+      } else if(s.flare){
+        ctx.save();ctx.strokeStyle=s.color+Math.min(1,a*.6)+')';ctx.lineWidth=.5;
+        const fl=r*7;
+        ctx.beginPath();ctx.moveTo(s.x-fl,s.y);ctx.lineTo(s.x+fl,s.y);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(s.x,s.y-fl);ctx.lineTo(s.x,s.y+fl);ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.beginPath();ctx.arc(s.x,s.y,r,0,Math.PI*2);
+      ctx.fillStyle=s.color+Math.min(1,a)+')';ctx.fill();
+    });
+
+    /* ── 3. CONSTELLATION NODES — filled, glowing ── */
+    nodes.forEach(n=>{
+      n.x+=n.vx;n.y+=n.vy;n.rot+=n.rotV;n.pulse+=.032;
+      if(n.x<-30)n.x=W+30;if(n.x>W+30)n.x=-30;
+      if(n.y<-30)n.y=H+30;if(n.y>H+30)n.y=-30;
+
+      const pulse=0.5+0.5*Math.sin(n.pulse);
+      const col=colors[n.colorIdx];
+      const alphaMul=dark?2.4:1.2;
+      const a=Math.min(1,n.baseAlpha*alphaMul*(0.5+pulse*.5));
+      const sz=n.size*(0.85+pulse*.15);
+
+      // Outer glow halo — multiple layers for depth
+      ctx.save();
+      const glowR=sz*(dark?3.5:2.5);
+      const glow1=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,glowR);
+      glow1.addColorStop(0,col+Math.floor(a*.55*255).toString(16).padStart(2,'0'));
+      glow1.addColorStop(0.4,col+Math.floor(a*.2*255).toString(16).padStart(2,'0'));
+      glow1.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,glowR,0,Math.PI*2);ctx.fillStyle=glow1;ctx.fill();
+
+      const glowR2=sz*(dark?6:4);
+      const glow2=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,glowR2);
+      glow2.addColorStop(0,col+Math.floor(a*.18*255).toString(16).padStart(2,'0'));
+      glow2.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,glowR2,0,Math.PI*2);ctx.fillStyle=glow2;ctx.fill();
+      ctx.restore();
+
+      // Filled shape body
+      if(n.type==='hex') drawHex(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+      else if(n.type==='tri') drawTri(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+      else if(n.type==='sq') drawSq(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+      else if(n.type==='rect') drawRect(ctx,n.x,n.y,sz*.8,n.rot,col,Math.min(1,a*1.1));
+      else if(n.type==='dia') drawDia(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+      else if(n.type==='star') drawStar(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+      else drawPent(ctx,n.x,n.y,sz,n.rot,col,Math.min(1,a*1.1));
+
+      // Bright inner highlight for 3D look
+      const hx=n.x-sz*.25,hy=n.y-sz*.25;
+      const hl=ctx.createRadialGradient(hx,hy,0,hx,hy,sz*.55);
+      hl.addColorStop(0,`rgba(255,255,255,${a*.5})`);
+      hl.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,sz*.9,0,Math.PI*2);ctx.fillStyle=hl;ctx.fill();
+    });
+
+    /* ── 4. CONSTELLATION LINES ── */
     for(let i=0;i<nodes.length;i++){
       for(let j=i+1;j<nodes.length;j++){
         const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y;
         const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<110){
-          const a=(1-dist/110)*(dark?.12:.06);
+        const maxDist=dark?130:100;
+        if(dist<maxDist){
+          const a=(1-dist/maxDist)*(dark?.14:.07);
           ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);
-          ctx.strokeStyle=`rgba(100,140,255,${a})`;ctx.lineWidth=.6;ctx.stroke();
+          ctx.strokeStyle=`rgba(120,160,255,${a})`;ctx.lineWidth=.7;ctx.stroke();
         }
       }
     }
+
+    /* ── 5. PERIODIC SPARKLE BURST from a random node ── */
+    if(animT%180===0){
+      const n=nodes[Math.floor(Math.random()*nodes.length)];
+      if(n){
+        for(let i=0;i<8;i++){
+          const ang=i*Math.PI/4;const fl=n.size*4;
+          const col=colors[n.colorIdx];
+          ctx.save();ctx.strokeStyle=col+'88';ctx.lineWidth=.8;
+          ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(n.x+Math.cos(ang)*fl,n.y+Math.sin(ang)*fl);ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    animT++;
     requestAnimationFrame(draw);
   }
   draw();
