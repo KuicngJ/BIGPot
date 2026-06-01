@@ -531,6 +531,133 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
   .jstep:nth-child(3){border-right:1px solid var(--surf3)}
   .jstep:nth-child(3),.jstep:nth-child(4){border-top:1px solid var(--surf3)}
 }
+
+/* ========================================================
+   FITUR BARU — CAREER EXPLORER PAGE
+   ======================================================== */
+.cewrap{max-width:1100px;margin:0 auto;padding:28px 20px 100px}
+.ce-hero{background:linear-gradient(135deg,#060D2E 0%,#1847ED 100%);border-radius:var(--r-xl);padding:36px 32px;margin-bottom:28px;position:relative;overflow:hidden}
+.ce-hero::after{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;background:rgba(255,255,255,.04);border-radius:50%}
+.ce-hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,4vw,34px);font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.ce-hero p{font-size:14px;color:rgba(255,255,255,.65);max-width:460px;line-height:1.6}
+.ce-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.ce-filter-btn{background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:8px 18px;font-size:12.5px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all var(--dur) var(--ease);white-space:nowrap}
+.ce-filter-btn:hover{border-color:var(--blue-m);color:var(--ink)}
+.ce-filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.ce-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.cecard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
+.cecard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.cecard-top{padding:22px 22px 16px;border-bottom:1px solid var(--surf3)}
+.cecard-ic-wrap{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:24px}
+.cecard-title{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px;letter-spacing:-.3px}
+.cecard-desc{font-size:13px;color:var(--ink3);line-height:1.6}
+.cecard-body{padding:16px 22px}
+.cecard-section{margin-bottom:14px}
+.cecard-section:last-child{margin-bottom:0}
+.cecard-label{font-size:10.5px;font-weight:700;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.cecard-label i{font-size:13px}
+.cetag{display:inline-block;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;background:var(--surf2);color:var(--ink2);margin:2px 2px 2px 0}
+.cecard-prospect{font-size:12.5px;color:var(--ink2);line-height:1.5;display:flex;align-items:flex-start;gap:7px}
+.cecard-prospect i{color:var(--green);flex-shrink:0;margin-top:2px;font-size:14px}
+.ce-empty{text-align:center;padding:60px 20px;color:var(--ink3);grid-column:1/-1}
+.ce-empty i{font-size:40px;display:block;margin-bottom:12px;opacity:.35}
+
+/* ========================================================
+   FITUR BARU — LEARNING PATH (di result page)
+   ======================================================== */
+.lp-section{margin-bottom:20px}
+.lp-header{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.lp-header i{font-size:20px;color:var(--blue)}
+.lp-sub{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.lp-timeline{position:relative;padding-left:32px}
+.lp-timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--blue),var(--purple),var(--orange));border-radius:2px}
+.lp-step{position:relative;margin-bottom:18px}
+.lp-step:last-child{margin-bottom:0}
+.lp-dot{position:absolute;left:-24px;top:3px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.lp-step-card{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-sm);transition:all var(--dur) var(--ease)}
+.lp-step-card:hover{border-color:var(--blue-m);box-shadow:var(--shadow)}
+.lp-step-num{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.lp-step-title{font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.lp-step-desc{font-size:12.5px;color:var(--ink3);line-height:1.5}
+.lp-step-tag{display:inline-flex;align-items:center;gap:5px;background:var(--blue-l);color:var(--blue);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-top:8px}
+
+/* ========================================================
+   FITUR BARU — PROJECT RECOMMENDATION (di result page)
+   ======================================================== */
+.proj-section{margin-bottom:20px}
+.proj-tabs{display:flex;gap:6px;margin-bottom:16px}
+.proj-tab{background:var(--surf3);border:none;padding:8px 18px;border-radius:50px;font-size:12.5px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all var(--dur) var(--ease)}
+.proj-tab.on{background:var(--ink);color:var(--surf)}
+.proj-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.proj-scroll::-webkit-scrollbar{height:4px}
+.proj-scroll::-webkit-scrollbar-track{background:var(--surf3);border-radius:2px}
+.proj-scroll::-webkit-scrollbar-thumb{background:var(--blue-m);border-radius:2px}
+.pcard{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:18px;min-width:200px;max-width:220px;flex-shrink:0;scroll-snap-align:start;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
+.pcard:hover{border-color:var(--blue-m);transform:translateY(-2px);box-shadow:var(--shadow)}
+.pcard-ic{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.pcard-title{font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.pcard-desc{font-size:12px;color:var(--ink3);line-height:1.5;margin-bottom:10px}
+.pcard-diff{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:50px}
+
+/* ========================================================
+   FITUR BARU — TOKOH MIRIP KAMU (di result page)
+   ======================================================== */
+.tokoh-section{margin-bottom:20px}
+.tokoh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tokoh-card{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:18px 14px;text-align:center;transition:all var(--dur) var(--ease);box-shadow:var(--shadow-sm)}
+.tokoh-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tokoh-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;position:relative}
+.tokoh-avatar::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;background-clip:padding-box}
+.tokoh-name{font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.tokoh-desc{font-size:11.5px;color:var(--ink3);line-height:1.5;margin-bottom:10px}
+.tokoh-match{display:inline-flex;align-items:center;gap:5px;background:var(--green-l);color:var(--green-d);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700}
+.tokoh-reason{font-size:11px;color:var(--ink3);font-style:italic;margin-top:6px;line-height:1.4}
+
+/* ========================================================
+   FITUR BARU — HIDDEN POTENTIAL (di result page)
+   ======================================================== */
+.hidden-pot-section{margin-bottom:20px;background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--shadow-sm)}
+.hidden-pot-hd{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink);margin-bottom:4px;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.hidden-pot-hd i{color:var(--purple)}
+.hidden-pot-sub{font-size:13px;color:var(--ink3);margin-bottom:18px}
+.pot-bar-row{margin-bottom:14px}
+.pot-bar-row:last-child{margin-bottom:0}
+.pot-bar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.pot-bar-label{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.pot-bar-label i{font-size:16px}
+.pot-pct{font-size:13px;font-weight:700;color:var(--blue)}
+.pot-bar-track{height:8px;background:var(--surf3);border-radius:4px;overflow:hidden}
+.pot-bar-fill{height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.pot-bar-note{font-size:11.5px;color:var(--ink3);margin-top:4px}
+
+/* ========================================================
+   FITUR BARU — QUOTE MOTIVATION GENERATOR (di result page)
+   ======================================================== */
+.quote-section{margin-bottom:20px;border-radius:var(--r-lg);overflow:hidden;position:relative}
+.quote-card{background:linear-gradient(135deg,var(--purple) 0%,#1847ED 100%);padding:28px 28px 22px;position:relative;overflow:hidden}
+.quote-card::before{content:'';position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;background:rgba(255,255,255,.05);border-radius:50%}
+.quote-card::after{content:'';position:absolute;left:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.04);border-radius:50%}
+.quote-icon{font-size:28px;color:rgba(255,255,255,.35);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;line-height:1;margin-bottom:12px;display:block}
+.quote-text{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:#fff;line-height:1.5;letter-spacing:-.2px;margin-bottom:10px;position:relative;z-index:1;min-height:52px;transition:opacity .3s var(--ease)}
+.quote-text.fade{opacity:0}
+.quote-author{font-size:12.5px;color:rgba(255,255,255,.55);position:relative;z-index:1}
+.quote-footer{background:rgba(0,0,0,.2);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(4px)}
+.quote-refresh{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:7px 16px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;transition:all var(--dur) var(--ease);display:flex;align-items:center;gap:6px}
+.quote-refresh:hover{background:rgba(255,255,255,.25)}
+.quote-counter{font-size:11.5px;color:rgba(255,255,255,.5)}
+
+/* ========================================================
+   BOTTOM NAV — Add Career Explorer
+   ======================================================== */
+.ce-bnav-add{cursor:pointer}
+
+@media(max-width:520px){
+  .tokoh-grid{grid-template-columns:repeat(3,1fr)}
+  .ce-hero{padding:24px 20px}
+  .cewrap{padding:20px 14px 100px}
+  .cecard-body{padding:14px 16px}
+  .cecard-top{padding:18px 16px 14px}
+}
 </style>
 </head>
 <body>
@@ -908,6 +1035,33 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
   </div>
 </div>
 
+<!-- ===================== PAGE: CAREER EXPLORER ===================== -->
+<div id="pg-career" class="page">
+  <div class="cewrap">
+    <div class="ce-hero">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="width:42px;height:42px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-map-2" style="color:#fff;font-size:20px"></i></div>
+        <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase">Career Explorer</span>
+      </div>
+      <h1>Temukan Karirmu<br>yang Sesungguhnya</h1>
+      <p>Jelajahi 11+ pilihan karir berdasarkan bakat dan minatmu. Lihat skill, prospek, dan jalur nyata menuju karir impianmu.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap" style="margin-bottom:16px">
+      <i class="ti ti-search search-ic"></i>
+      <input class="search-inp" id="ce-search" type="text" placeholder="Cari karir, skill, atau bidang…" oninput="filterCareers()" autocomplete="off"/>
+      <button class="search-clear" id="ce-search-clear" onclick="clearCeSearch()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="ce-filters" id="ce-filters"></div>
+
+    <!-- Career grid -->
+    <div class="ce-grid" id="ce-grid"></div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bi on" id="nav-home" onclick="go('home');setNav('home')">
@@ -918,14 +1072,14 @@ nav{background:var(--surf);border-bottom:1px solid var(--surf3);height:64px;disp
     <div class="bi-ic"><i class="ti ti-brain"></i></div>
     <div class="bi-lbl">Tes Bakat</div>
   </div>
+  <div class="bi" id="nav-career" onclick="go('career');setNav('career')">
+    <div class="bi-ic"><i class="ti ti-map-2"></i></div>
+    <div class="bi-lbl">Karir</div>
+  </div>
   <div class="bi" id="nav-komunitas" onclick="go('komunitas');setNav('komunitas')">
     <div class="bi-ic"><i class="ti ti-users"></i></div>
     <div class="bi-lbl">Komunitas</div>
     <div class="bi-badge"></div>
-  </div>
-  <div class="bi" id="nav-bookmark" onclick="go('bookmark');setNav('bookmark')">
-    <div class="bi-ic"><i class="ti ti-bookmark"></i></div>
-    <div class="bi-lbl">Tersimpan</div>
   </div>
   <div class="bi" id="nav-profil" onclick="go('profil');setNav('profil')">
     <div class="bi-ic"><i class="ti ti-user-circle"></i></div>
@@ -1279,6 +1433,7 @@ function go(id){
   if(id==='bookmark'){renderBookmarks()}
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
+  if(id==='career'){renderCareers()}
 }
 
 function setNav(k){
@@ -1767,120 +1922,6 @@ function prevQ(){
 }
 
 /* ===================================================================
-   SHOW RESULT — personal & bermakna
-   =================================================================== */
-function showResult(){
-  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
-  const mp=[
-    ['tech','seni','tulis','sport'],
-    ['seni','seni','tech','tulis'],
-    ['tech','musik','sains','tulis'],
-    ['tech','seni','sport','tulis'],
-    ['tech','foto','sains','sport'],
-    ['tech','sport','seni','sains'],
-  ];
-  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
-  const top=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0][0];
-  const r=RES[top]||RES['tech']; // fallback ke tech jika key tidak ditemukan
-  const rWrap=document.getElementById('rwrap');
-  if(!rWrap)return;
-
-  // 7-day plan HTML
-  const dayColors=['#1847ED','#F04E23','#00966A'];
-  const planHTML=r.plan7.map((d,i)=>`
-    <div class="day-row">
-      <div class="day-badge" style="background:${dayColors[i]||'#636A84'};color:#fff">${d.day}</div>
-      <div class="day-content">
-        <div class="day-title">${d.title}</div>
-        <div class="day-desc">${d.desc}</div>
-        <div class="day-output">${d.output}</div>
-      </div>
-    </div>`).join('');
-
-  // Role models HTML
-  const rolesHTML=r.roles.map(ro=>`
-    <div class="role-row">
-      <div class="role-av" style="background:${ro.color}">${ro.name.charAt(0)}</div>
-      <div>
-        <div class="role-name">${ro.name}</div>
-        <div class="role-desc">${ro.desc}</div>
-      </div>
-    </div>`).join('');
-
-  rWrap.innerHTML=`
-    <!-- HERO RESULT -->
-    <div class="rhero" style="background:${r.bg};color:${r.tc}">
-      <div class="r-ic" style="background:${r.icbg}"><i class="ti ${r.ic}"></i></div>
-      <div class="r-label">Hasil analisis bakatmu</div>
-      <div class="r-title">${r.title}</div>
-      <div class="r-char">${r.char}</div>
-      <div class="r-desc">${r.desc}</div>
-      <div class="r-skills">${r.skills.map(s=>`<span class="r-skill">${s}</span>`).join('')}</div>
-    </div>
-
-    <!-- EMOTIONAL MOTIVATION -->
-    <div class="r-motive">
-      <div class="r-motive-label"><i class="ti ti-heart"></i>Pesan khusus untukmu</div>
-      <div class="r-motive-text">${r.motive}</div>
-      <div class="r-motive-sub">${r.motiveSub}</div>
-    </div>
-
-    <!-- REAL WORLD ROLE MODELS -->
-    <div class="r-rolemodel">
-      <div class="r-rolemodel-hd"><i class="ti ti-award"></i>Orang Indonesia yang memulai sepertimu</div>
-      ${rolesHTML}
-    </div>
-
-    <!-- 7-DAY ACTION PLAN -->
-    <div class="r-7day">
-      <div class="r-7day-hd"><i class="ti ti-calendar-event"></i>7-Day Challenge: Mulai sekarang</div>
-      <div class="r-7day-sub">Ini yang membedakanmu dari yang hanya tahu, tapi tidak bertindak</div>
-      ${planHTML}
-    </div>
-
-    <!-- COMMUNITY & EVENTS -->
-    <div class="rgrid">
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-users"></i>Komunitas untukmu</div>
-        ${r.coms.map((ic,i)=>{
-          const k=KOMS.find(k=>k.ic===ic);
-          return `<div class="com-row">
-            <div class="com-av" style="background:${k?k.bg:'#EEF2FD'}"><i class="ti ${ic}" style="color:${k?k.bgi:'#1239C4'}"></i></div>
-            <div><div class="com-name">${r.comN[i]}</div><div class="com-meta">${r.comM[i]}</div></div>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="rcard">
-        <div class="rcard-hd"><i class="ti ti-trophy"></i>Lomba rekomendasi</div>
-        ${r.evs.map(e=>`<div class="ev-row">
-          <div class="ev-name"><i class="ti ti-trophy"></i>${e}</div>
-          <div class="ev-meta">Pelajar SMP–SMA · Indonesia</div>
-        </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="rcta">
-      <div>
-        <h3>Siap memulai perjalananmu?</h3>
-        <p>Bergabung komunitas dan daftar lomba pertamamu hari ini</p>
-      </div>
-      <button class="btn-w" onclick="go('komunitas');setNav('komunitas')">
-        Gabung sekarang<i class="ti ti-arrow-right"></i>
-      </button>
-    </div>
-    <div style="text-align:center;margin-top:16px">
-      <button onclick="go('quiz');setNav('cari')" style="background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px">
-        <i class="ti ti-refresh"></i>Ulangi tes
-      </button>
-    </div>`;
-
-  go('result');
-  setNav('cari');
-  launchConfetti();
-}
-
-/* ===================================================================
    CONFETTI
    =================================================================== */
 function launchConfetti(){
@@ -2095,6 +2136,861 @@ function updateStats(){
   const sk=document.getElementById('stat-komunitas');
   if(sl)sl.textContent=EVS.length;
   if(sk)sk.textContent=KOMS.length;
+}
+
+/* ===================================================================
+   MODULE 1 — CAREER EXPLORER DATA
+   =================================================================== */
+const CAREERS = [
+  {
+    id:'robotics-eng',
+    name:'Robotics Engineer',
+    icon:'ti-robot',
+    iconBg:'#F0EEFF',
+    iconColor:'#4C1D95',
+    category:'teknologi',
+    desc:'Merancang, membangun, dan memprogram robot untuk berbagai industri — dari manufaktur hingga eksplorasi luar angkasa.',
+    skills:['Pemrograman','Elektronika','Mekanik','Matematika','Problem Solving'],
+    subjects:['Fisika','Matematika','Informatika','TIK'],
+    prospect:'Permintaan tinggi — industri 4.0 membutuhkan robotics engineer di otomasi pabrik, pertanian cerdas, dan medis.',
+    related:['Electrical Engineer','Mechatronics','AI Engineer','IoT Developer'],
+  },
+  {
+    id:'game-dev',
+    name:'Game Developer',
+    icon:'ti-device-gamepad-2',
+    iconBg:'#EEF2FD',
+    iconColor:'#1239C4',
+    category:'teknologi',
+    desc:'Membangun dunia virtual yang dimainkan jutaan orang — dari mobile game hingga AAA titles internasional.',
+    skills:['Unity/Unreal','Coding (C#/C++)','Game Design','Storytelling','Matematika 3D'],
+    subjects:['Informatika','Matematika','Seni','Fisika'],
+    prospect:'Industri game Indonesia senilai $1B+ dan terus tumbuh. Game lokal semakin mendunia.',
+    related:['UI/UX Designer','Animator','Sound Designer','Game Writer'],
+  },
+  {
+    id:'uiux-designer',
+    name:'UI/UX Designer',
+    icon:'ti-layout-2',
+    iconBg:'#FEF0EC',
+    iconColor:'#C43C14',
+    category:'kreatif',
+    desc:'Merancang pengalaman digital yang intuitif dan indah. Membuat teknologi terasa manusiawi.',
+    skills:['Figma','Design Thinking','Riset Pengguna','Prototyping','Visual Design'],
+    subjects:['Seni','TIK','Bahasa Indonesia','Psikologi'],
+    prospect:'Setiap startup, perusahaan teknologi, dan brand digital membutuhkan UI/UX designer. Gaji sangat kompetitif.',
+    related:['Product Designer','Front-End Developer','Brand Designer','Motion Designer'],
+  },
+  {
+    id:'animator',
+    name:'Animator',
+    icon:'ti-movie',
+    iconBg:'#FDF0F6',
+    iconColor:'#9D174D',
+    category:'kreatif',
+    desc:'Menghidupkan karakter dan cerita melalui gerakan. Berkarya untuk film, iklan, game, dan pendidikan.',
+    skills:['Blender/Maya','Drawing','Storytelling','Timing','Compositing'],
+    subjects:['Seni','Fisika','Matematika','Bahasa Indonesia'],
+    prospect:'Industri animasi Indonesia berkembang pesat. Permintaan konten video dan animasi terus meningkat.',
+    related:['VFX Artist','Motion Designer','Game Artist','Illustrator'],
+  },
+  {
+    id:'data-scientist',
+    name:'Data Scientist',
+    icon:'ti-chart-dots',
+    iconBg:'#E5F7F2',
+    iconColor:'#006B4C',
+    category:'sains',
+    desc:'Mengubah data mentah menjadi insight yang menggerakkan keputusan bisnis besar.',
+    skills:['Python','Machine Learning','Statistik','SQL','Data Visualization'],
+    subjects:['Matematika','Statistik','Informatika','Fisika'],
+    prospect:'Salah satu profesi paling dicari dekade ini. Hampir semua industri butuh data scientist.',
+    related:['Machine Learning Engineer','Business Analyst','AI Researcher','Data Engineer'],
+  },
+  {
+    id:'software-eng',
+    name:'Software Engineer',
+    icon:'ti-code',
+    iconBg:'#EEF2FD',
+    iconColor:'#1239C4',
+    category:'teknologi',
+    desc:'Membangun sistem dan aplikasi yang digunakan jutaan orang setiap hari.',
+    skills:['Coding','Algoritma','System Design','Version Control','Testing'],
+    subjects:['Matematika','Informatika','Logika','TIK'],
+    prospect:'Permintaan selalu tinggi, gaji kompetitif, bisa kerja remote dari mana saja.',
+    related:['Backend Dev','Frontend Dev','Mobile Dev','DevOps Engineer'],
+  },
+  {
+    id:'digital-marketer',
+    name:'Digital Marketer',
+    icon:'ti-brand-instagram',
+    iconBg:'#FEF9EC',
+    iconColor:'#92400E',
+    category:'bisnis',
+    desc:'Membantu brand menjangkau audiens yang tepat di dunia digital dengan strategi kreatif berbasis data.',
+    skills:['Social Media','SEO/SEM','Copywriting','Analytics','Ads Management'],
+    subjects:['Bahasa Indonesia','Bahasa Inggris','Ekonomi','TIK'],
+    prospect:'Bisnis digital terus tumbuh. Setiap brand butuh strategi digital yang solid.',
+    related:['Content Strategist','Brand Manager','Growth Hacker','Social Media Manager'],
+  },
+  {
+    id:'content-creator',
+    name:'Content Creator',
+    icon:'ti-camera',
+    iconBg:'#FEF0EC',
+    iconColor:'#C43C14',
+    category:'kreatif',
+    desc:'Menciptakan konten yang menghibur, menginspirasi, dan mendidik jutaan orang di platform digital.',
+    skills:['Video Editing','Storytelling','Photography','Consistency','Personal Branding'],
+    subjects:['Bahasa Indonesia','Bahasa Inggris','Seni','TIK'],
+    prospect:'Ekonomi kreator tumbuh eksponensial. Creator berbakat bisa menghasilkan dari berbagai sumber.',
+    related:['Influencer','Podcaster','YouTuber','Brand Ambassador'],
+  },
+  {
+    id:'doctor',
+    name:'Dokter',
+    icon:'ti-stethoscope',
+    iconBg:'#E5F7F2',
+    iconColor:'#006B4C',
+    category:'sains',
+    desc:'Mendiagnosis, merawat, dan membantu pasien pulih — profesi mulia yang membutuhkan dedikasi tinggi.',
+    skills:['Ilmu Kedokteran','Empati','Analisis','Komunikasi','Problem Solving'],
+    subjects:['Biologi','Kimia','Fisika','Matematika','Bahasa Indonesia'],
+    prospect:'Dokter selalu dibutuhkan. Spesialisasi tertentu sangat kekurangan tenaga ahli di Indonesia.',
+    related:['Dokter Spesialis','Peneliti Medis','Farmasi','Kesehatan Masyarakat'],
+  },
+  {
+    id:'architect',
+    name:'Arsitek',
+    icon:'ti-building',
+    iconBg:'#F0EEFF',
+    iconColor:'#5B21B6',
+    category:'kreatif',
+    desc:'Merancang bangunan dan ruang yang tidak hanya indah, tapi juga fungsional dan berkelanjutan.',
+    skills:['AutoCAD','Desain 3D','Matematika','Kreativitas','Urban Planning'],
+    subjects:['Matematika','Fisika','Seni','Geografi'],
+    prospect:'Pembangunan infrastruktur Indonesia terus berjalan. Arsitek berbakat selalu dicari.',
+    related:['Interior Designer','Urban Planner','Landscape Architect','Civil Engineer'],
+  },
+  {
+    id:'entrepreneur',
+    name:'Entrepreneur',
+    icon:'ti-rocket',
+    iconBg:'#FEF9EC',
+    iconColor:'#D97706',
+    category:'bisnis',
+    desc:'Membangun bisnis dari nol, menciptakan lapangan kerja, dan memecahkan masalah nyata di masyarakat.',
+    skills:['Problem Solving','Leadership','Financial Literacy','Networking','Resilience'],
+    subjects:['Ekonomi','Matematika','Bahasa Indonesia','Bahasa Inggris'],
+    prospect:'Era digital membuka peluang tak terbatas. Startup Indonesia semakin mendapat perhatian global.',
+    related:['Product Manager','Business Developer','Venture Capitalist','Startup Founder'],
+  },
+];
+
+const CE_CATEGORIES = [
+  {id:'semua', label:'Semua Karir'},
+  {id:'teknologi', label:'Teknologi'},
+  {id:'kreatif', label:'Kreatif'},
+  {id:'sains', label:'Sains & Medis'},
+  {id:'bisnis', label:'Bisnis'},
+];
+
+let ceActiveCategory = 'semua';
+
+function renderCareers(){
+  // Render filter buttons
+  const fEl = document.getElementById('ce-filters');
+  if(fEl) fEl.innerHTML = CE_CATEGORIES.map(c=>`
+    <button class="ce-filter-btn${ceActiveCategory===c.id?' active':''}" onclick="setCeCategory('${c.id}')">${c.label}</button>
+  `).join('');
+
+  // Render grid
+  const q = (document.getElementById('ce-search')?.value||'').toLowerCase();
+  const filtered = CAREERS.filter(c=>{
+    const catOk = ceActiveCategory==='semua' || c.category===ceActiveCategory;
+    const qOk = !q || c.name.toLowerCase().includes(q) ||
+      c.skills.some(s=>s.toLowerCase().includes(q)) ||
+      c.category.toLowerCase().includes(q) ||
+      c.desc.toLowerCase().includes(q);
+    return catOk && qOk;
+  });
+
+  const grid = document.getElementById('ce-grid');
+  if(!grid) return;
+  if(filtered.length===0){
+    grid.innerHTML=`<div class="ce-empty"><i class="ti ti-search-off"></i><p>Tidak ada karir yang cocok.<br>Coba kata kunci lain.</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(c=>`
+    <div class="cecard">
+      <div class="cecard-top">
+        <div class="cecard-ic-wrap" style="background:${c.iconBg}">
+          <i class="ti ${c.icon}" style="color:${c.iconColor}"></i>
+        </div>
+        <div class="cecard-title">${c.name}</div>
+        <div class="cecard-desc">${c.desc}</div>
+      </div>
+      <div class="cecard-body">
+        <div class="cecard-section">
+          <div class="cecard-label"><i class="ti ti-bolt"></i>Skill yang dibutuhkan</div>
+          <div>${c.skills.map(s=>`<span class="cetag">${s}</span>`).join('')}</div>
+        </div>
+        <div class="cecard-section">
+          <div class="cecard-label"><i class="ti ti-school"></i>Mata pelajaran</div>
+          <div>${c.subjects.map(s=>`<span class="cetag" style="background:var(--blue-l);color:var(--blue)">${s}</span>`).join('')}</div>
+        </div>
+        <div class="cecard-section">
+          <div class="cecard-label"><i class="ti ti-trending-up"></i>Prospek masa depan</div>
+          <div class="cecard-prospect"><i class="ti ti-circle-check"></i><span>${c.prospect}</span></div>
+        </div>
+        <div class="cecard-section">
+          <div class="cecard-label"><i class="ti ti-git-branch"></i>Bidang terkait</div>
+          <div>${c.related.map(r=>`<span class="cetag" style="background:var(--purple-l);color:var(--purple)">${r}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setCeCategory(id){
+  ceActiveCategory = id;
+  renderCareers();
+}
+
+function filterCareers(){
+  const val = document.getElementById('ce-search')?.value||'';
+  const cl = document.getElementById('ce-search-clear');
+  if(cl) cl.classList.toggle('vis', val.length>0);
+  renderCareers();
+}
+
+function clearCeSearch(){
+  const inp = document.getElementById('ce-search');
+  if(inp) inp.value='';
+  filterCareers();
+}
+
+/* ===================================================================
+   MODULE 2 — LEARNING PATH DATA
+   =================================================================== */
+const LEARNING_PATHS = {
+  tech:[
+    {step:'Step 1', title:'Kuasai Logika Dasar', desc:'Pelajari algoritma, kondisi, dan perulangan. Gunakan CS50 Harvard (gratis).', tag:'🧠 Fondasi'},
+    {step:'Step 2', title:'Pilih 1 Bahasa Pemrograman', desc:'Python untuk pemula, JavaScript untuk web. Kerjakan 10 latihan kecil.', tag:'💻 Skill'},
+    {step:'Step 3', title:'Build Proyek Mini Pertama', desc:'Kalkulator, to-do list, atau quiz sederhana. Buat nyata, bukan hanya teori.', tag:'🔨 Praktik'},
+    {step:'Step 4', title:'Bergabung Komunitas Tech', desc:'Masuk komunitas GitHub, Discord coding, atau komunitas CodeKid Indonesia.', tag:'👥 Komunitas'},
+    {step:'Step 5', title:'Ikut Hackathon atau Lomba', desc:'Coba Hackathon Pelajar Nasional. Pengalaman ini tak ternilai di CV.', tag:'🏆 Kompetisi'},
+  ],
+  seni:[
+    {step:'Step 1', title:'Latih Tangan 30 Menit/Hari', desc:'Gambar bebas tanpa kritik diri. Kuantitas dulu, kualitas mengikuti.', tag:'✏️ Fondasi'},
+    {step:'Step 2', title:'Pelajari 1 Software Desain', desc:'Canva untuk pemula, Procreate atau Figma untuk serius. Tonton tutorial gratis.', tag:'🖥️ Tools'},
+    {step:'Step 3', title:'Buat Portofolio Mini (5 karya)', desc:'Upload di Instagram atau Behance. Caption ceritakan proses kreatifmu.', tag:'🎨 Portofolio'},
+    {step:'Step 4', title:'Cari Klien Pertama', desc:'Tawarkan jasa desain gratis untuk teman atau UMKM lokal. Bangun pengalaman.', tag:'💼 Pengalaman'},
+    {step:'Step 5', title:'Ikut Lomba Desain Pelajar', desc:'Young Designer Award, lomba poster kemerdekaan, atau kompetisi lokal.', tag:'🏆 Kompetisi'},
+  ],
+  sains:[
+    {step:'Step 1', title:'Latihan Soal Logika & Analisis', desc:'Kerjakan soal OSN tahun lalu. Fokus proses berpikir, bukan hanya jawaban.', tag:'🔬 Fondasi'},
+    {step:'Step 2', title:'Buat Eksperimen Sederhana', desc:'Eksperimen di rumah dengan bahan sederhana. Dokumentasikan dengan metode ilmiah.', tag:'🧪 Praktik'},
+    {step:'Step 3', title:'Kerjakan Karya Ilmiah Remaja', desc:'Pilih topik yang menarik. Tulis proposal KIR 3 halaman — itu sudah langkah besar.', tag:'📄 KIR'},
+    {step:'Step 4', title:'Gabung Komunitas Sains', desc:'Olimpiade Math ID, grup KIR nasional, atau komunitas LIPI muda.', tag:'👥 Komunitas'},
+    {step:'Step 5', title:'Ikut OSN atau LKIR', desc:'Lomba Karya Ilmiah Remaja LIPI atau Olimpiade Sains Nasional. Aim tinggi!', tag:'🏆 Kompetisi'},
+  ],
+  tulis:[
+    {step:'Step 1', title:'Tulis 300 Kata Setiap Hari', desc:'Tentang apa saja — pengalaman, opini, fiksi. Jangan dihapus selama 10 menit.', tag:'✍️ Fondasi'},
+    {step:'Step 2', title:'Baca & Analisis 1 Cerpen/Minggu', desc:'Perhatikan struktur, karakter, dan cara pengarang membuka cerita.', tag:'📚 Analisis'},
+    {step:'Step 3', title:'Buat Blog atau Akun Medium', desc:'Publikasikan 1 artikel per minggu. Tuliskan perspektifmu yang unik.', tag:'🌐 Publish'},
+    {step:'Step 4', title:'Kirim ke Lomba Penulisan', desc:'Cerpen Nasional "Suara Generasi", lomba esai, atau majalah sekolah.', tag:'🏆 Lomba'},
+    {step:'Step 5', title:'Bangun Personal Brand Penulis', desc:'Konsistensi di satu platform. Jadilah suara yang ditunggu pembacamu.', tag:'⭐ Brand'},
+  ],
+  musik:[
+    {step:'Step 1', title:'Rekam Dirimu Bermain/Bernyanyi', desc:'Pakai HP. Bukan untuk orang lain — untuk kamu dengar sendiri dan ukur kemajuan.', tag:'🎵 Fondasi'},
+    {step:'Step 2', title:'Cover 5 Lagu Favorit', desc:'Boleh private dulu. Fokus pada ekspresi dan perasaan, bukan teknik sempurna.', tag:'🎤 Cover'},
+    {step:'Step 3', title:'Pelajari 1 Software Produksi', desc:'GarageBand (gratis iOS), atau LMMS (gratis PC). Buat beat pertamamu.', tag:'🎚️ Produksi'},
+    {step:'Step 4', title:'Rilis 1 Lagu Original', desc:'Upload di SoundCloud atau YouTube. Lagu jelek yang dirilis > lagu bagus di kepala.', tag:'🚀 Rilis'},
+    {step:'Step 5', title:'Ikut Kompetisi Musik Pelajar', desc:'FLS2N Bidang Musik, Kompetisi Indie Pelajar, atau open mic lokal.', tag:'🏆 Kompetisi'},
+  ],
+  sport:[
+    {step:'Step 1', title:'Buat Program Latihan 30 Hari', desc:'Jadwal harian yang realistis — waktu, jenis latihan, dan target spesifik.', tag:'📋 Program'},
+    {step:'Step 2', title:'Track Performa Setiap Hari', desc:'Catat waktu, jarak, atau repetisi. Data ini adalah bukti kemajuanmu.', tag:'📊 Data'},
+    {step:'Step 3', title:'Cari Pelatih atau Mentor', desc:'Senior di club, guru olahraga, atau komunitas atlet remaja online.', tag:'👤 Mentor'},
+    {step:'Step 4', title:'Daftar Turnamen Lokal Pertama', desc:'Cek KONI daerah atau komunitas olahraga lokal. Daftar adalah langkah nyata.', tag:'🏅 Kompetisi'},
+    {step:'Step 5', title:'Bangun Portofolio Atlet', desc:'Dokumentasi latihan, hasil lomba, dan progress di media sosial.', tag:'⭐ Portofolio'},
+  ],
+  robot:[
+    {step:'Step 1', title:'Pelajari Dasar Elektronika', desc:'Resistor, LED, sensor. Tonton seri Arduino Pemula di YouTube (1 jam).', tag:'⚡ Fondasi'},
+    {step:'Step 2', title:'Simulasi di Tinkercad', desc:'Platform gratis untuk simulasi Arduino tanpa beli komponen fisik dulu.', tag:'🖥️ Simulasi'},
+    {step:'Step 3', title:'Beli Kit Arduino Starter (~Rp150rb)', desc:'Buat proyek lampu LED, sensor jarak, atau alarm sederhana.', tag:'🔧 Praktik'},
+    {step:'Step 4', title:'Gabung Komunitas Robotika', desc:'Robotika Pelajar ID, forum Arduino Indonesia. Banyak mentor di sana.', tag:'👥 Komunitas'},
+    {step:'Step 5', title:'Ikut Kompetisi Robotika', desc:'Indonesia Robot Contest (IRC), WRO, atau lomba robotika sekolah.', tag:'🤖 Kompetisi'},
+  ],
+  foto:[
+    {step:'Step 1', title:'Ambil 20 Foto HP Setiap Hari', desc:'Fokus pada cahaya, komposisi, dan momen. Tidak perlu kamera mahal.', tag:'📸 Fondasi'},
+    {step:'Step 2', title:'Pelajari Komposisi & Teknik Dasar', desc:'Rule of thirds, golden hour, depth of field. Tonton tutorial 15 menit.', tag:'🎯 Teknik'},
+    {step:'Step 3', title:'Buat Album Mini 10 Foto Bertema', desc:'Street, alam, potret, makanan. Satu tema, satu mood, satu cerita.', tag:'🖼️ Album'},
+    {step:'Step 4', title:'Post & Bangun Audiens', desc:'Instagram atau VSCO dengan konsistensi gaya. Hashtag komunitas fotografi.', tag:'🌐 Publish'},
+    {step:'Step 5', title:'Ikut Lomba & Ekshibisi', desc:'Lomba foto pelajar, pameran sekolah, atau kompetisi fotografi online.', tag:'🏆 Kompetisi'},
+  ],
+};
+
+/* ===================================================================
+   MODULE 3 — PROJECT RECOMMENDATIONS DATA
+   =================================================================== */
+const PROJECTS = {
+  tech:{
+    beginner:[
+      {title:'Kalkulator Sederhana',desc:'Kalkulator dengan operasi dasar menggunakan HTML/CSS/JS',ic:'ti-calculator',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'To-Do List App',desc:'Aplikasi daftar tugas dengan fitur tambah, hapus, selesai',ic:'ti-checklist',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'Quiz Sederhana',desc:'Kuis 10 soal dengan skor dan timer menggunakan JavaScript',ic:'ti-question-mark',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'Halaman Profil',desc:'Personal website sederhana dengan HTML dan CSS animasi',ic:'ti-user-circle',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'Konverter Mata Uang',desc:'Input nilai mata uang dan konversi ke berbagai valuta',ic:'ti-currency-dollar',bg:'#EEF2FD',ic2:'#1239C4'},
+    ],
+    intermediate:[
+      {title:'Weather App',desc:'Ambil data cuaca real-time dari API OpenWeather',ic:'ti-cloud',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'Expense Tracker',desc:'Aplikasi lacak pengeluaran dengan grafik dan kategori',ic:'ti-chart-bar',bg:'#EEF2FD',ic2:'#1239C4'},
+      {title:'Blog Mini CMS',desc:'Sistem pengelolaan konten sederhana dengan localStorage',ic:'ti-pencil',bg:'#EEF2FD',ic2:'#1239C4'},
+    ],
+  },
+  seni:{
+    beginner:[
+      {title:'Logo Personal',desc:'Desain logo diri sendiri dengan Canva atau Illustrator',ic:'ti-stars',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Poster Event Sekolah',desc:'Buat poster acara sekolah yang menarik dan informatif',ic:'ti-photo',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Social Media Kit',desc:'Template Instagram story, post, dan highlight cover',ic:'ti-brand-instagram',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Komik Strip 4 Panel',desc:'Cerita pendek dalam format komik visual',ic:'ti-mood-smile',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Redesign Kemasan Produk',desc:'Redesain kemasan produk lokal favoritmu',ic:'ti-box',bg:'#FEF0EC',ic2:'#C43C14'},
+    ],
+    intermediate:[
+      {title:'Animated Explainer',desc:'Video animasi pendek 30 detik menjelaskan konsep apapun',ic:'ti-movie',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Desain Karakter',desc:'Buat karakter original dengan backstory dan sheet desain',ic:'ti-ghost',bg:'#FEF0EC',ic2:'#C43C14'},
+      {title:'Brand Identity',desc:'Desain brand lengkap: logo, palet warna, tipografi',ic:'ti-palette',bg:'#FEF0EC',ic2:'#C43C14'},
+    ],
+  },
+  sains:{
+    beginner:[
+      {title:'Uji Kualitas Air',desc:'Tes pH berbagai sumber air di sekitar rumahmu',ic:'ti-droplet',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Eksperimen Pertumbuhan Tanaman',desc:'Uji pengaruh cahaya/media tanam terhadap pertumbuhan',ic:'ti-plant',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Survey Lingkungan Sekitar',desc:'Riset kecil tentang masalah lingkungan lokal',ic:'ti-map-pin',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Mini Lab Kimia Dapur',desc:'Eksperimen kimia sederhana dengan bahan dapur',ic:'ti-flask',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Data Logger Cuaca Manual',desc:'Catat suhu & cuaca selama 30 hari dan analisis polanya',ic:'ti-thermometer',bg:'#E5F7F2',ic2:'#006B4C'},
+    ],
+    intermediate:[
+      {title:'Karya Ilmiah Remaja',desc:'Proposal KIR lengkap dengan metodologi dan data awal',ic:'ti-file-text',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Data Visualization Riset',desc:'Visualisasikan data risetmu dengan grafik dan infografis',ic:'ti-chart-line',bg:'#E5F7F2',ic2:'#006B4C'},
+      {title:'Simulasi Matematika',desc:'Buat simulasi visual konsep matematika menggunakan Python/GeoGebra',ic:'ti-math-function',bg:'#E5F7F2',ic2:'#006B4C'},
+    ],
+  },
+  tulis:{
+    beginner:[
+      {title:'Cerpen 1000 Kata',desc:'Satu tokoh, satu konflik, satu resolusi. Selesai!',ic:'ti-pencil',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Blog Post Opini',desc:'Tulisan 500 kata tentang isu yang kamu pedulikan',ic:'ti-edit',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Review Buku/Film',desc:'Ulasan kritis dengan perspektif unik yang kamu miliki',ic:'ti-star',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Thread Twitter/X',desc:'Rangkuman pelajaran menarik dalam format 10 tweet',ic:'ti-brand-twitter',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Puisi Bebas',desc:'Ekspresikan emosi terkuat yang pernah kamu rasakan',ic:'ti-heart',bg:'#F0EEFF',ic2:'#5B21B6'},
+    ],
+    intermediate:[
+      {title:'Naskah Pendek',desc:'Script untuk film pendek 5-10 menit dengan 3 karakter',ic:'ti-movie',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Zine Pribadi',desc:'Majalah mini 8 halaman tentang topik yang kamu cintai',ic:'ti-book',bg:'#F0EEFF',ic2:'#5B21B6'},
+      {title:'Artikel Investigasi',desc:'Riset mendalam tentang isu lokal yang belum banyak diliput',ic:'ti-search',bg:'#F0EEFF',ic2:'#5B21B6'},
+    ],
+  },
+  musik:{
+    beginner:[
+      {title:'Cover Akustik Lagu Favorit',desc:'Rekam cover sederhana — vokal/gitar + HP cukup',ic:'ti-microphone',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Jingle 30 Detik',desc:'Buat jingle pendek untuk "brand" imajiner',ic:'ti-music',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Remix Sederhana',desc:'Ambil lagu instrumental dan tambahkan vokal atau instrument',ic:'ti-adjustments',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Lirik Original',desc:'Tulis lirik lagu lengkap tentang pengalaman personalmu',ic:'ti-pencil',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Beat Lofi',desc:'Buat beat lo-fi sederhana dengan GarageBand atau LMMS',ic:'ti-headphones',bg:'#FDF0F6',ic2:'#9D174D'},
+    ],
+    intermediate:[
+      {title:'EP Mini (3 Lagu)',desc:'Rekam, produksi, dan rilis 3 lagu original di platform digital',ic:'ti-vinyl',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Score untuk Film Pendek',desc:'Buat musik latar untuk film pendek teman atau karyamu sendiri',ic:'ti-movie',bg:'#FDF0F6',ic2:'#9D174D'},
+      {title:'Live Performance Video',desc:'Rekam penampilan live berkualitas untuk portofolio',ic:'ti-camera',bg:'#FDF0F6',ic2:'#9D174D'},
+    ],
+  },
+  sport:{
+    beginner:[
+      {title:'Program Latihan 30 Hari',desc:'Buat jadwal harian lengkap dengan target terukur',ic:'ti-calendar',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Sport Journal',desc:'Catat setiap sesi latihan: apa, berapa lama, hasilnya',ic:'ti-notebook',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Analisis Teknik Video',desc:'Rekam dirimu latihan, analisis, dan identifikasi area perbaikan',ic:'ti-video',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Nutrisi Atlet Plan',desc:'Riset dan buat rencana nutrisi harian untuk atlet muda',ic:'ti-salad',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Challenge 100 Rep',desc:'Pilih 1 gerakan, lakukan 100 rep per hari selama 30 hari',ic:'ti-bolt',bg:'#FEF9EC',ic2:'#D97706'},
+    ],
+    intermediate:[
+      {title:'Mini Turnamen',desc:'Organisir turnamen olahraga kecil di sekolah atau lingkungan',ic:'ti-trophy',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Coach Muda',desc:'Latih 5 adik kelas teknik dasar olahraga favoritmu',ic:'ti-whistle',bg:'#FEF9EC',ic2:'#D97706'},
+      {title:'Athlete Portfolio',desc:'Dokumentasi perjalanan, prestasi, dan highlight video',ic:'ti-star',bg:'#FEF9EC',ic2:'#D97706'},
+    ],
+  },
+  robot:{
+    beginner:[
+      {title:'Lampu Otomatis Sensor Cahaya',desc:'Lampu yang menyala otomatis saat gelap menggunakan LDR',ic:'ti-bulb',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'Sensor Jarak Ultrasonik',desc:'Alat pengukur jarak dengan HC-SR04 dan display LCD',ic:'ti-radar',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'Alarm Sederhana',desc:'Sistem alarm dengan sensor gerak PIR dan buzzer',ic:'ti-bell',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'Display Suhu Digital',desc:'Tampilkan suhu real-time dengan sensor DHT11 dan OLED',ic:'ti-thermometer',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'LED Matrix Kata',desc:'Tampilkan teks berjalan di LED matrix 8x8',ic:'ti-border-all',bg:'#F0EEFF',ic2:'#4C1D95'},
+    ],
+    intermediate:[
+      {title:'Smart Bin',desc:'Tempat sampah yang terbuka otomatis dengan sensor jarak',ic:'ti-trash',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'Line Follower Robot',desc:'Robot yang mengikuti garis hitam di lantai putih',ic:'ti-route',bg:'#F0EEFF',ic2:'#4C1D95'},
+      {title:'Smart Home Mini',desc:'Kontrol lampu dan kipas lewat Bluetooth dari HP',ic:'ti-home-bolt',bg:'#F0EEFF',ic2:'#4C1D95'},
+    ],
+  },
+  foto:{
+    beginner:[
+      {title:'20 Foto Street Photography',desc:'Tangkap kehidupan dan karakter jalanan sekitar rumahmu',ic:'ti-camera',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'Golden Hour Series',desc:'5 foto saat matahari terbit atau terbenam dengan mood konsisten',ic:'ti-sun',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'Potret Keluarga',desc:'Mini sesi foto keluarga — praktik lighting natural dalam ruangan',ic:'ti-users',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'Macro Dunia Kecil',desc:'Foto objek kecil (serangga, bunga, tetesan air) dari dekat',ic:'ti-zoom-in',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'365 Project',desc:'Foto 1 hal spesifik setiap hari selama setahun — komitmen terbesar',ic:'ti-calendar',bg:'#FEF0EC',ic2:'#D97706'},
+    ],
+    intermediate:[
+      {title:'Mini Fashion Shoot',desc:'Sesi foto fashion dengan teman sebagai model, lokasi lokal',ic:'ti-shirt',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'Photo Essay',desc:'10 foto yang menceritakan satu isu sosial lokal secara mendalam',ic:'ti-book-2',bg:'#FEF0EC',ic2:'#D97706'},
+      {title:'Time-lapse Video',desc:'Buat time-lapse 30 detik — matahari terbenam, kota malam, atau aktivitas',ic:'ti-clock-play',bg:'#FEF0EC',ic2:'#D97706'},
+    ],
+  },
+};
+
+/* ===================================================================
+   MODULE 4 — TOKOH DATA
+   =================================================================== */
+const TOKOH_DATA = {
+  tech:[
+    {name:'Nadiem Makarim',init:'NM',color:'#1847ED',desc:'Founder Gojek, Menteri Pendidikan RI',reason:'Membangun solusi teknologi untuk masalah nyata masyarakat Indonesia'},
+    {name:'Kevin Systrom',init:'KS',color:'#4C1D95',desc:'Co-founder Instagram — belajar coding sendiri',reason:'Membuktikan bahwa belajar mandiri bisa mengubah dunia'},
+    {name:'Khoirul Anwar',init:'KA',color:'#00966A',desc:'Penemu teknologi 4G LTE dari Indonesia',reason:'Rasa ingin tahu dan ketelitian dalam penelitian teknis'},
+    {name:'Achmad Zaky',init:'AZ',color:'#D97706',desc:'Founder Bukalapak — startup unicorn Indonesia',reason:'Menggunakan teknologi untuk memberdayakan pengusaha kecil'},
+    {name:'William Tanuwijaya',init:'WT',color:'#9D174D',desc:'Founder Tokopedia, unicorn Indonesia',reason:'Visi digital untuk mendemokratisasi bisnis di Indonesia'},
+  ],
+  seni:[
+    {name:'Diela Maharanie',init:'DM',color:'#F04E23',desc:'Ilustrator Indonesia — klien brand internasional',reason:'Gaya visual unik yang berkembang dari konsistensi berkarya'},
+    {name:'Rachel Vennya',init:'RV',color:'#9D174D',desc:'Content creator → influencer → entrepreneur',reason:'Membangun brand personal dari kreativitas dan autentisitas'},
+    {name:'Mulyadi (Jay)',init:'MJ',color:'#D97706',desc:'Desainer grafis Indonesia mendunia',reason:'Membuktikan kreativitas lokal bisa bersaing global'},
+    {name:'Marion Jola',init:'MJ',color:'#6D28D9',desc:'Penyanyi-aktris yang berani tampil otentik',reason:'Keberanian untuk mengekspresikan diri tanpa filter'},
+    {name:'Stereoflow',init:'SF',color:'#C43C14',desc:'Seniman visual & mural Indonesia',reason:'Mengubah ruang publik menjadi kanvas ekspresi seni'},
+  ],
+  sains:[
+    {name:'Tri Mumpuni',init:'TM',color:'#00966A',desc:'Ilmuwan pioneer energi terbarukan pedesaan',reason:'Menerapkan sains untuk memecahkan masalah sosial nyata'},
+    {name:'Khoirul Anwar',init:'KA',color:'#1847ED',desc:'Penemu teknologi 4G LTE, lahir di Kediri',reason:'Ketekunan riset dari daerah hingga diakui dunia'},
+    {name:'Yusuf Nugroho',init:'YN',color:'#6D28D9',desc:'Siswa SMA juara olimpiade sains internasional',reason:'Dedikasi latihan soal dan rasa ingin tahu yang tidak berhenti'},
+    {name:'Sri Mulyani',init:'SM',color:'#D97706',desc:'Menteri Keuangan RI, ekonom dunia',reason:'Analisis data dan berpikir sistem untuk keputusan besar'},
+    {name:'Prof. Nelson Tansu',init:'NT',color:'#9D174D',desc:'Ilmuwan Indonesia di Lehigh University AS',reason:'Membuktikan pelajar Indonesia bisa riset di level tertinggi'},
+  ],
+  tulis:[
+    {name:'Dee Lestari',init:'DL',color:'#6D28D9',desc:'Penulis Supernova — novel terlaris Indonesia',reason:'Menulis dari passion tanpa latar sastra formal'},
+    {name:'Andrea Hirata',init:'AH',color:'#1847ED',desc:'Laskar Pelangi — 40+ bahasa terjemahan',reason:'Cerita lokal yang universal karena kejujuran emosionalnya'},
+    {name:'Tere Liye',init:'TL',color:'#00966A',desc:'Penulis produktif dengan jutaan pembaca',reason:'Konsistensi dan produktivitas yang luar biasa'},
+    {name:'Dewi Lestari',init:'DL',color:'#F04E23',desc:'Musisi-penulis multitalenta Indonesia',reason:'Membuktikan bakat ganda bisa saling memperkuat'},
+    {name:'Boy Candra',init:'BC',color:'#9D174D',desc:'Penulis sastra populer generasi muda',reason:'Menunjukkan penulis muda Indonesia bisa punya market besar'},
+  ],
+  musik:[
+    {name:'Pamungkas',init:'PM',color:'#9D174D',desc:'Musisi solo → chart internasional dari kamar tidur',reason:'Membuktikan starting dari kamar dengan laptop bisa go global'},
+    {name:'Rich Brian',init:'RB',color:'#1847ED',desc:'Remaja Jakarta → rapper label AS 88rising',reason:'Kepercayaan diri total pada style unik dan identitas sendiri'},
+    {name:'Hindia (Baskara)',init:'HB',color:'#6D28D9',desc:'Musisi indie yang autentik dan mendalam',reason:'Kejujuran emosional dalam berkarya yang resonan ke banyak orang'},
+    {name:'Tulus',init:'TL',color:'#00966A',desc:'Penyanyi dengan suara dan karya yang timeless',reason:'Konsistensi kualitas dan ketulusan dalam bermusik'},
+    {name:'Isyana Sarasvati',init:'IS',color:'#D97706',desc:'Penyanyi + violinist berlatar klasik',reason:'Menggabungkan pendidikan formal dengan kreativitas kontemporer'},
+  ],
+  sport:[
+    {name:'Jonatan Christie',init:'JC',color:'#D97706',desc:'Dari klub kecil Jakarta → Juara All England',reason:'Membuktikan kerja keras mengalahkan bakat yang tidak dilatih'},
+    {name:'Greysia Polii',init:'GP',color:'#00966A',desc:'Pelajar biasa → Medali Emas Olimpiade Tokyo',reason:'Resiliensi melewati kegagalan berulang menuju puncak'},
+    {name:'Kevin Sanjaya',init:'KS',color:'#1847ED',desc:'Pernah ditolak pelatnas, kini juara dunia',reason:'Tidak menerima penolakan sebagai akhir perjalanan'},
+    {name:'Susi Susanti',init:'SS',color:'#9D174D',desc:'Legenda bulutangkis, emas Olimpiade 1992',reason:'Disiplin dan dedikasi total sejak usia muda'},
+    {name:'Liliyana Natsir',init:'LN',color:'#6D28D9',desc:'Legenda bulu tangkis ganda, Juara Dunia',reason:'Kerja keras dan kecerdasan taktis di lapangan'},
+  ],
+  robot:[
+    {name:'Tim WRO Indonesia',init:'WI',color:'#4C1D95',desc:'Pelajar SMA → Juara World Robot Olympiad',reason:'Kreativitas teknis dan semangat tim yang luar biasa'},
+    {name:'Elon Musk',init:'EM',color:'#1847ED',desc:'Tertarik robotika → founder SpaceX & Tesla',reason:'Obsesi dengan first principles thinking dalam rekayasa'},
+    {name:'Ainun Najib',init:'AN',color:'#00966A',desc:'Programmer Indonesia, aktivis data publik',reason:'Menggunakan teknologi untuk dampak sosial nyata'},
+    {name:'Reza Sarif',init:'RS',color:'#D97706',desc:'Inventor muda Indonesia, raih penghargaan NASA',reason:'Membuktikan inovasi tidak memerlukan lab canggih'},
+    {name:'Habibie',init:'BJ',color:'#9D174D',desc:'Insinyur pesawat terbang, Presiden RI ke-3',reason:'Visi teknologi tinggi yang dimulai dari rasa ingin tahu besar'},
+  ],
+  foto:[
+    {name:'Darwis Triadi',init:'DT',color:'#D97706',desc:'Fotografer Indonesia → diakui internasional',reason:'Konsistensi dan standar kualitas yang tidak pernah kompromi'},
+    {name:'Rony Zakaria',init:'RZ',color:'#1847ED',desc:'Fotografer dokumenter Indonesia, Magnum',reason:'Foto sebagai alat bercerita tentang kemanusiaan'},
+    {name:'Agus Leonardi',init:'AL',color:'#00966A',desc:'Pelajar biasa → fotografer wildlife internasional',reason:'Ketekunan di satu spesialisasi yang dicintai'},
+    {name:'Beawiharta',init:'BW',color:'#9D174D',desc:'Fotografer Reuters, liputan internasional',reason:'Membuktikan fotografer Indonesia bisa bersaing global'},
+    {name:'Tahta Aidilla',init:'TA',color:'#6D28D9',desc:'Fotografer jurnalistik perempuan Indonesia',reason:'Keberanian dan kepekaan sosial dalam setiap bidikan'},
+  ],
+};
+
+/* ===================================================================
+   MODULE 5 — HIDDEN POTENTIAL DATA
+   =================================================================== */
+const HIDDEN_POT = {
+  tech:{secondary:[
+    {key:'sains',label:'Scientist',ic:'ti-microscope',color:'#00966A',pct:74,note:'Kamu punya pola pikir analitis yang kuat — fondasi riset teknologi'},
+    {key:'robot',label:'Robotics Builder',ic:'ti-robot',color:'#4C1D95',pct:69,note:'Kemampuan sistematis kamu sangat cocok untuk engineering'},
+  ]},
+  seni:{secondary:[
+    {key:'tulis',label:'Storyteller',ic:'ti-pencil',color:'#6D28D9',pct:71,note:'Kreativitas visualmu juga mengalir ke narasi — keduanya saling memperkuat'},
+    {key:'foto',label:'Visual Storyteller',ic:'ti-camera',color:'#D97706',pct:68,note:'Mata artistikmu adalah aset besar di dunia fotografi'},
+  ]},
+  sains:{secondary:[
+    {key:'tech',label:'Tech Innovator',ic:'ti-code',color:'#1847ED',pct:76,note:'Logika sains dan coding adalah kombinasi yang sangat powerful'},
+    {key:'tulis',label:'Science Writer',ic:'ti-pencil',color:'#6D28D9',pct:62,note:'Kemampuan analitismu bisa menghasilkan tulisan ilmiah yang hebat'},
+  ]},
+  tulis:{secondary:[
+    {key:'seni',label:'Visual Creator',ic:'ti-palette',color:'#F04E23',pct:70,note:'Pikiran naratifmu sangat adaptif ke medium visual'},
+    {key:'musik',label:'Lyricist',ic:'ti-music',color:'#9D174D',pct:65,note:'Kepekaan bahasamu adalah modal besar menulis lirik'},
+  ]},
+  musik:{secondary:[
+    {key:'seni',label:'Visual Artist',ic:'ti-palette',color:'#F04E23',pct:73,note:'Kepekaan artistik musik sering berpasangan dengan visual'},
+    {key:'tulis',label:'Storyteller',ic:'ti-pencil',color:'#6D28D9',pct:66,note:'Kemampuan bercerita lewat lirik bisa meluas ke tulisan'},
+  ]},
+  sport:{secondary:[
+    {key:'tech',label:'Sport Analyst',ic:'ti-chart-bar',color:'#1847ED',pct:72,note:'Strategi dan analisis adalah bagian penting dari olahraga modern'},
+    {key:'sains',label:'Sport Scientist',ic:'ti-microscope',color:'#00966A',pct:64,note:'Ilmu nutrisi dan biomekanik semakin penting untuk atlet'},
+  ]},
+  robot:{secondary:[
+    {key:'tech',label:'Software Dev',ic:'ti-code',color:'#1847ED',pct:78,note:'Fondasi hardware kamu akan membuat kode kamu lebih powerful'},
+    {key:'sains',label:'Electronics Researcher',ic:'ti-microscope',color:'#00966A',pct:71,note:'Curiosity teknis sangat dekat dengan riset ilmiah'},
+  ]},
+  foto:{secondary:[
+    {key:'seni',label:'Visual Designer',ic:'ti-palette',color:'#F04E23',pct:75,note:'Komposisi dan estetika fotografi langsung transferable ke desain'},
+    {key:'tulis',label:'Photo Journalist',ic:'ti-pencil',color:'#6D28D9',pct:67,note:'Kamu menceritakan dunia lewat gambar — itu adalah jurnalisme'},
+  ]},
+};
+
+/* ===================================================================
+   MODULE 6 — QUOTE MOTIVATION DATA
+   =================================================================== */
+const QUOTES = [
+  {text:'Potensi tanpa tindakan hanyalah kemungkinan.',author:'— Wisdom'},
+  {text:'Keunggulan dibangun dari latihan kecil yang dilakukan setiap hari.',author:'— Aristoteles'},
+  {text:'Kamu tidak harus hebat untuk memulai, tapi kamu harus memulai untuk menjadi hebat.',author:'— Zig Ziglar'},
+  {text:'Jangan bandingkan perjalananmu dengan orang lain. Kamu tidak tahu mereka memulai dari mana.',author:'— Anonymous'},
+  {text:'Impian tanpa rencana hanyalah harapan. Rencana tanpa aksi hanyalah mimpi di siang bolong.',author:'— Wisdom'},
+  {text:'Yang membedakan orang biasa dan luar biasa hanya ini: konsistensi.',author:'— Les Brown'},
+  {text:'Bakat adalah titik awal, bukan garis finish.',author:'— LostPotential'},
+  {text:'Setiap ahli pernah menjadi pemula. Setiap pro pernah merasa tidak tahu apa-apa.',author:'— Wisdom'},
+  {text:'Gagal itu normal. Yang tidak normal adalah berhenti karena gagal.',author:'— Michael Jordan'},
+  {text:'Kamu tidak akan pernah tahu seberapa jauh kamu bisa pergi kalau kamu tidak mau melangkah pertama.',author:'— Wisdom'},
+  {text:'Dunia tidak kekurangan bakat. Dunia kekurangan orang yang mau berkomitmen pada bakat mereka.',author:'— Wisdom'},
+  {text:'Satu langkah kecil yang konsisten mengalahkan satu lompatan besar yang sesekali.',author:'— Atomic Habits'},
+  {text:'Identitas kamu bukan siapa kamu sekarang, tapi siapa yang sedang kamu bangun.',author:'— James Clear'},
+  {text:'Saat orang bilang kamu terlambat, ingat — Warren Buffett mulai investasi serius di usia 11 tahun dan menyesal kenapa tidak lebih cepat.',author:'— Wisdom'},
+  {text:'Kesuksesan bukan tentang jarang gagal. Ini tentang tidak menyerah setelah gagal.',author:'— Winston Churchill'},
+  {text:'Kamu tidak bisa kembali dan mengubah awal, tapi kamu bisa memulai dari sekarang dan mengubah akhir.',author:'— C.S. Lewis'},
+  {text:'Bukan tentang seberapa keras kamu dipukul. Tentang seberapa keras kamu bisa dipukul tapi terus maju.',author:'— Rocky Balboa'},
+  {text:'Habit kecil tidak terasa penting sampai kamu lihat ke belakang. Itulah kenapa dimulai hari ini.',author:'— Wisdom'},
+  {text:'Bintang-bintang terbesar lahir dalam tekanan terbesar.',author:'— Wisdom'},
+  {text:'Yang kamu lakukan hari ini menentukan siapa kamu tahun depan.',author:'— LostPotential'},
+  {text:'Kamu punya lebih banyak potensi dari yang kamu bayangkan, lebih dari yang orang tahu, bahkan lebih dari yang sudah kamu tunjukkan.',author:'— Wisdom'},
+  {text:'Fokus bukan tentang menghindari hal lain. Fokus tentang memberi yang terbaik untuk satu hal.',author:'— Gary Keller'},
+  {text:'Kamu tidak perlu izin siapapun untuk mulai.',author:'— LostPotential'},
+  {text:'Tujuan terbesar hidupmu layak mendapat versi terbaik dirimu.',author:'— Hal Elrod'},
+  {text:'Belajar seperti mendayung melawan arus — berhenti dayung artinya mundur.',author:'— Benjamin Britten'},
+  {text:'Setiap hari kamu memilih: maju atau mundur, berkembang atau stagnan.',author:'— Wisdom'},
+  {text:'Jangan tunggu kondisi sempurna. Kondisi sempurna tidak pernah datang. Mulailah.',author:'— Wisdom'},
+  {text:'Otak kamu seperti otot — semakin dipakai, semakin kuat.',author:'— Carol Dweck'},
+  {text:'Yang penting bukan seberapa banyak yang kamu tahu, tapi seberapa banyak yang kamu mau pelajari.',author:'— Wisdom'},
+  {text:'Masa depan kamu dibentuk oleh pertanyaan-pertanyaan yang berani kamu tanyakan sekarang.',author:'— LostPotential'},
+  {text:'Kamu akan menyesal waktu yang tidak kamu gunakan jauh lebih besar dari waktu yang kamu gunakan untuk mencoba.',author:'— Jeff Bezos'},
+];
+
+let currentQuoteIdx = -1;
+
+function getRandomQuote(){
+  let idx;
+  do { idx = Math.floor(Math.random() * QUOTES.length); } while(idx === currentQuoteIdx);
+  currentQuoteIdx = idx;
+  return QUOTES[idx];
+}
+
+function refreshQuote(){
+  const textEl = document.getElementById('lp-quote-text');
+  const authorEl = document.getElementById('lp-quote-author');
+  const counterEl = document.getElementById('lp-quote-counter');
+  if(!textEl) return;
+  textEl.classList.add('fade');
+  setTimeout(()=>{
+    const q = getRandomQuote();
+    textEl.textContent = q.text;
+    if(authorEl) authorEl.textContent = q.author;
+    if(counterEl) counterEl.textContent = `Quote ${currentQuoteIdx+1} dari ${QUOTES.length}`;
+    textEl.classList.remove('fade');
+  }, 300);
+}
+
+/* ===================================================================
+   INJECT NEW SECTIONS INTO RESULT PAGE
+   =================================================================== */
+function buildNewResultSections(top){
+  const path = LEARNING_PATHS[top] || LEARNING_PATHS['tech'];
+  const projects = PROJECTS[top] || PROJECTS['tech'];
+  const tokohList = TOKOH_DATA[top] || TOKOH_DATA['tech'];
+  const hiddenPot = HIDDEN_POT[top] || HIDDEN_POT['tech'];
+  const stepColors = ['#1847ED','#F04E23','#00966A','#6D28D9','#D97706'];
+
+  /* FEATURE 2 — Learning Path */
+  const lpHTML = `
+  <div class="lp-section">
+    <div style="background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:22px 22px 24px;box-shadow:var(--shadow-sm)">
+      <div class="lp-header"><i class="ti ti-road"></i>Langkah Awal Untukmu</div>
+      <div class="lp-sub">Roadmap sederhana untuk memulai perjalanan pengembanganmu sekarang</div>
+      <div class="lp-timeline">
+        ${path.map((s,i)=>`
+          <div class="lp-step">
+            <div class="lp-dot" style="background:${stepColors[i%stepColors.length]}">${i+1}</div>
+            <div class="lp-step-card">
+              <div class="lp-step-num">${s.step}</div>
+              <div class="lp-step-title">${s.title}</div>
+              <div class="lp-step-desc">${s.desc}</div>
+              <div class="lp-step-tag"><i class="ti ti-sparkles" style="font-size:11px"></i>${s.tag}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  /* FEATURE 3 — Project Recommendation */
+  const projHTML = `
+  <div class="proj-section">
+    <div style="background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:22px 22px 18px;box-shadow:var(--shadow-sm)">
+      <div class="lp-header" style="margin-bottom:4px"><i class="ti ti-hammer" style="color:var(--orange)"></i>Project yang Cocok Untukmu</div>
+      <div class="lp-sub">Mulai membangun portofolio nyata dengan project-project ini</div>
+      <div class="proj-tabs">
+        <button class="proj-tab on" id="ptab-beginner" onclick="switchProjTab('beginner','${top}')">🌱 Pemula (${projects.beginner.length})</button>
+        <button class="proj-tab" id="ptab-intermediate" onclick="switchProjTab('intermediate','${top}')">🚀 Menengah (${projects.intermediate.length})</button>
+      </div>
+      <div class="proj-scroll" id="proj-scroll-beginner">
+        ${projects.beginner.map(p=>`
+          <div class="pcard">
+            <div class="pcard-ic" style="background:${p.bg}"><i class="ti ${p.ic}" style="color:${p.ic2}"></i></div>
+            <div class="pcard-title">${p.title}</div>
+            <div class="pcard-desc">${p.desc}</div>
+            <span class="pcard-diff" style="background:var(--green-l);color:var(--green-d)"><i class="ti ti-leaf" style="font-size:10px"></i>Pemula</span>
+          </div>`).join('')}
+      </div>
+      <div class="proj-scroll" id="proj-scroll-intermediate" style="display:none">
+        ${projects.intermediate.map(p=>`
+          <div class="pcard">
+            <div class="pcard-ic" style="background:${p.bg}"><i class="ti ${p.ic}" style="color:${p.ic2}"></i></div>
+            <div class="pcard-title">${p.title}</div>
+            <div class="pcard-desc">${p.desc}</div>
+            <span class="pcard-diff" style="background:var(--amber-l);color:var(--amber)"><i class="ti ti-flame" style="font-size:10px"></i>Menengah</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  /* FEATURE 4 — Tokoh Mirip Kamu */
+  const tokohHTML = `
+  <div class="tokoh-section">
+    <div style="background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:22px 22px 18px;box-shadow:var(--shadow-sm)">
+      <div class="lp-header" style="margin-bottom:4px"><i class="ti ti-award" style="color:var(--amber)"></i>Tokoh yang Memiliki Karakter Mirip</div>
+      <div class="lp-sub">Mereka juga mulai dari titik yang sama sepertimu</div>
+      <div class="tokoh-grid">
+        ${tokohList.slice(0,5).map(t=>`
+          <div class="tokoh-card">
+            <div class="tokoh-avatar" style="background:${t.color}">${t.init}</div>
+            <div class="tokoh-name">${t.name}</div>
+            <div class="tokoh-desc">${t.desc}</div>
+            <div class="tokoh-match"><i class="ti ti-heart-filled" style="font-size:10px"></i>Karakter mirip</div>
+            <div class="tokoh-reason">${t.reason}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  /* FEATURE 5 — Hidden Potential */
+  const pot = hiddenPot.secondary;
+  const potHTML = `
+  <div class="hidden-pot-section" id="hidden-pot-card">
+    <div class="hidden-pot-hd"><i class="ti ti-eye-spark"></i>Potensi Tersembunyimu</div>
+    <div class="hidden-pot-sub">Bakat utamamu bukan satu-satunya kekuatan — ini yang tersembunyi di baliknya</div>
+    ${pot.map((p,i)=>`
+      <div class="pot-bar-row">
+        <div class="pot-bar-top">
+          <div class="pot-bar-label">
+            <i class="ti ${p.ic}" style="color:${p.color}"></i>
+            ${p.label}
+          </div>
+          <div class="pot-pct" id="pot-pct-${i}">${p.pct}%</div>
+        </div>
+        <div class="pot-bar-track">
+          <div class="pot-bar-fill" id="pot-bar-${i}" style="background:${p.color};width:0"></div>
+        </div>
+        <div class="pot-bar-note">${p.note}</div>
+      </div>`).join('')}
+  </div>`;
+
+  /* FEATURE 6 — Quote Generator */
+  const initQ = getRandomQuote();
+  const quoteHTML = `
+  <div class="quote-section">
+    <div class="quote-card">
+      <span class="quote-icon">"</span>
+      <div class="quote-text" id="lp-quote-text">${initQ.text}</div>
+      <div class="quote-author" id="lp-quote-author">${initQ.author}</div>
+    </div>
+    <div class="quote-footer">
+      <button class="quote-refresh" onclick="refreshQuote()">
+        <i class="ti ti-refresh"></i>Quote baru
+      </button>
+      <div class="quote-counter" id="lp-quote-counter">Quote ${currentQuoteIdx+1} dari ${QUOTES.length}</div>
+    </div>
+  </div>`;
+
+  return quoteHTML + lpHTML + projHTML + tokohHTML + potHTML;
+}
+
+function switchProjTab(tab, resultKey){
+  document.querySelectorAll('.proj-tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('ptab-'+tab)?.classList.add('on');
+  ['beginner','intermediate'].forEach(t=>{
+    const el = document.getElementById('proj-scroll-'+t);
+    if(el) el.style.display = t===tab ? 'flex' : 'none';
+  });
+}
+
+function animateHiddenPotBars(){
+  const card = document.getElementById('hidden-pot-card');
+  if(!card) return;
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        // Find all bars in the document
+        document.querySelectorAll('.pot-bar-fill').forEach((bar,i)=>{
+          const pct = bar.style.background ? bar.closest('.pot-bar-row')?.querySelector('.pot-pct')?.textContent : null;
+          const target = pct ? parseInt(pct) : 70;
+          setTimeout(()=>{
+            bar.style.width = target+'%';
+          }, i * 200);
+        });
+        observer.disconnect();
+      }
+    });
+  },{threshold:0.3});
+  observer.observe(card);
+}
+
+/* ===================================================================
+   PATCH showResult — append new sections modularly
+   =================================================================== */
+const _origShowResult = showResult;
+// Override showResult to inject new sections
+function showResult(){
+  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
+  const mp=[
+    ['tech','seni','tulis','sport'],
+    ['seni','seni','tech','tulis'],
+    ['tech','musik','sains','tulis'],
+    ['tech','seni','sport','tulis'],
+    ['tech','foto','sains','sport'],
+    ['tech','sport','seni','sains'],
+  ];
+  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
+  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
+  const top=sorted[0][0];
+  const r=RES[top]||RES['tech'];
+  const rWrap=document.getElementById('rwrap');
+  if(!rWrap)return;
+
+  const dayColors=['#1847ED','#F04E23','#00966A'];
+  const planHTML=r.plan7.map((d,i)=>`
+    <div class="day-row">
+      <div class="day-badge" style="background:${dayColors[i]||'#636A84'};color:#fff">${d.day}</div>
+      <div class="day-content">
+        <div class="day-title">${d.title}</div>
+        <div class="day-desc">${d.desc}</div>
+        <div class="day-output">${d.output}</div>
+      </div>
+    </div>`).join('');
+
+  const rolesHTML=r.roles.map(ro=>`
+    <div class="role-row">
+      <div class="role-av" style="background:${ro.color}">${ro.name.charAt(0)}</div>
+      <div>
+        <div class="role-name">${ro.name}</div>
+        <div class="role-desc">${ro.desc}</div>
+      </div>
+    </div>`).join('');
+
+  // Build new sections
+  const newSections = buildNewResultSections(top);
+
+  rWrap.innerHTML=`
+    <!-- HERO RESULT -->
+    <div class="rhero" style="background:${r.bg};color:${r.tc}">
+      <div class="r-ic" style="background:${r.icbg}"><i class="ti ${r.ic}"></i></div>
+      <div class="r-label">Hasil analisis bakatmu</div>
+      <div class="r-title">${r.title}</div>
+      <div class="r-char">${r.char}</div>
+      <div class="r-desc">${r.desc}</div>
+      <div class="r-skills">${r.skills.map(s=>`<span class="r-skill">${s}</span>`).join('')}</div>
+    </div>
+
+    <!-- NEW: QUOTE MOTIVATION -->
+    ${newSections}
+
+    <!-- EMOTIONAL MOTIVATION -->
+    <div class="r-motive">
+      <div class="r-motive-label"><i class="ti ti-heart"></i>Pesan khusus untukmu</div>
+      <div class="r-motive-text">${r.motive}</div>
+      <div class="r-motive-sub">${r.motiveSub}</div>
+    </div>
+
+    <!-- REAL WORLD ROLE MODELS -->
+    <div class="r-rolemodel">
+      <div class="r-rolemodel-hd"><i class="ti ti-award"></i>Orang Indonesia yang memulai sepertimu</div>
+      ${rolesHTML}
+    </div>
+
+    <!-- 7-DAY ACTION PLAN -->
+    <div class="r-7day">
+      <div class="r-7day-hd"><i class="ti ti-calendar-event"></i>7-Day Challenge: Mulai sekarang</div>
+      <div class="r-7day-sub">Ini yang membedakanmu dari yang hanya tahu, tapi tidak bertindak</div>
+      ${planHTML}
+    </div>
+
+    <!-- COMMUNITY & EVENTS -->
+    <div class="rgrid">
+      <div class="rcard">
+        <div class="rcard-hd"><i class="ti ti-users"></i>Komunitas untukmu</div>
+        ${r.coms.map((ic,i)=>{
+          const k=KOMS.find(k=>k.ic===ic);
+          return `<div class="com-row">
+            <div class="com-av" style="background:${k?k.bg:'#EEF2FD'}"><i class="ti ${ic}" style="color:${k?k.bgi:'#1239C4'}"></i></div>
+            <div><div class="com-name">${r.comN[i]}</div><div class="com-meta">${r.comM[i]}</div></div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="rcard">
+        <div class="rcard-hd"><i class="ti ti-trophy"></i>Lomba rekomendasi</div>
+        ${r.evs.map(e=>`<div class="ev-row">
+          <div class="ev-name"><i class="ti ti-trophy"></i>${e}</div>
+          <div class="ev-meta">Pelajar SMP–SMA · Indonesia</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="rcta">
+      <div>
+        <h3>Siap memulai perjalananmu?</h3>
+        <p>Bergabung komunitas dan daftar lomba pertamamu hari ini</p>
+      </div>
+      <button class="btn-w" onclick="go('komunitas');setNav('komunitas')">
+        Gabung sekarang<i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="go('career');setNav('career')" style="background:var(--blue);border:none;color:#fff;font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:50px;font-weight:700">
+        <i class="ti ti-map-2"></i>Eksplor Karir Lebih Lanjut
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:10px">
+      <button onclick="go('quiz');setNav('cari')" style="background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px">
+        <i class="ti ti-refresh"></i>Ulangi tes
+      </button>
+    </div>`;
+
+  go('result');
+  setNav('cari');
+  launchConfetti();
+
+  // Animate hidden potential bars after render
+  setTimeout(animateHiddenPotBars, 300);
 }
 
 document.addEventListener('DOMContentLoaded',function(){
