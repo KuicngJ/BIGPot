@@ -3012,6 +3012,22 @@ function checkAuthState(){
 function onUserLoggedIn(user){
   currentUser=user;
 
+   if (user && user.uid && typeof db !== 'undefined') {
+    db.collection('users').doc(user.uid).get().then((doc) => {
+      if (doc.exists && doc.data().quizScores) {
+        galaxyScores = doc.data().quizScores;
+        console.log("👉 [Firebase Sukses] Skor kuis lama berhasil dimuat ulang!");
+        if (typeof updateQuizCTA === 'function') {
+          updateQuizCTA();
+        }
+      } else {
+        console.log("👉 User ini belum pernah mengikuti kuis sebelumnya.");
+      }
+    }).catch((error) => {
+      console.error("Gagal memuat skor kuis:", error);
+    });
+  }
+
   // Ambil role
   const isDev = user.email && user.email === firebaseConfig.developerEmail;
   authCurrentRole = isDev ? 'developer' : (localStorage.getItem('role_'+( user.uid||'demo')) || null);
