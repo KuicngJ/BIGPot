@@ -5475,6 +5475,22 @@ window._showResultGalaxyPatch = function(){
     pctScores[k] = maxRaw > 0 ? Math.round((sc[k]/maxRaw)*100) : 10;
     if(pctScores[k] < 10) pctScores[k] = 10;
   });
+
+   if (typeof db !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
+    db.collection('users').doc(currentUser.uid).set({
+      quizScores: galaxyScores,
+      lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true })
+    .then(() => {
+      console.log("👉 [Firebase Sukses] Hasil kuis berhasil disimpan!");
+    })
+    .catch((error) => {
+      console.error("👉 [Firebase Error] Gagal menyimpan:", error);
+    });
+  } else {
+    console.warn("👉 [Firebase Warning] db belum siap atau user belum login.");
+  }
+   
   galaxyScores = pctScores;
   __origShowResult();
 };
