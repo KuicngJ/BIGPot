@@ -1,0 +1,96 @@
+<!-- PANITIA DASHBOARD PAGE — ADD TO BODY -->
+<div class="page" id="pg-panitia-dashboard">
+  <div class="panitia-dashboard">
+    <div class="panitia-header">
+      <h1>📊 Dashboard Panitia</h1>
+      <p>Kelola semua event dan lomba dengan mudah</p>
+    </div>
+
+    <div class="panitia-controls">
+      <button id="panitia-create-btn">
+        <i class="ti ti-plus"></i>
+        <span>Buat Event Baru</span>
+      </button>
+    </div>
+
+    <div id="panitia-event-list">
+      <!-- Events akan di-render di sini -->
+    </div>
+  </div>
+</div>
+
+<!-- PANITIA EVENT CREATION MODAL — ADD TO BODY -->
+<div id="panitia-modal-overlay">
+  <div id="panitia-modal">
+    <div id="panitia-modal-header">
+      <h2 id="panitia-modal-title">Buat Event Baru</h2>
+      <button id="panitia-modal-close"><i class="ti ti-x"></i></button>
+    </div>
+
+    <form id="panitia-event-form">
+      <div class="panitia-form-group">
+        <label>Judul Event</label>
+        <input type="text" name="title" required placeholder="Contoh: Hackathon 2024">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Deskripsi</label>
+        <textarea name="description" placeholder="Jelaskan tentang event..."></textarea>
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Kategori</label>
+        <input type="text" name="category" placeholder="Contoh: Tech, Design, Business">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Icon (Tabler Icon)</label>
+        <input type="text" name="icon" value="ti ti-star" placeholder="ti ti-star">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Warna Accent</label>
+        <input type="color" name="color" value="#1847ED">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Prize/Hadiah</label>
+        <input type="text" name="prize" placeholder="Contoh: Rp 50.000.000">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Deadline</label>
+        <input type="text" name="deadline" placeholder="Contoh: 31 Des 2024">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Link Event</label>
+        <input type="url" name="link" placeholder="https://...">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>WhatsApp Contact</label>
+        <input type="text" name="waContact" placeholder="+62812...">
+      </div>
+
+      <div class="panitia-form-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="ended">Ended</option>
+        </select>
+      </div>
+
+      <div class="panitia-form-actions">
+        <button type="submit" class="panitia-btn-submit">Simpan Event</button>
+        <button type="button" class="panitia-btn-cancel" onclick="closePanitiaModal()">Batal</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SCRIPT REFERENCES — ADD BEFORE CLOSING BODY -->
+<script src="js/firestore-data.js"></script>
+<script src="js/quiz-firestore-integration.js"></script>
+<script src="js/panitia-dashboard.js"></script>
