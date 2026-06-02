@@ -17,6 +17,70 @@
 /* ========================================================
    ROOT & RESET
    ======================================================== */
+   /* ========================================================
+   PANITIA DASHBOARD — NEW
+   ======================================================== */
+.panitia-dashboard{max-width:1200px;margin:0 auto;padding:28px 20px 100px}
+.panitia-header{margin-bottom:32px}
+.panitia-header h1{font-size:28px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+.panitia-header p{color:var(--ink3);font-size:14px}
+.panitia-controls{display:flex;gap:12px;margin-bottom:24px;align-items:center}
+#panitia-create-btn{background:var(--blue);color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700;font-size:14px;cursor:pointer;transition:all var(--dur) var(--ease);display:inline-flex;align-items:center;gap:8px}
+#panitia-create-btn:hover{background:var(--blue-d);transform:translateY(-1px)}
+#panitia-event-list{display:grid;grid-template-columns:1fr;gap:12px}
+.panitia-event-item{background:var(--surf);border:1px solid var(--surf3);border-radius:var(--r-lg);padding:16px;transition:all var(--dur) var(--ease));box-shadow:var(--shadow-sm)}
+.panitia-event-item:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.pei-top{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.pei-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pei-info{flex:1}
+.pei-info h3{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.pei-info p{font-size:12px;color:var(--ink3)}
+.pei-actions{display:flex;gap:8px}
+.pei-btn{padding:8px 16px;border-radius:50px;font-size:12px;font-weight:700;border:1.5px solid;cursor:pointer;transition:all var(--dur) var(--ease))}
+.pei-edit{background:var(--blue-l);color:var(--blue);border-color:var(--blue)}
+.pei-edit:hover{background:var(--blue);color:#fff}
+.pei-delete{background:var(--orange-l);color:var(--orange);border-color:var(--orange)}
+.pei-delete:hover{background:var(--orange);color:#fff}
+.pei-details{display:flex;gap:16px;font-size:12px;flex-wrap:wrap;margin-top:8px}
+.pei-details span{color:var(--ink2)}
+.pei-details strong{color:var(--ink);margin-right:4px}
+.badge{display:inline-block;padding:4px 10px;border-radius:50px;font-size:10.5px;font-weight:700}
+.badge-active{background:var(--green-l);color:var(--green-d)}
+.badge-inactive{background:var(--orange-l);color:var(--orange-d)}
+.badge-ended{background:var(--ink3);color:#fff}
+
+/* ========================================================
+   PANITIA MODAL — NEW
+   ======================================================== */
+#panitia-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s ease}
+#panitia-modal-overlay.open{opacity:1;pointer-events:all}
+#panitia-modal{background:var(--surf);border-radius:var(--r-xl);max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:28px;box-shadow:var(--shadow-lg);transform:scale(0.95);transition:transform .28s ease}
+#panitia-modal-overlay.open #panitia-modal{transform:scale(1)}
+#panitia-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+#panitia-modal-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--ink)}
+#panitia-modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink3);transition:color var(--dur) var(--ease))}
+#panitia-modal-close:hover{color:var(--ink)}
+.panitia-form-group{margin-bottom:16px}
+.panitia-form-group label{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.panitia-form-group input,.panitia-form-group textarea,.panitia-form-group select{width:100%;background:var(--surf2);border:1.5px solid var(--surf3);border-radius:var(--r-sm);padding:12px 14px;font-size:14px;color:var(--ink);font-family:'DM Sans',sans-serif;outline:none;transition:all var(--dur) var(--ease))}
+.panitia-form-group input:focus,.panitia-form-group textarea:focus,.panitia-form-group select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.1)}
+.panitia-form-group textarea{resize:vertical;min-height:80px}
+.panitia-form-actions{display:flex;gap:10px;margin-top:20px}
+.panitia-btn-submit,.panitia-btn-cancel{flex:1;padding:12px;border-radius:var(--r-sm);font-weight:700;font-size:14px;cursor:pointer;transition:all var(--dur) var(--ease));border:none}
+.panitia-btn-submit{background:var(--blue);color:#fff}
+.panitia-btn-submit:hover{background:var(--blue-d);transform:translateY(-1px)}
+.panitia-btn-cancel{background:var(--surf3);color:var(--ink)}
+.panitia-btn-cancel:hover{background:var(--surf4)}
+
+@media(max-width:520px){
+  .panitia-dashboard{padding:20px 14px 100px}
+  .pei-top{flex-wrap:wrap;gap:12px}
+  .pei-actions{width:100%;order:3}
+  .pei-info{flex:1;min-width:200px}
+  #panitia-modal{max-width:100%;padding:20px}
+  .panitia-form-actions{flex-direction:column}
+}
+
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{
   --ink:#0A0F1E;--ink2:#3D4460;--ink3:#8891AB;--ink4:#C8CEDF;
