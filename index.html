@@ -5475,7 +5475,8 @@ window._showResultGalaxyPatch = function(){
     pctScores[k] = maxRaw > 0 ? Math.round((sc[k]/maxRaw)*100) : 10;
     if(pctScores[k] < 10) pctScores[k] = 10;
   });
-
+   galaxyScores = pctScores;
+   
    if (typeof db !== 'undefined' && typeof currentUser !== 'undefined' && currentUser) {
     db.collection('users').doc(currentUser.uid).set({
       quizScores: galaxyScores,
@@ -5491,7 +5492,7 @@ window._showResultGalaxyPatch = function(){
     console.warn("👉 [Firebase Warning] db belum siap atau user belum login.");
   }
    
-  galaxyScores = pctScores;
+  
   __origShowResult();
 };
 
