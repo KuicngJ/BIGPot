@@ -1760,6 +1760,18 @@ body::before{
         <div class="pr-row-text"><div class="pr-row-label">Notifikasi</div><div class="pr-row-sub">Atur preferensi notifikasimu</div></div>
         <i class="ti ti-chevron-right chevron"></i>
       </div>
+      <!-- Dashboard Siswa (always visible when logged in) -->
+      <div class="pr-row" id="pr-row-siswa" onclick="go('dashboard-siswa');setNav('profil')" style="display:none">
+        <div class="pr-row-ic" style="background:#E5F7F2;color:#006B4C"><i class="ti ti-school"></i></div>
+        <div class="pr-row-text"><div class="pr-row-label">Dashboard Saya</div><div class="pr-row-sub">Progress bakat & lomba tersimpan</div></div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <!-- Dashboard Panitia (only for panitia/dev) -->
+      <div class="pr-row" id="pr-row-panitia" onclick="go('dashboard-panitia');setNav('profil')" style="display:none">
+        <div class="pr-row-ic" style="background:var(--purple-l);color:var(--purple)"><i class="ti ti-clipboard-list"></i></div>
+        <div class="pr-row-text"><div class="pr-row-label">Dashboard Panitia</div><div class="pr-row-sub">Kelola lomba & komunitas</div></div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
     </div>
     <button class="btn-logout" id="logout-btn" onclick="doLogout()" style="display:none"><i class="ti ti-logout"></i>Keluar dari akun</button>
     <div id="pr-login-cta" style="margin-top:16px">
@@ -2002,68 +2014,21 @@ const CATS = [
      deskripsi  → penjelasan singkat lomba (string, opsional)
      thumbnail  → URL gambar thumbnail (string URL, opsional — kalau kosong pakai icon kategori)
    =================================================================== */
-const EVS = 
-  [
-  {
-    nama: 'Traspac Competition',
-    kategori: 'tech',
-    link: 'https://trascom.traspac.id/',
-    deskripsi: 'Kompetisi teknologi nasional UI/UX, web, dan mobile app.'
-  },
-  {
-    nama: 'TECHCOMFEST',
-    kategori: 'tech',
-    link: 'https://techcomfest.com/',
-    deskripsi: 'Festival teknologi dan kompetisi IT untuk pelajar dan mahasiswa.'
-  },
-  {
-    nama: 'ISPO',
-    kategori: 'sains',
-    link: 'https://ispo.or.id/',
-    deskripsi: 'Kompetisi riset dan inovasi sains tingkat nasional.'
-  },
-  {
-    nama: 'OSEBI',
-    kategori: 'sains',
-    link: 'https://osebi.id/',
-    deskripsi: 'Olimpiade sains untuk pelajar Indonesia.'
-  },
-  {
-    nama: 'Codeavour',
-    kategori: 'robot',
-    link: 'https://codeavour.org/',
-    deskripsi: 'Kompetisi AI, coding, dan robotika internasional.'
-  },
-  {
-    nama: 'World Robot Olympiad',
-    kategori: 'robot',
-    link: 'https://wro-association.org/',
-    deskripsi: 'Kompetisi robotika tingkat dunia berbasis misi.'
-  },
-  {
-    nama: 'National Essay Competition',
-    kategori: 'tulis',
-    link: 'https://silomba.id/',
-    deskripsi: 'Kompetisi menulis esai nasional.'
-  },
-  {
-    nama: 'National Poster Competition',
-    kategori: 'seni',
-    link: 'https://silomba.id/',
-    deskripsi: 'Kompetisi desain poster kreatif.'
-  },
-  {
-    nama: 'Indomusikgram Challenge',
-    kategori: 'musik',
-    link: 'https://instagram.com/indomusikgram',
-    deskripsi: 'Challenge musik dan cover song.'
-  },
-  {
-    nama: 'Liga Pelajar Indonesia',
-    kategori: 'sport',
-    link: 'https://ligaindonesiabaru.com/',
-    deskripsi: 'Kompetisi olahraga pelajar nasional.'
-  }
+// EVS & KOMS sekarang dimuat dari Firestore (lihat fungsi loadEvsFromFirestore & loadKomsFromFirestore)
+// Array ini akan diisi otomatis — jangan edit manual
+let EVS = [];
+/* ── seed data bawaan (dipakai jika Firestore kosong / belum ada data) ── */
+const EVS_SEED = [
+  { nama:'Traspac Competition', kategori:'tech', link:'https://trascom.traspac.id/', deskripsi:'Kompetisi teknologi nasional UI/UX, web, dan mobile app.' },
+  { nama:'TECHCOMFEST', kategori:'tech', link:'https://techcomfest.com/', deskripsi:'Festival teknologi dan kompetisi IT untuk pelajar dan mahasiswa.' },
+  { nama:'ISPO', kategori:'sains', link:'https://ispo.or.id/', deskripsi:'Kompetisi riset dan inovasi sains tingkat nasional.' },
+  { nama:'OSEBI', kategori:'sains', link:'https://osebi.id/', deskripsi:'Olimpiade sains untuk pelajar Indonesia.' },
+  { nama:'Codeavour', kategori:'robot', link:'https://codeavour.org/', deskripsi:'Kompetisi AI, coding, dan robotika internasional.' },
+  { nama:'World Robot Olympiad', kategori:'robot', link:'https://wro-association.org/', deskripsi:'Kompetisi robotika tingkat dunia berbasis misi.' },
+  { nama:'National Essay Competition', kategori:'tulis', link:'https://silomba.id/', deskripsi:'Kompetisi menulis esai nasional.' },
+  { nama:'National Poster Competition', kategori:'seni', link:'https://silomba.id/', deskripsi:'Kompetisi desain poster kreatif.' },
+  { nama:'Indomusikgram Challenge', kategori:'musik', link:'https://instagram.com/indomusikgram', deskripsi:'Challenge musik dan cover song.' },
+  { nama:'Liga Pelajar Indonesia', kategori:'sport', link:'https://ligaindonesiabaru.com/', deskripsi:'Kompetisi olahraga pelajar nasional.' },
 ];
 /* ===================================================================
    DATA: KOMUNITAS
@@ -2076,20 +2041,10 @@ const EVS =
      thumbnail → URL gambar thumbnail (opsional — kalau kosong pakai icon kategori, ukuran fleksibel)
      btw cara nambah thumbanil pergi ke imgur(nama web) habis itu convert gambarmu ke url
    =================================================================== */
-const KOMS = [
-
-  // ✅ CONTOH LENGKAP (dengan thumbnail):
-  // { nama:'Nama Komunitas', kategori:'tech', link:'https://chat.whatsapp.com/xxxxx', thumbnail:'https://url-gambar.jpg' },
-
-  // ✅ CONTOH TANPA THUMBNAIL (pakai icon otomatis):
-  // { nama:'Nama Komunitas', kategori:'seni', link:'https://chat.whatsapp.com/xxxxx' },
-
-  // 📌 KATEGORI YANG TERSEDIA:
-  // 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
-
-  // ⬇️ TAMBAHKAN KOMUNITAS KAMU DI SINI:
-   { nama:'D.R.G.B.T', kategori:'seni',  link:'https://chat.whatsapp.com/Ko5r4P4uZQq8V4SsCBXJiO?s=cl&p=a&mlu=3', thumbnail:'https://i.imgur.com/UUPMtT5.jpeg' },
-
+// KOMS sekarang dimuat dari Firestore
+let KOMS = [];
+const KOMS_SEED = [
+  { nama:'D.R.G.B.T', kategori:'seni', link:'https://chat.whatsapp.com/Ko5r4P4uZQq8V4SsCBXJiO?s=cl&p=a&mlu=3', thumbnail:'https://i.imgur.com/UUPMtT5.jpeg' },
 ];
 
 /* ===================================================================
@@ -2660,7 +2615,7 @@ function normKom(k, idx){
   };
 }
 
-let allKoms=[...KOMS];
+let allKoms=[];
 function renderKoms(){
   const q=(document.getElementById('kom-search')?.value||'').toLowerCase();
   const el=document.getElementById('k-list');
@@ -2973,6 +2928,13 @@ function onUserLoggedIn(user){
     document.getElementById('role-overlay').classList.add('open');
   }
 
+  // Tampilkan menu dashboard di profil
+  const rowSiswa = document.getElementById('pr-row-siswa');
+  const rowPanitia = document.getElementById('pr-row-panitia');
+  if(rowSiswa) rowSiswa.style.display = 'flex';
+  const isPanitiaOrDev = isDev || authCurrentRole === 'panitia';
+  if(rowPanitia) rowPanitia.style.display = isPanitiaOrDev ? 'flex' : 'none';
+
   // Update profil page juga
   const initials=(name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase())||'LP';
   const prAv=document.getElementById('pr-av-initials');
@@ -3003,6 +2965,11 @@ function onUserLoggedOut(){
   if(loginCta)loginCta.style.display='block';
 
   loadBookmarks();
+  // Hide dashboard rows on logout
+  const rowSiswa2 = document.getElementById('pr-row-siswa');
+  const rowPanitia2 = document.getElementById('pr-row-panitia');
+  if(rowSiswa2) rowSiswa2.style.display = 'none';
+  if(rowPanitia2) rowPanitia2.style.display = 'none';
   setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
 }
 
@@ -3113,6 +3080,9 @@ function authSelectRole(role){
     else{chip.textContent='🎓 Murid';chip.className='user-role-chip urc-murid';}
   }
   toast('Masuk sebagai '+(role==='panitia'?'Guru/Panitia':'Murid')+'!','ti-check');
+  // Update visibility of dashboard menus after role selection
+  const rowPan = document.getElementById('pr-row-panitia');
+  if(rowPan) rowPan.style.display = role==='panitia'?'flex':'none';
 }
 
 // ---- Legacy functions (untuk backward-compat dengan tombol lama di halaman profil/register) ----
@@ -5811,12 +5781,11 @@ function initSparkles(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-  renderCats();
-  filterEvs();
-  updateStats();
   loadDarkPref();
   loadBookmarks();
   initFirebase();
+  // Load data from Firestore (will call renderCats, filterEvs, updateStats internally)
+  setTimeout(()=>{ loadEvsFromFirestore(); loadKomsFromFirestore(); }, 200);
   initSparkles();
   updateQuizCTA();
 
@@ -5824,6 +5793,8 @@ document.addEventListener('DOMContentLoaded',function(){
   const _goOriginal = go;
   window.go = function(page){
     _goOriginal(page);
+    // Run registered go hooks (dashboard pages etc.)
+    _preGoHooks.forEach(fn=>{ try{ fn(page); }catch(e){} });
     if(page === 'galaxy'){
       if(galaxyScores){
         setTimeout(()=>initGalaxyCanvas(galaxyScores), 80);
@@ -6004,6 +5975,670 @@ const FOOTER_KONTAK = [
       </div>
     </div>`;
 })();
+</script>
+
+
+<style>
+/* ============================================================
+   DASHBOARD PANITIA & SISWA — STYLES
+   ============================================================ */
+
+/* ── Admin / Student page wrapper ── */
+.dboard-wrap{max-width:900px;margin:0 auto;padding:24px 18px 100px}
+.dboard-hero{background:linear-gradient(135deg,#0A0F1E 0%,#1847ED 100%);border-radius:20px;padding:28px 26px;margin-bottom:24px;position:relative;overflow:hidden}
+.dboard-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;background:rgba(255,255,255,.05);border-radius:50%}
+.dboard-hero h2{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:6px}
+.dboard-hero p{font-size:13.5px;color:rgba(255,255,255,.6)}
+.dboard-hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50px;padding:5px 14px;font-size:11.5px;font-weight:700;color:#fff;margin-bottom:14px}
+
+/* ── Section card ── */
+.db-section{background:var(--surf);border:1px solid var(--surf3);border-radius:16px;margin-bottom:18px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.db-sec-hd{padding:16px 20px;border-bottom:1px solid var(--surf3);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.db-sec-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.db-sec-title i{font-size:18px;color:var(--blue)}
+.db-sec-body{padding:18px 20px}
+
+/* ── Lomba table ── */
+.db-table{width:100%;border-collapse:collapse}
+.db-table th{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.8px;padding:0 12px 10px;text-align:left}
+.db-table td{padding:10px 12px;border-top:1px solid var(--surf3);font-size:13.5px;color:var(--ink);vertical-align:middle}
+.db-table tr:first-child td{border-top:none}
+.db-table tr:hover td{background:var(--surf2)}
+.db-tbl-actions{display:flex;gap:6px}
+.btn-edit{background:var(--blue-l);color:var(--blue);border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s ease}
+.btn-edit:hover{background:var(--blue);color:#fff}
+.btn-del{background:var(--orange-l);color:var(--orange-d);border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s ease}
+.btn-del:hover{background:var(--orange);color:#fff}
+
+/* ── Add form ── */
+.db-form{display:grid;gap:12px}
+.db-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.db-form-row{grid-template-columns:1fr}}
+.db-label{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:5px;display:block}
+.db-inp{width:100%;background:var(--surf2);border:1.5px solid var(--surf3);border-radius:10px;padding:10px 14px;font-size:13.5px;color:var(--ink);outline:none;transition:border-color .15s ease;font-family:'DM Sans',sans-serif}
+.db-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,71,237,.08)}
+.db-inp::placeholder{color:var(--ink4)}
+select.db-inp{cursor:pointer}
+.db-form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.btn-save{background:var(--blue);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .15s ease}
+.btn-save:hover{background:var(--blue-d);transform:translateY(-1px)}
+.btn-cancel-form{background:var(--surf3);color:var(--ink2);border:none;padding:10px 18px;border-radius:50px;font-size:13.5px;font-weight:700;cursor:pointer;transition:all .15s ease}
+.btn-cancel-form:hover{background:var(--surf4)}
+.db-empty{padding:28px 0;text-align:center;color:var(--ink3);font-size:13.5px}
+.db-empty i{font-size:32px;display:block;margin-bottom:10px;opacity:.35}
+.db-loading{padding:20px 0;text-align:center;color:var(--ink3);font-size:13px}
+.db-count-badge{background:var(--surf3);color:var(--ink2);border-radius:50px;padding:2px 10px;font-size:12px;font-weight:700}
+
+/* ── Student dashboard ── */
+.stu-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:520px){.stu-stat-grid{grid-template-columns:1fr 1fr}}
+.stu-stat{background:var(--surf);border:1px solid var(--surf3);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow-sm)}
+.stu-stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-1px}
+.stu-stat-lbl{font-size:12px;color:var(--ink3);margin-top:2px}
+
+/* ── Edit inline modal ── */
+.inline-edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.inline-edit-overlay.open{opacity:1;pointer-events:all}
+.inline-edit-card{background:var(--surf);border-radius:20px;padding:26px;width:100%;max-width:480px;box-shadow:var(--shadow-lg);max-height:88vh;overflow-y:auto}
+.inline-edit-card h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:18px}
+
+/* ── Access denied card ── */
+.access-denied{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
+.access-denied i{font-size:48px;color:var(--ink4);margin-bottom:16px}
+.access-denied h3{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.access-denied p{font-size:14px;color:var(--ink3);max-width:320px}
+</style>
+
+<!-- ===================== PAGE: DASHBOARD PANITIA ===================== -->
+<div id="pg-dashboard-panitia" class="page">
+  <div class="dboard-wrap">
+    <!-- hero -->
+    <div class="dboard-hero">
+      <div class="dboard-hero-badge"><i class="ti ti-clipboard-list"></i>Dashboard Panitia</div>
+      <h2>Kelola Lomba & Komunitas</h2>
+      <p>Tambah, edit, atau hapus lomba dan komunitas langsung di sini — tanpa edit kode.</p>
+    </div>
+
+    <!-- access gate (shown when not panitia/dev) -->
+    <div id="panitia-gate">
+      <div class="db-section">
+        <div class="access-denied">
+          <i class="ti ti-lock"></i>
+          <h3>Akses Terbatas</h3>
+          <p>Halaman ini hanya untuk Panitia / Developer. Silakan login dan pilih peran "Panitia" untuk mengakses.</p>
+          <button class="btn-save" style="margin-top:18px" onclick="go('login');setNav('profil')"><i class="ti ti-login"></i>Login Sekarang</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- actual dashboard (hidden until verified) -->
+    <div id="panitia-content" style="display:none">
+
+      <!-- LOMBA SECTION -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-trophy"></i>Daftar Lomba <span class="db-count-badge" id="db-lomba-count">0</span></div>
+          <button class="btn-save" onclick="openAddForm('lomba')"><i class="ti ti-plus"></i>Tambah Lomba</button>
+        </div>
+        <div class="db-sec-body">
+          <!-- Add/Edit form (hidden by default) -->
+          <div id="lomba-form-wrap" style="display:none;margin-bottom:20px;padding:18px;background:var(--surf2);border-radius:14px;border:1.5px dashed var(--blue-m)">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px" id="lomba-form-title">Tambah Lomba Baru</div>
+            <div class="db-form">
+              <div class="db-form-row">
+                <div><label class="db-label">Nama Lomba *</label><input class="db-inp" id="lf-nama" type="text" placeholder="Nama lomba"/></div>
+                <div>
+                  <label class="db-label">Kategori *</label>
+                  <select class="db-inp" id="lf-kat">
+                    <option value="">Pilih kategori</option>
+                    <option value="tech">💻 Teknologi & IT</option>
+                    <option value="seni">🎨 Seni & Desain</option>
+                    <option value="sains">🔬 Sains & Riset</option>
+                    <option value="tulis">✍️ Menulis & Sastra</option>
+                    <option value="musik">🎵 Musik & Pertunjukan</option>
+                    <option value="sport">⚽ Olahraga</option>
+                    <option value="robot">🤖 Robotika & AI</option>
+                    <option value="foto">📸 Fotografi & Film</option>
+                  </select>
+                </div>
+              </div>
+              <div><label class="db-label">Link Pendaftaran</label><input class="db-inp" id="lf-link" type="url" placeholder="https://..."/></div>
+              <div><label class="db-label">Thumbnail (URL gambar)</label><input class="db-inp" id="lf-thumb" type="url" placeholder="https://i.imgur.com/..."/></div>
+              <div><label class="db-label">Deskripsi Singkat</label><input class="db-inp" id="lf-desc" type="text" placeholder="Penjelasan singkat lomba"/></div>
+              <input type="hidden" id="lf-edit-id"/>
+              <div class="db-form-actions">
+                <button class="btn-cancel-form" onclick="closeAddForm('lomba')">Batal</button>
+                <button class="btn-save" onclick="saveLomba()"><i class="ti ti-device-floppy"></i>Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div id="db-lomba-table">
+            <div class="db-loading"><i class="ti ti-loader-2" style="font-size:20px;display:block;margin-bottom:8px;animation:spin 1s linear infinite"></i>Memuat lomba…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KOMUNITAS SECTION -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-users"></i>Daftar Komunitas <span class="db-count-badge" id="db-kom-count">0</span></div>
+          <button class="btn-save" onclick="openAddForm('kom')"><i class="ti ti-plus"></i>Tambah Komunitas</button>
+        </div>
+        <div class="db-sec-body">
+          <div id="kom-form-wrap" style="display:none;margin-bottom:20px;padding:18px;background:var(--surf2);border-radius:14px;border:1.5px dashed var(--blue-m)">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px" id="kom-form-title">Tambah Komunitas Baru</div>
+            <div class="db-form">
+              <div class="db-form-row">
+                <div><label class="db-label">Nama Komunitas *</label><input class="db-inp" id="kf-nama" type="text" placeholder="Nama komunitas"/></div>
+                <div>
+                  <label class="db-label">Kategori *</label>
+                  <select class="db-inp" id="kf-kat">
+                    <option value="">Pilih kategori</option>
+                    <option value="tech">💻 Teknologi & IT</option>
+                    <option value="seni">🎨 Seni & Desain</option>
+                    <option value="sains">🔬 Sains & Riset</option>
+                    <option value="tulis">✍️ Menulis & Sastra</option>
+                    <option value="musik">🎵 Musik & Pertunjukan</option>
+                    <option value="sport">⚽ Olahraga</option>
+                    <option value="robot">🤖 Robotika & AI</option>
+                    <option value="foto">📸 Fotografi & Film</option>
+                  </select>
+                </div>
+              </div>
+              <div><label class="db-label">Link WhatsApp / Grup</label><input class="db-inp" id="kf-link" type="url" placeholder="https://chat.whatsapp.com/..."/></div>
+              <div><label class="db-label">Thumbnail (URL gambar)</label><input class="db-inp" id="kf-thumb" type="url" placeholder="https://i.imgur.com/..."/></div>
+              <input type="hidden" id="kf-edit-id"/>
+              <div class="db-form-actions">
+                <button class="btn-cancel-form" onclick="closeAddForm('kom')">Batal</button>
+                <button class="btn-save" onclick="saveKom()"><i class="ti ti-device-floppy"></i>Simpan</button>
+              </div>
+            </div>
+          </div>
+          <div id="db-kom-table">
+            <div class="db-loading"><i class="ti ti-loader-2" style="font-size:20px;display:block;margin-bottom:8px;animation:spin 1s linear infinite"></i>Memuat komunitas…</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panitia-content -->
+  </div>
+</div>
+
+<!-- ===================== PAGE: DASHBOARD SISWA ===================== -->
+<div id="pg-dashboard-siswa" class="page">
+  <div class="dboard-wrap">
+    <div class="dboard-hero" style="background:linear-gradient(135deg,#0A1940 0%,#006B4C 100%)">
+      <div class="dboard-hero-badge"><i class="ti ti-school"></i>Dashboard Siswa</div>
+      <h2 id="stu-hero-name">Selamat datang! 👋</h2>
+      <p id="stu-hero-sub">Pantau progress bakat dan aktifitas lombamu</p>
+    </div>
+
+    <div id="stu-gate">
+      <div class="db-section">
+        <div class="access-denied">
+          <i class="ti ti-user-x"></i>
+          <h3>Belum Login</h3>
+          <p>Login terlebih dahulu untuk melihat dashboard siswa kamu.</p>
+          <button class="btn-save" style="margin-top:18px" onclick="go('login');setNav('profil')"><i class="ti ti-login"></i>Login Sekarang</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="stu-content" style="display:none">
+      <!-- Stats -->
+      <div class="stu-stat-grid">
+        <div class="stu-stat">
+          <div class="stu-stat-num" id="stu-bm-lomba">0</div>
+          <div class="stu-stat-lbl">Lomba Disimpan</div>
+        </div>
+        <div class="stu-stat">
+          <div class="stu-stat-num" id="stu-bm-kom">0</div>
+          <div class="stu-stat-lbl">Komunitas Disimpan</div>
+        </div>
+        <div class="stu-stat">
+          <div class="stu-stat-num" id="stu-tes-done">—</div>
+          <div class="stu-stat-lbl">Tes Bakat</div>
+        </div>
+      </div>
+
+      <!-- Hasil Tes -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-brain"></i>Hasil Tes Bakatmu</div>
+          <button class="btn-save" onclick="go('quiz');setNav('cari')" style="padding:8px 16px;font-size:12px"><i class="ti ti-refresh"></i>Ulangi Tes</button>
+        </div>
+        <div class="db-sec-body" id="stu-quiz-result">
+          <div class="db-empty"><i class="ti ti-brain"></i>Belum ada hasil tes. Yuk mulai tes bakatmu!</div>
+        </div>
+      </div>
+
+      <!-- Lomba Tersimpan -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-trophy"></i>Lomba Tersimpan</div>
+          <button class="btn-cancel-form" style="font-size:12px;padding:7px 14px" onclick="go('home');setNav('home')"><i class="ti ti-search" style="font-size:12px"></i>Cari Lomba</button>
+        </div>
+        <div class="db-sec-body" id="stu-saved-lomba">
+          <div class="db-empty"><i class="ti ti-bookmark"></i>Belum ada lomba tersimpan.</div>
+        </div>
+      </div>
+
+      <!-- Komunitas Tersimpan -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-users"></i>Komunitas Tersimpan</div>
+        </div>
+        <div class="db-sec-body" id="stu-saved-kom">
+          <div class="db-empty"><i class="ti ti-users"></i>Belum ada komunitas tersimpan.</div>
+        </div>
+      </div>
+    </div><!-- /stu-content -->
+  </div>
+</div>
+
+<style>
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style>
+
+<script>
+/* ===================================================================
+   FIRESTORE — LOAD EVS & KOMS
+   =================================================================== */
+
+function loadEvsFromFirestore(){
+  if(!firebaseReady||!db){
+    // Fallback ke seed data
+    EVS.length = 0;
+    EVS_SEED.forEach(e => EVS.push(e));
+    allKoms = [...KOMS];
+    renderCats(); filterEvs(); updateStats();
+    renderDbLombaTable(); renderDbKomTable();
+    return;
+  }
+  db.collection('lomba').orderBy('createdAt','desc').onSnapshot(snap=>{
+    EVS.length = 0;
+    if(snap.empty){
+      // Seed Firestore on first run
+      const batch = db.batch();
+      EVS_SEED.forEach(e=>{
+        const ref = db.collection('lomba').doc();
+        batch.set(ref, {...e, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      batch.commit().catch(()=>{});
+      EVS_SEED.forEach(e => EVS.push(e));
+    } else {
+      snap.forEach(d => EVS.push({...d.data(), _id: d.id}));
+    }
+    renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
+  }, ()=>{
+    EVS_SEED.forEach(e => EVS.push(e));
+    renderCats(); filterEvs(); updateStats();
+  });
+}
+
+function loadKomsFromFirestore(){
+  if(!firebaseReady||!db){
+    KOMS.length = 0;
+    KOMS_SEED.forEach(k => KOMS.push(k));
+    allKoms = [...KOMS];
+    renderKoms(); renderDbKomTable();
+    return;
+  }
+  db.collection('komunitas').orderBy('createdAt','desc').onSnapshot(snap=>{
+    KOMS.length = 0;
+    if(snap.empty){
+      const batch = db.batch();
+      KOMS_SEED.forEach(k=>{
+        const ref = db.collection('komunitas').doc();
+        batch.set(ref, {...k, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      batch.commit().catch(()=>{});
+      KOMS_SEED.forEach(k => KOMS.push(k));
+    } else {
+      snap.forEach(d => KOMS.push({...d.data(), _id: d.id}));
+    }
+    allKoms = [...KOMS];
+    renderKoms(); renderDbKomTable();
+  }, ()=>{
+    KOMS_SEED.forEach(k => KOMS.push(k));
+    allKoms = [...KOMS];
+    renderKoms();
+  });
+}
+
+/* ===================================================================
+   PANITIA DASHBOARD — RENDER TABLES
+   =================================================================== */
+
+function renderDbLombaTable(){
+  const el = document.getElementById('db-lomba-table');
+  const cnt = document.getElementById('db-lomba-count');
+  if(!el) return;
+  if(cnt) cnt.textContent = EVS.length;
+  if(EVS.length === 0){
+    el.innerHTML = '<div class="db-empty"><i class="ti ti-trophy"></i>Belum ada lomba. Klik "Tambah Lomba" untuk mulai.</div>';
+    return;
+  }
+  const catLabel = {tech:'💻 Teknologi',seni:'🎨 Seni',sains:'🔬 Sains',tulis:'✍️ Menulis',musik:'🎵 Musik',sport:'⚽ Olahraga',robot:'🤖 Robotika',foto:'📸 Foto'};
+  el.innerHTML = `<div style="overflow-x:auto"><table class="db-table">
+    <thead><tr>
+      <th>Nama Lomba</th>
+      <th>Kategori</th>
+      <th>Link</th>
+      <th>Aksi</th>
+    </tr></thead>
+    <tbody>
+    ${EVS.map((e,i)=>`<tr>
+      <td style="font-weight:600;max-width:200px;word-break:break-word">${e.nama||e.title||'—'}</td>
+      <td><span class="chip ch-b" style="white-space:nowrap">${catLabel[e.kategori||e.cat]||e.kategori||'—'}</span></td>
+      <td>${e.link?`<a href="${e.link}" target="_blank" style="color:var(--blue);font-size:12px;display:flex;align-items:center;gap:4px"><i class="ti ti-external-link" style="font-size:11px"></i>Buka</a>`:'<span style="color:var(--ink4)">—</span>'}</td>
+      <td><div class="db-tbl-actions">
+        <button class="btn-edit" onclick="editLomba(${i})"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
+        <button class="btn-del" onclick="deleteLomba(${i})"><i class="ti ti-trash" style="font-size:11px"></i>Hapus</button>
+      </div></td>
+    </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+function renderDbKomTable(){
+  const el = document.getElementById('db-kom-table');
+  const cnt = document.getElementById('db-kom-count');
+  if(!el) return;
+  if(cnt) cnt.textContent = KOMS.length;
+  if(KOMS.length === 0){
+    el.innerHTML = '<div class="db-empty"><i class="ti ti-users"></i>Belum ada komunitas. Klik "Tambah Komunitas" untuk mulai.</div>';
+    return;
+  }
+  const catLabel = {tech:'💻 Teknologi',seni:'🎨 Seni',sains:'🔬 Sains',tulis:'✍️ Menulis',musik:'🎵 Musik',sport:'⚽ Olahraga',robot:'🤖 Robotika',foto:'📸 Foto'};
+  el.innerHTML = `<div style="overflow-x:auto"><table class="db-table">
+    <thead><tr>
+      <th>Nama</th><th>Kategori</th><th>Link</th><th>Aksi</th>
+    </tr></thead>
+    <tbody>
+    ${KOMS.map((k,i)=>`<tr>
+      <td style="font-weight:600">${k.nama||k.name||'—'}</td>
+      <td><span class="chip ch-b" style="white-space:nowrap">${catLabel[k.kategori||k.cat]||k.kategori||'—'}</span></td>
+      <td>${(k.link||k.wa)?`<a href="${k.link||k.wa}" target="_blank" style="color:var(--green);font-size:12px;display:flex;align-items:center;gap:4px"><i class="ti ti-brand-whatsapp" style="font-size:11px"></i>WA</a>`:'<span style="color:var(--ink4)">—</span>'}</td>
+      <td><div class="db-tbl-actions">
+        <button class="btn-edit" onclick="editKom(${i})"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
+        <button class="btn-del" onclick="deleteKom(${i})"><i class="ti ti-trash" style="font-size:11px"></i>Hapus</button>
+      </div></td>
+    </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+/* ===================================================================
+   PANITIA — FORM OPEN/CLOSE
+   =================================================================== */
+function openAddForm(type){
+  if(type==='lomba'){
+    document.getElementById('lf-nama').value='';
+    document.getElementById('lf-kat').value='';
+    document.getElementById('lf-link').value='';
+    document.getElementById('lf-thumb').value='';
+    document.getElementById('lf-desc').value='';
+    document.getElementById('lf-edit-id').value='';
+    document.getElementById('lomba-form-title').textContent='Tambah Lomba Baru';
+    document.getElementById('lomba-form-wrap').style.display='block';
+    document.getElementById('lf-nama').focus();
+  } else {
+    document.getElementById('kf-nama').value='';
+    document.getElementById('kf-kat').value='';
+    document.getElementById('kf-link').value='';
+    document.getElementById('kf-thumb').value='';
+    document.getElementById('kf-edit-id').value='';
+    document.getElementById('kom-form-title').textContent='Tambah Komunitas Baru';
+    document.getElementById('kom-form-wrap').style.display='block';
+    document.getElementById('kf-nama').focus();
+  }
+}
+function closeAddForm(type){
+  if(type==='lomba') document.getElementById('lomba-form-wrap').style.display='none';
+  else document.getElementById('kom-form-wrap').style.display='none';
+}
+
+/* ===================================================================
+   PANITIA — SAVE/EDIT/DELETE LOMBA
+   =================================================================== */
+async function saveLomba(){
+  const nama = document.getElementById('lf-nama').value.trim();
+  const kat  = document.getElementById('lf-kat').value;
+  const link = document.getElementById('lf-link').value.trim();
+  const thumb= document.getElementById('lf-thumb').value.trim();
+  const desc = document.getElementById('lf-desc').value.trim();
+  const editId = document.getElementById('lf-edit-id').value;
+  if(!nama){ toast('Nama lomba wajib diisi!','ti-alert-circle'); return; }
+  if(!kat){ toast('Pilih kategori dulu!','ti-alert-circle'); return; }
+
+  const data = { nama, kategori:kat, link, thumbnail:thumb, deskripsi:desc };
+
+  if(firebaseReady && db){
+    try{
+      if(editId){
+        await db.collection('lomba').doc(editId).update(data);
+        toast('Lomba diperbarui!','ti-check');
+      } else {
+        await db.collection('lomba').add({...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        toast('Lomba berhasil ditambahkan!','ti-check');
+      }
+    }catch(e){ toast('Gagal simpan: '+e.message,'ti-alert-circle'); return; }
+  } else {
+    // local-only fallback
+    if(editId){
+      const idx = parseInt(editId);
+      if(!isNaN(idx)) EVS[idx] = data;
+    } else {
+      EVS.unshift(data);
+    }
+    renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
+    toast('Lomba ditambahkan (mode lokal)!','ti-check');
+  }
+  closeAddForm('lomba');
+}
+
+function editLomba(idx){
+  const e = EVS[idx]; if(!e) return;
+  document.getElementById('lf-nama').value = e.nama||e.title||'';
+  document.getElementById('lf-kat').value  = e.kategori||e.cat||'';
+  document.getElementById('lf-link').value = e.link||'';
+  document.getElementById('lf-thumb').value= e.thumbnail||'';
+  document.getElementById('lf-desc').value = e.deskripsi||e.desc||'';
+  document.getElementById('lf-edit-id').value = e._id || String(idx);
+  document.getElementById('lomba-form-title').textContent='Edit Lomba';
+  document.getElementById('lomba-form-wrap').style.display='block';
+  document.getElementById('lf-nama').focus();
+  document.getElementById('lomba-form-wrap').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+async function deleteLomba(idx){
+  const e = EVS[idx]; if(!e) return;
+  if(!confirm('Hapus lomba "'+( e.nama||e.title)+'"?')) return;
+  if(firebaseReady && db && e._id){
+    try{ await db.collection('lomba').doc(e._id).delete(); toast('Lomba dihapus!','ti-trash'); }
+    catch(er){ toast('Gagal hapus: '+er.message,'ti-alert-circle'); }
+  } else {
+    EVS.splice(idx,1);
+    renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
+    toast('Lomba dihapus!','ti-trash');
+  }
+}
+
+/* ===================================================================
+   PANITIA — SAVE/EDIT/DELETE KOMUNITAS
+   =================================================================== */
+async function saveKom(){
+  const nama = document.getElementById('kf-nama').value.trim();
+  const kat  = document.getElementById('kf-kat').value;
+  const link = document.getElementById('kf-link').value.trim();
+  const thumb= document.getElementById('kf-thumb').value.trim();
+  const editId = document.getElementById('kf-edit-id').value;
+  if(!nama){ toast('Nama komunitas wajib diisi!','ti-alert-circle'); return; }
+  if(!kat){ toast('Pilih kategori dulu!','ti-alert-circle'); return; }
+
+  const data = { nama, kategori:kat, link, thumbnail:thumb };
+
+  if(firebaseReady && db){
+    try{
+      if(editId){
+        await db.collection('komunitas').doc(editId).update(data);
+        toast('Komunitas diperbarui!','ti-check');
+      } else {
+        await db.collection('komunitas').add({...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        toast('Komunitas berhasil ditambahkan!','ti-check');
+      }
+    }catch(e){ toast('Gagal simpan: '+e.message,'ti-alert-circle'); return; }
+  } else {
+    if(editId){
+      const idx = parseInt(editId);
+      if(!isNaN(idx)) KOMS[idx] = data;
+    } else {
+      KOMS.unshift(data);
+    }
+    allKoms = [...KOMS]; renderKoms(); renderDbKomTable();
+    toast('Komunitas ditambahkan (mode lokal)!','ti-check');
+  }
+  closeAddForm('kom');
+}
+
+function editKom(idx){
+  const k = KOMS[idx]; if(!k) return;
+  document.getElementById('kf-nama').value = k.nama||k.name||'';
+  document.getElementById('kf-kat').value  = k.kategori||k.cat||'';
+  document.getElementById('kf-link').value = k.link||k.wa||'';
+  document.getElementById('kf-thumb').value= k.thumbnail||'';
+  document.getElementById('kf-edit-id').value = k._id || String(idx);
+  document.getElementById('kom-form-title').textContent='Edit Komunitas';
+  document.getElementById('kom-form-wrap').style.display='block';
+  document.getElementById('kf-nama').focus();
+  document.getElementById('kom-form-wrap').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+async function deleteKom(idx){
+  const k = KOMS[idx]; if(!k) return;
+  if(!confirm('Hapus komunitas "'+(k.nama||k.name)+'"?')) return;
+  if(firebaseReady && db && k._id){
+    try{ await db.collection('komunitas').doc(k._id).delete(); toast('Komunitas dihapus!','ti-trash'); }
+    catch(er){ toast('Gagal hapus: '+er.message,'ti-alert-circle'); }
+  } else {
+    KOMS.splice(idx,1);
+    allKoms = [...KOMS]; renderKoms(); renderDbKomTable();
+    toast('Komunitas dihapus!','ti-trash');
+  }
+}
+
+/* ===================================================================
+   PANITIA GATE — CHECK ACCESS
+   =================================================================== */
+function checkPanitiaAccess(){
+  const isPanitia = authCurrentRole === 'panitia' || authCurrentRole === 'developer' ||
+    (currentUser && currentUser.email && currentUser.email === firebaseConfig.developerEmail);
+  document.getElementById('panitia-gate').style.display = isPanitia ? 'none' : 'block';
+  document.getElementById('panitia-content').style.display = isPanitia ? 'block' : 'none';
+  if(isPanitia){ renderDbLombaTable(); renderDbKomTable(); }
+}
+
+/* ===================================================================
+   SISWA DASHBOARD — RENDER
+   =================================================================== */
+function renderStudentDashboard(){
+  const isLoggedIn = !!currentUser;
+  document.getElementById('stu-gate').style.display = isLoggedIn ? 'none' : 'block';
+  document.getElementById('stu-content').style.display = isLoggedIn ? 'block' : 'none';
+  if(!isLoggedIn) return;
+
+  // Hero
+  const name = currentUser.displayName || currentUser.phoneNumber || 'Siswa';
+  const heroName = document.getElementById('stu-hero-name');
+  if(heroName) heroName.textContent = 'Halo, '+name+' 👋';
+
+  // Stats
+  const bmL = document.getElementById('stu-bm-lomba');
+  const bmK = document.getElementById('stu-bm-kom');
+  const tesDone = document.getElementById('stu-tes-done');
+  if(bmL) bmL.textContent = bookmarks.lomba.size;
+  if(bmK) bmK.textContent = bookmarks.komunitas.size;
+  if(tesDone) tesDone.textContent = galaxyScores ? '✓ Selesai' : 'Belum';
+
+  // Quiz result
+  const qEl = document.getElementById('stu-quiz-result');
+  if(qEl){
+    if(galaxyScores){
+      const sorted = Object.entries(galaxyScores).sort((a,b)=>b[1]-a[1]);
+      const top3 = sorted.slice(0,3);
+      const catLabels = {tech:'💻 Teknologi',seni:'🎨 Seni',sains:'🔬 Sains',tulis:'✍️ Menulis',musik:'🎵 Musik',sport:'⚽ Olahraga',robot:'🤖 Robotika',foto:'📸 Foto'};
+      qEl.innerHTML = `<div style="margin-bottom:12px;font-size:13px;color:var(--ink3)">Bakat dominan kamu:</div>
+        ${top3.map(([k,v],i)=>`<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <div style="width:32px;height:32px;border-radius:8px;background:var(--surf3);display:flex;align-items:center;justify-content:center;font-size:16px">${['🥇','🥈','🥉'][i]}</div>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:700;color:var(--ink)">${catLabels[k]||k}</div>
+            <div style="height:6px;background:var(--surf3);border-radius:3px;margin-top:5px;overflow:hidden">
+              <div style="height:100%;width:${v}%;background:var(--blue);border-radius:3px;transition:width 1s ease"></div>
+            </div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--blue)">${v}%</div>
+        </div>`).join('')}
+        <button class="btn-save" style="margin-top:8px;padding:8px 18px;font-size:12.5px" onclick="go('result');setNav('cari')"><i class="ti ti-chart-bar"></i>Lihat Detail Hasil</button>`;
+    } else {
+      qEl.innerHTML = `<div class="db-empty"><i class="ti ti-brain"></i>Belum ada hasil tes.<br>
+        <button class="btn-save" style="margin-top:12px" onclick="go('quiz');setNav('cari')"><i class="ti ti-brain"></i>Mulai Tes Bakat</button></div>`;
+    }
+  }
+
+  // Saved lomba
+  const slEl = document.getElementById('stu-saved-lomba');
+  if(slEl){
+    const savedLomba = EVS.map((e,i)=>({...normEv(e,i),_idx:i})).filter(e=>bookmarks.lomba.has(e.id));
+    if(savedLomba.length === 0){
+      slEl.innerHTML = '<div class="db-empty"><i class="ti ti-bookmark"></i>Belum ada lomba tersimpan.</div>';
+    } else {
+      slEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">
+        ${savedLomba.map(e=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surf2);border-radius:12px;border:1px solid var(--surf3)">
+          <div style="width:36px;height:36px;border-radius:10px;background:${e.ibg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="ti ${e.ic}" style="color:${e.ic2}"></i></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.title}</div>
+            <span class="chip ${e.tc}" style="font-size:10.5px">${e.tag}</span>
+          </div>
+          ${e.link?`<a href="${e.link}" target="_blank" rel="noopener" style="color:var(--blue);font-size:12px;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0"><i class="ti ti-external-link" style="font-size:11px"></i>Daftar</a>`:''}
+        </div>`).join('')}
+      </div>`;
+    }
+  }
+
+  // Saved komunitas
+  const skEl = document.getElementById('stu-saved-kom');
+  if(skEl){
+    const savedKom = KOMS.map((k,i)=>normKom(k,i)).filter(k=>bookmarks.komunitas.has(k.id));
+    if(savedKom.length === 0){
+      skEl.innerHTML = '<div class="db-empty"><i class="ti ti-users"></i>Belum ada komunitas tersimpan.</div>';
+    } else {
+      skEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">
+        ${savedKom.map(k=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surf2);border-radius:12px;border:1px solid var(--surf3)">
+          <div style="width:36px;height:36px;border-radius:50%;background:${k.bg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="ti ${k.ic}" style="color:${k.bgi}"></i></div>
+          <div style="flex:1">
+            <div style="font-size:13.5px;font-weight:700;color:var(--ink)">${k.name}</div>
+          </div>
+          <a href="${k.wa}" target="_blank" rel="noopener" style="background:var(--wa-green);color:#fff;border-radius:50px;padding:6px 12px;font-size:12px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0"><i class="ti ti-brand-whatsapp" style="font-size:12px"></i>Join</a>
+        </div>`).join('')}
+      </div>`;
+    }
+  }
+}
+
+/* ===================================================================
+   NAV HOOKS — intercept go() to render dashboards on navigate
+   =================================================================== */
+// We'll patch go() after DOMContentLoaded; for now store originals
+const _preGoHooks = [];
+function addGoHook(fn){ _preGoHooks.push(fn); }
+
+addGoHook(function(page){
+  if(page === 'dashboard-panitia') checkPanitiaAccess();
+  if(page === 'dashboard-siswa') renderStudentDashboard();
+});
 </script>
 
 </body>
