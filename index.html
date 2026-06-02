@@ -6169,44 +6169,7 @@ const FOOTER_KONTAK = [
       </div>
     </div>`;
 
-   function showToast(message, type = 'info') {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-  
-  toast.textContent = message;
-  toast.className = 'toast show';
-  
-  const icons = {
-    success: 'ti ti-check',
-    error: 'ti ti-alert-circle',
-    warning: 'ti ti-alert-triangle',
-    info: 'ti ti-info-circle'
-  };
-  
-  const icon = document.createElement('i');
-  icon.className = icons[type] || icons.info;
-  toast.prepend(icon);
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
-}
 
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-  const page = document.getElementById(`pg-${pageId}`);
-  if (page) {
-    page.classList.add('on');
-    
-    if (pageId === 'panitia-dashboard') {
-      initPanitiaDashboard();
-    }
-  }
-}
-
-function closePanitiaModal() {
-  document.getElementById('panitia-modal-overlay').classList.remove('open');
-}
    
 })();
 </script>
