@@ -2954,39 +2954,32 @@ function onUserLoggedIn(user){
   currentUser=user;
   const isDev = user.email && user.email === firebaseConfig.developerEmail;
 
-  if(isDev){
-    _applyUserUI(user, 'developer');
-    return;
-  }
+  // Ambil role dari localStorage dulu (non-blocking, langsung tampil)
+  const localRole = isDev ? 'developer' : (localStorage.getItem('role_'+(user.uid||'demo')) || null);
+  _applyUserUI(user, localRole);
 
-  if(firebaseReady && db && user.uid && !user.isDemo){
-    // Baca role dari Firestore — persist lintas device & browser
+  // Sync role dari Firestore di background (tidak blocking login)
+  if(firebaseReady && db && user.uid && !user.isDemo && !isDev){
     db.collection('users').doc(user.uid).get().then(doc => {
-      let role = null;
       if(doc.exists && doc.data().role){
-        role = doc.data().role;
-        try{ localStorage.setItem('role_'+user.uid, role); }catch(e){}
-      } else {
-        // Fallback: cek localStorage (cache device ini)
-        role = localStorage.getItem('role_'+user.uid) || null;
-        if(role){
-          // Ada di lokal tapi belum di Firestore — sync ke Firestore
-          db.collection('users').doc(user.uid).set({
-            role,
-            displayName: user.displayName||'',
-            email: user.email||'',
-            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-          }, {merge:true}).catch(()=>{});
+        const fsRole = doc.data().role;
+        // Update localStorage cache
+        try{ localStorage.setItem('role_'+user.uid, fsRole); }catch(e){}
+        // Kalau role dari Firestore beda dengan yang sudah ditampilkan, update UI
+        if(fsRole !== localRole){
+          authCurrentRole = fsRole;
+          const chip = document.getElementById('user-role-chip-lp');
+          if(chip){
+            if(fsRole==='panitia'){chip.textContent='📋 Panitia';chip.className='user-role-chip urc-panitia';}
+            else{chip.textContent='🎓 Murid';chip.className='user-role-chip urc-murid';}
+          }
+          const rowPan = document.getElementById('pr-row-panitia');
+          if(rowPan) rowPan.style.display = fsRole==='panitia'?'flex':'none';
+          // Tutup role modal kalau sempat terbuka
+          document.getElementById('role-overlay')?.classList.remove('open');
         }
       }
-      _applyUserUI(user, role);
-    }).catch(()=>{
-      const role = localStorage.getItem('role_'+(user.uid||'demo')) || null;
-      _applyUserUI(user, role);
-    });
-  } else {
-    const role = localStorage.getItem('role_'+(user.uid||'demo')) || null;
-    _applyUserUI(user, role);
+    }).catch(()=>{}); // Gagal Firestore — tidak apa-apa, sudah pakai localStorage
   }
 }
 
