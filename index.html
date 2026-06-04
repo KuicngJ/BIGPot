@@ -2475,18 +2475,20 @@ const KOM_META = {
    RENDER EVENTS
    =================================================================== */
 function normEv(e, idx){
-  if(e.title) return e;
-  const m = CAT_META[e.kategori] || CAT_META['tech'];
+  // Data dari Firestore panitia punya field 'nama' & 'kategori'
+  // Seed lama atau data legacy mungkin punya 'title' & 'cat'
+  // Fungsi ini menormalkan keduanya menjadi format yang sama
+  const m = CAT_META[e.kategori || e.cat] || CAT_META['tech'];
   return {
-    id: 'ev'+idx,
+    id: e._id || 'ev'+idx,
     ic: m.ic, ibg: m.ibg, ic2: m.ic2,
     tag: m.tag, tc: m.tc, bc: m.bc,
-    title: e.nama,
-    deskripsi: e.deskripsi || '',
+    title: e.nama || e.title || '—',
+    deskripsi: e.deskripsi || e.desc || '',
     thumbnail: e.thumbnail || '',
-    loc: '—', prize: '—', dl: '—',
+    loc: e.loc || '—', prize: e.prize || '—', dl: e.dl || '—',
     badge: m.tag,
-    cat: e.kategori,
+    cat: e.kategori || e.cat || 'tech',
     link: e.link || null,
     _raw: e,
   };
@@ -2587,14 +2589,14 @@ function filterEvs(){
     if(el)el.innerHTML='<p style="color:var(--ink3);font-size:14px;grid-column:1/-1;padding:32px 0;text-align:center"><i class="ti ti-trophy" style="display:block;font-size:32px;margin-bottom:8px;opacity:.3"></i>Lomba belum ditambahkan.<br>Isi array EVS di kode untuk menampilkan lomba.</p>';
     return;
   }
-  const filtered=EVS.filter((e,i)=>{
+  const filtered=EVS.map((e,i)=>({e,i})).filter(({e,i})=>{
     const ne=normEv(e,i);
     const matchCat=!activeCat||ne.cat===activeCat;
     const matchQ=!q||ne.title.toLowerCase().includes(q)||(ne.tag||'').toLowerCase().includes(q);
     return matchCat&&matchQ;
   });
   const el=document.getElementById('ev-list');
-  if(el)el.innerHTML=filtered.length?filtered.map((e,i)=>renderEvCard(e,i)).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
+  if(el)el.innerHTML=filtered.length?filtered.map(({e,i})=>renderEvCard(e,i)).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
 }
 
 function clearEvSearch(){
@@ -2607,16 +2609,16 @@ function clearEvSearch(){
    RENDER KOMUNITAS
    =================================================================== */
 function normKom(k, idx){
-  if(k.name) return k; // sudah format lama
-  const m = KOM_META[k.kategori] || KOM_META['tech'];
+  // Support format lama (name/cat) dan format panitia (nama/kategori)
+  const m = KOM_META[k.kategori || k.cat] || KOM_META['tech'];
   return {
-    id: 'k'+idx,
+    id: k._id || 'k'+idx,
     ic: m.ic, bg: m.bg, bgi: m.bgi,
-    name: k.nama,
-    desc: '—',
-    mem: '—',
-    tags: [k.kategori],
-    wa: k.link || '#',
+    name: k.nama || k.name || '—',
+    desc: k.desc || '—',
+    mem: k.mem || '—',
+    tags: [k.kategori || k.cat || 'tech'],
+    wa: k.link || k.wa || '#',
     thumbnail: k.thumbnail || '',
   };
 }
@@ -6539,6 +6541,12 @@ select.db-inp{cursor:pointer}
 const CACHE_KEY_EVS  = 'lp_cache_evs';
 const CACHE_KEY_KOMS = 'lp_cache_koms';
 
+// Guard flag: seed otomatis HANYA boleh berjalan SEKALI per sesi
+// Mencegah onSnapshot "empty" palsu (akibat reconnect / pending writes)
+// dari menimpa data yang sudah diisi panitia
+let _evsSeedDone  = false;
+let _komsSeedDone = false;
+
 function saveCacheEvs(data){ try{ localStorage.setItem(CACHE_KEY_EVS, JSON.stringify(data)); }catch(e){} }
 function saveCacheKoms(data){ try{ localStorage.setItem(CACHE_KEY_KOMS, JSON.stringify(data)); }catch(e){} }
 function loadCacheEvs(){ try{ const d=localStorage.getItem(CACHE_KEY_EVS); return d?JSON.parse(d):null; }catch(e){return null;} }
@@ -6575,17 +6583,23 @@ function loadEvsFromFirestore(){
 
   db.collection('lomba').orderBy('createdAt','desc').onSnapshot(snap=>{
     if(snap.empty){
-      // Firestore kosong — seed otomatis
-      const batch = db.batch();
-      EVS_SEED.forEach(e=>{
-        const ref = db.collection('lomba').doc();
-        batch.set(ref, {...e, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
-      });
-      batch.commit().catch(()=>{});
-      EVS.length = 0;
-      EVS_SEED.forEach(e => EVS.push(e));
-      saveCacheEvs([...EVS]);
+      // Firestore kosong — seed HANYA SEKALI per sesi agar tidak menimpa data panitia
+      // saat koneksi putus-nyambung (reconnect bisa menghasilkan snapshot "empty" palsu)
+      if(!_evsSeedDone){
+        _evsSeedDone = true;
+        const batch = db.batch();
+        EVS_SEED.forEach(e=>{
+          const ref = db.collection('lomba').doc();
+          batch.set(ref, {...e, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        });
+        batch.commit().catch(()=>{});
+        EVS.length = 0;
+        EVS_SEED.forEach(e => EVS.push(e));
+        saveCacheEvs([...EVS]);
+      }
+      // Jika seed sudah pernah dijalankan, abaikan snapshot kosong ini
     } else {
+      _evsSeedDone = true; // anggap sudah punya data, jangan seed lagi
       EVS.length = 0;
       snap.forEach(d => EVS.push({...d.data(), _id: d.id}));
       // Simpan ke cache setiap ada update dari Firestore
@@ -6625,16 +6639,22 @@ function loadKomsFromFirestore(){
 
   db.collection('komunitas').orderBy('createdAt','desc').onSnapshot(snap=>{
     if(snap.empty){
-      const batch = db.batch();
-      KOMS_SEED.forEach(k=>{
-        const ref = db.collection('komunitas').doc();
-        batch.set(ref, {...k, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
-      });
-      batch.commit().catch(()=>{});
-      KOMS.length = 0;
-      KOMS_SEED.forEach(k => KOMS.push(k));
-      saveCacheKoms([...KOMS]);
+      // Seed HANYA SEKALI per sesi — sama seperti lomba
+      if(!_komsSeedDone){
+        _komsSeedDone = true;
+        const batch = db.batch();
+        KOMS_SEED.forEach(k=>{
+          const ref = db.collection('komunitas').doc();
+          batch.set(ref, {...k, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        });
+        batch.commit().catch(()=>{});
+        KOMS.length = 0;
+        KOMS_SEED.forEach(k => KOMS.push(k));
+        saveCacheKoms([...KOMS]);
+      }
+      // Jika sudah pernah seed, abaikan snapshot kosong ini
     } else {
+      _komsSeedDone = true; // ada data nyata, jangan seed lagi
       KOMS.length = 0;
       snap.forEach(d => KOMS.push({...d.data(), _id: d.id}));
       saveCacheKoms([...KOMS]);
