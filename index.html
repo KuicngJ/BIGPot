@@ -6533,47 +6533,97 @@ select.db-inp{cursor:pointer}
    FIRESTORE — LOAD EVS & KOMS
    =================================================================== */
 
+/* ===================================================================
+   CACHE KEYS — localStorage untuk persist data saat offline
+   =================================================================== */
+const CACHE_KEY_EVS  = 'lp_cache_evs';
+const CACHE_KEY_KOMS = 'lp_cache_koms';
+
+function saveCacheEvs(data){ try{ localStorage.setItem(CACHE_KEY_EVS, JSON.stringify(data)); }catch(e){} }
+function saveCacheKoms(data){ try{ localStorage.setItem(CACHE_KEY_KOMS, JSON.stringify(data)); }catch(e){} }
+function loadCacheEvs(){ try{ const d=localStorage.getItem(CACHE_KEY_EVS); return d?JSON.parse(d):null; }catch(e){return null;} }
+function loadCacheKoms(){ try{ const d=localStorage.getItem(CACHE_KEY_KOMS); return d?JSON.parse(d):null; }catch(e){return null;} }
+
+/* ===================================================================
+   LOAD LOMBA — localStorage cache → Firestore realtime
+   Urutan prioritas:
+   1. Tampilkan cache localStorage dulu (instant, tidak hilang)
+   2. Firestore onSnapshot update di background (realtime)
+   3. Kalau Firestore gagal → tetap pakai cache / seed
+   =================================================================== */
 function loadEvsFromFirestore(){
-  if(!firebaseReady||!db){
-    // Fallback ke seed data
+  // LANGKAH 1: Tampilkan cache dulu (instant load, tidak hilang saat refresh)
+  const cached = loadCacheEvs();
+  if(cached && cached.length > 0){
+    EVS.length = 0;
+    cached.forEach(e => EVS.push(e));
+    renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
+  } else {
+    // Belum ada cache — pakai seed sebagai tampilan awal
     EVS.length = 0;
     EVS_SEED.forEach(e => EVS.push(e));
-    allKoms = [...KOMS];
     renderCats(); filterEvs(); updateStats();
-    renderDbLombaTable(); renderDbKomTable();
+  }
+
+  // LANGKAH 2: Sync dari Firestore di background
+  if(!firebaseReady||!db){
+    // Firebase tidak ready — simpan seed ke cache biar next load ada data
+    if(!cached || cached.length === 0) saveCacheEvs(EVS_SEED);
+    renderDbLombaTable();
     return;
   }
+
   db.collection('lomba').orderBy('createdAt','desc').onSnapshot(snap=>{
-    EVS.length = 0;
     if(snap.empty){
-      // Seed Firestore on first run
+      // Firestore kosong — seed otomatis
       const batch = db.batch();
       EVS_SEED.forEach(e=>{
         const ref = db.collection('lomba').doc();
         batch.set(ref, {...e, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
       });
       batch.commit().catch(()=>{});
+      EVS.length = 0;
       EVS_SEED.forEach(e => EVS.push(e));
+      saveCacheEvs([...EVS]);
     } else {
+      EVS.length = 0;
       snap.forEach(d => EVS.push({...d.data(), _id: d.id}));
+      // Simpan ke cache setiap ada update dari Firestore
+      saveCacheEvs([...EVS]);
     }
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
   }, ()=>{
-    EVS_SEED.forEach(e => EVS.push(e));
-    renderCats(); filterEvs(); updateStats();
+    // Firestore error — sudah tampil dari cache di atas, tidak perlu apa-apa
+    renderDbLombaTable();
   });
 }
 
+/* ===================================================================
+   LOAD KOMUNITAS — sama, localStorage cache → Firestore realtime
+   =================================================================== */
 function loadKomsFromFirestore(){
-  if(!firebaseReady||!db){
+  // LANGKAH 1: Cache dulu
+  const cached = loadCacheKoms();
+  if(cached && cached.length > 0){
+    KOMS.length = 0;
+    cached.forEach(k => KOMS.push(k));
+    allKoms = [...KOMS];
+    renderKoms(); renderDbKomTable();
+  } else {
     KOMS.length = 0;
     KOMS_SEED.forEach(k => KOMS.push(k));
     allKoms = [...KOMS];
-    renderKoms(); renderDbKomTable();
+    renderKoms();
+  }
+
+  // LANGKAH 2: Firestore background sync
+  if(!firebaseReady||!db){
+    if(!cached || cached.length === 0) saveCacheKoms(KOMS_SEED);
+    renderDbKomTable();
     return;
   }
+
   db.collection('komunitas').orderBy('createdAt','desc').onSnapshot(snap=>{
-    KOMS.length = 0;
     if(snap.empty){
       const batch = db.batch();
       KOMS_SEED.forEach(k=>{
@@ -6581,16 +6631,18 @@ function loadKomsFromFirestore(){
         batch.set(ref, {...k, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
       });
       batch.commit().catch(()=>{});
+      KOMS.length = 0;
       KOMS_SEED.forEach(k => KOMS.push(k));
+      saveCacheKoms([...KOMS]);
     } else {
+      KOMS.length = 0;
       snap.forEach(d => KOMS.push({...d.data(), _id: d.id}));
+      saveCacheKoms([...KOMS]);
     }
     allKoms = [...KOMS];
     renderKoms(); renderDbKomTable();
   }, ()=>{
-    KOMS_SEED.forEach(k => KOMS.push(k));
-    allKoms = [...KOMS];
-    renderKoms();
+    renderDbKomTable();
   });
 }
 
@@ -6718,6 +6770,7 @@ async function saveLomba(){
     } else {
       EVS.unshift(data);
     }
+    saveCacheEvs([...EVS]);
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
     toast('Lomba ditambahkan (mode lokal)!','ti-check');
   }
@@ -6746,6 +6799,7 @@ async function deleteLomba(idx){
     catch(er){ toast('Gagal hapus: '+er.message,'ti-alert-circle'); }
   } else {
     EVS.splice(idx,1);
+    saveCacheEvs([...EVS]);
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
     toast('Lomba dihapus!','ti-trash');
   }
@@ -6782,6 +6836,7 @@ async function saveKom(){
     } else {
       KOMS.unshift(data);
     }
+    saveCacheKoms([...KOMS]);
     allKoms = [...KOMS]; renderKoms(); renderDbKomTable();
     toast('Komunitas ditambahkan (mode lokal)!','ti-check');
   }
@@ -6809,6 +6864,7 @@ async function deleteKom(idx){
     catch(er){ toast('Gagal hapus: '+er.message,'ti-alert-circle'); }
   } else {
     KOMS.splice(idx,1);
+    saveCacheKoms([...KOMS]);
     allKoms = [...KOMS]; renderKoms(); renderDbKomTable();
     toast('Komunitas dihapus!','ti-trash');
   }
