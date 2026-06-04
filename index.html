@@ -6599,18 +6599,21 @@ function loadEvsFromFirestore(){
       }
       // Jika seed sudah pernah dijalankan, abaikan snapshot kosong ini
     } else {
-      _evsSeedDone = true; // anggap sudah punya data, jangan seed lagi
+      _evsSeedDone = true;
       const docs = [];
       snap.forEach(d => docs.push({...d.data(), _id: d.id}));
-      // Sort client-side descending by createdAt (aman walau ada dokumen tanpa field ini)
+      // Sort descending by createdAt
       docs.sort((a,b)=>{
         const ta = a.createdAt?.seconds ?? a.createdAt?.toMillis?.() ?? 0;
         const tb = b.createdAt?.seconds ?? b.createdAt?.toMillis?.() ?? 0;
         return tb - ta;
       });
+      // Merge: lomba Firestore (panitia) di atas + seed HTML yang belum ada di Firestore
+      const firestoreNames = new Set(docs.map(d=>(d.nama||d.title||'').toLowerCase().trim()));
+      const seedExtras = EVS_SEED.filter(s => !firestoreNames.has((s.nama||'').toLowerCase().trim()));
       EVS.length = 0;
       docs.forEach(d => EVS.push(d));
-      // Simpan ke cache setiap ada update dari Firestore
+      seedExtras.forEach(s => EVS.push(s));
       saveCacheEvs([...EVS]);
     }
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
