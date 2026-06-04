@@ -1750,16 +1750,6 @@ body::before{
         <div class="pr-row-text"><div class="pr-row-label">Tes Bakat</div><div class="pr-row-sub">Ulangi atau lihat hasilmu</div></div>
         <i class="ti ti-chevron-right chevron"></i>
       </div>
-      <div class="pr-row" onclick="toggleDark()">
-        <div class="pr-row-ic" style="background:var(--surf3)"><i class="ti ti-moon" id="pr-dark-ic"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Tema Gelap</div><div class="pr-row-sub" id="pr-dark-sub">Aktifkan dark mode</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-      <div class="pr-row" onclick="toast('Notifikasi akan segera hadir!')">
-        <div class="pr-row-ic" style="background:var(--green-l);color:var(--green)"><i class="ti ti-bell"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Notifikasi</div><div class="pr-row-sub">Atur preferensi notifikasimu</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
       <!-- Dashboard Siswa (always visible when logged in) -->
       <div class="pr-row" id="pr-row-siswa" onclick="go('dashboard-siswa');setNav('profil')" style="display:none">
         <div class="pr-row-ic" style="background:#E5F7F2;color:#006B4C"><i class="ti ti-school"></i></div>
@@ -1770,6 +1760,16 @@ body::before{
       <div class="pr-row" id="pr-row-panitia" onclick="go('dashboard-panitia');setNav('profil')" style="display:none">
         <div class="pr-row-ic" style="background:var(--purple-l);color:var(--purple)"><i class="ti ti-clipboard-list"></i></div>
         <div class="pr-row-text"><div class="pr-row-label">Dashboard Panitia</div><div class="pr-row-sub">Kelola lomba & komunitas</div></div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="toggleDark()">
+        <div class="pr-row-ic" style="background:var(--surf3)"><i class="ti ti-moon" id="pr-dark-ic"></i></div>
+        <div class="pr-row-text"><div class="pr-row-label">Tema Gelap</div><div class="pr-row-sub" id="pr-dark-sub">Aktifkan dark mode</div></div>
+        <i class="ti ti-chevron-right chevron"></i>
+      </div>
+      <div class="pr-row" onclick="toast('Notifikasi akan segera hadir!')">
+        <div class="pr-row-ic" style="background:var(--green-l);color:var(--green)"><i class="ti ti-bell"></i></div>
+        <div class="pr-row-text"><div class="pr-row-label">Notifikasi</div><div class="pr-row-sub">Atur preferensi notifikasimu</div></div>
         <i class="ti ti-chevron-right chevron"></i>
       </div>
     </div>
