@@ -6581,7 +6581,7 @@ function loadEvsFromFirestore(){
     return;
   }
 
-  db.collection('lomba').orderBy('createdAt','desc').onSnapshot(snap=>{
+  db.collection('lomba').onSnapshot(snap=>{
     if(snap.empty){
       // Firestore kosong — seed HANYA SEKALI per sesi agar tidak menimpa data panitia
       // saat koneksi putus-nyambung (reconnect bisa menghasilkan snapshot "empty" palsu)
@@ -6600,14 +6600,23 @@ function loadEvsFromFirestore(){
       // Jika seed sudah pernah dijalankan, abaikan snapshot kosong ini
     } else {
       _evsSeedDone = true; // anggap sudah punya data, jangan seed lagi
+      const docs = [];
+      snap.forEach(d => docs.push({...d.data(), _id: d.id}));
+      // Sort client-side descending by createdAt (aman walau ada dokumen tanpa field ini)
+      docs.sort((a,b)=>{
+        const ta = a.createdAt?.seconds ?? a.createdAt?.toMillis?.() ?? 0;
+        const tb = b.createdAt?.seconds ?? b.createdAt?.toMillis?.() ?? 0;
+        return tb - ta;
+      });
       EVS.length = 0;
-      snap.forEach(d => EVS.push({...d.data(), _id: d.id}));
+      docs.forEach(d => EVS.push(d));
       // Simpan ke cache setiap ada update dari Firestore
       saveCacheEvs([...EVS]);
     }
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
-  }, ()=>{
-    // Firestore error — sudah tampil dari cache di atas, tidak perlu apa-apa
+  }, (err)=>{
+    // Firestore error — sudah tampil dari cache di atas
+    console.warn('Firestore lomba error:', err.message);
     renderDbLombaTable();
   });
 }
@@ -6637,7 +6646,7 @@ function loadKomsFromFirestore(){
     return;
   }
 
-  db.collection('komunitas').orderBy('createdAt','desc').onSnapshot(snap=>{
+  db.collection('komunitas').onSnapshot(snap=>{
     if(snap.empty){
       // Seed HANYA SEKALI per sesi — sama seperti lomba
       if(!_komsSeedDone){
@@ -6652,16 +6661,23 @@ function loadKomsFromFirestore(){
         KOMS_SEED.forEach(k => KOMS.push(k));
         saveCacheKoms([...KOMS]);
       }
-      // Jika sudah pernah seed, abaikan snapshot kosong ini
     } else {
-      _komsSeedDone = true; // ada data nyata, jangan seed lagi
+      _komsSeedDone = true;
+      const docs = [];
+      snap.forEach(d => docs.push({...d.data(), _id: d.id}));
+      docs.sort((a,b)=>{
+        const ta = a.createdAt?.seconds ?? a.createdAt?.toMillis?.() ?? 0;
+        const tb = b.createdAt?.seconds ?? b.createdAt?.toMillis?.() ?? 0;
+        return tb - ta;
+      });
       KOMS.length = 0;
-      snap.forEach(d => KOMS.push({...d.data(), _id: d.id}));
+      docs.forEach(d => KOMS.push(d));
       saveCacheKoms([...KOMS]);
     }
     allKoms = [...KOMS];
     renderKoms(); renderDbKomTable();
-  }, ()=>{
+  }, (err)=>{
+    console.warn('Firestore komunitas error:', err.message);
     renderDbKomTable();
   });
 }
