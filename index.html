@@ -6248,6 +6248,246 @@ select.db-inp{cursor:pointer}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 </style>
 
+<style>
+/* ================================================================
+   MOBILE LAYOUT — ≤480px
+   Tampilan khusus mobile dengan layout yang dioptimasi untuk layar kecil
+   ================================================================ */
+@media(max-width:480px){
+
+  /* ── BASE ── */
+  body{font-size:14px}
+
+  /* ── NAV ── */
+  nav{
+    height:54px;
+    padding:0 14px;
+  }
+  .brand{font-size:16px;gap:6px}
+  .brand-mark{width:28px;height:28px;border-radius:8px}
+  /* Sembunyikan semua tombol nav kecuali dark toggle */
+  .nav-r .btn-ghost,
+  .nav-r .btn-primary{display:none!important}
+  .dark-toggle{width:32px;height:32px}
+  /* User bar: ringkas di mobile */
+  .user-bar-lp{gap:6px}
+  .user-nm{display:none}
+  .user-role-chip{display:none}
+  .btn-logout-sm{padding:5px 10px;font-size:11px}
+  .user-av{width:30px;height:30px;font-size:12px}
+
+  /* ── HERO ── */
+  .hero{padding:24px 14px 20px}
+  .hero h1{font-size:28px;letter-spacing:-1px}
+  .hero h1 .outline{-webkit-text-stroke:1.5px var(--orange)}
+  .hero-tag{font-size:11.5px;padding:5px 12px;margin-bottom:16px}
+  .hook-banner{padding:16px 16px;margin-bottom:20px;border-radius:14px}
+  .hook-quote{font-size:14.5px}
+  .hook-sub{font-size:12px}
+  .hook-icon{width:30px;height:30px;border-radius:8px;margin-bottom:10px}
+  .cta-main{padding:13px 22px;font-size:14px;width:100%;justify-content:center}
+  .cta-trust{font-size:11.5px;justify-content:center}
+  .hero-cta-wrap{margin-bottom:28px}
+
+  /* ── STATS ── */
+  .stats{grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:28px}
+  .scard{padding:14px 12px;border-radius:12px}
+  .scard-n{font-size:20px}
+  .scard-l{font-size:11px}
+  .scard-bar{width:20px;height:3px;margin-bottom:8px}
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd{margin-bottom:14px}
+  .sec-hd h2{font-size:18px}
+  .sec-hd p{font-size:12.5px}
+
+  /* ── JOURNEY STRIP ── */
+  .journey-strip{
+    grid-template-columns:1fr 1fr;
+    margin-bottom:28px;
+    border-radius:14px;
+  }
+  .jstep{padding:14px 12px}
+  .jstep-num{font-size:9px}
+  .jstep-icon{font-size:17px;margin-bottom:4px}
+  .jstep-title{font-size:12.5px}
+  .jstep-sub{font-size:10.5px}
+  .jstep:nth-child(2){border-right:none}
+  .jstep:nth-child(3){border-right:1px solid var(--surf3);border-top:1px solid var(--surf3)}
+  .jstep:nth-child(4){border-top:1px solid var(--surf3)}
+
+  /* ── CATEGORY CHIPS ── */
+  .cats{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:28px}
+  .ccat{padding:14px 12px 12px;border-radius:12px}
+  .ccat-ic{width:34px;height:34px;border-radius:9px;margin-bottom:8px;font-size:16px}
+  .ccat-name{font-size:11.5px}
+  .ccat-ct{font-size:10.5px}
+
+  /* ── EVENT CARDS ── */
+  .evts{grid-template-columns:1fr;gap:10px;margin-bottom:28px}
+  .ecard-top{height:88px}
+  .ecard-body{padding:12px 14px 14px}
+  .ecard-title{font-size:13.5px}
+
+  /* ── SEARCH ── */
+  .search-wrap{margin-bottom:16px}
+  .search-inp{padding:11px 16px 11px 42px;font-size:13.5px;border-radius:50px}
+
+  /* ── RESULT PAGE ── */
+  .rwrap{padding:16px 14px 80px}
+  .rgrid{grid-template-columns:1fr;gap:10px;margin-bottom:12px}
+  .rcard{padding:14px 16px;border-radius:14px}
+  .rcta{flex-direction:column;align-items:flex-start;padding:18px 16px;border-radius:14px;gap:12px}
+  .rcta h3{font-size:15px}
+  .btn-w{width:100%;justify-content:center}
+  .r-motive-text{font-size:14.5px}
+  .r-7day{padding:18px 16px;border-radius:14px}
+  .r-7day-hd{font-size:15px}
+  .day-badge{min-width:44px;height:20px;font-size:9px}
+  .day-title{font-size:12.5px}
+  .day-desc{font-size:11px}
+
+  /* ── TOKOH CARDS ── */
+  .tokoh-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .tokoh-card{padding:14px 12px;border-radius:12px}
+  .tokoh-avatar{width:44px;height:44px;font-size:16px;margin-bottom:8px}
+  .tokoh-name{font-size:12.5px}
+  .tokoh-desc{font-size:10.5px}
+
+  /* ── QUIZ ── */
+  .qwrap{padding:16px 12px 90px}
+  .q-text{font-size:15px}
+  .q-hint{font-size:12px}
+  .q-opt{padding:13px 14px;font-size:13.5px;border-radius:14px}
+  .q-bot-bubble{padding:12px 14px;border-radius:4px 16px 16px 16px}
+
+  /* ── KOMUNITAS ── */
+  .kwrap{padding:16px 14px 80px}
+  .kgrid{grid-template-columns:1fr;gap:10px}
+  .kcard{border-radius:14px}
+  .kban{min-height:60px}
+  .kbody{padding:12px 14px}
+  .kname{font-size:14px}
+  .kdesc{font-size:12px}
+  .wa-channel-banner{flex-direction:column;padding:16px;border-radius:14px;gap:12px}
+  .wa-banner-text h3{font-size:15px}
+  .wa-banner-text p{font-size:12px}
+  .btn-wa-join{width:100%;justify-content:center}
+
+  /* ── BOOKMARK ── */
+  .bkwrap{padding:16px 14px 80px}
+  .bk-tabs{gap:8px;flex-wrap:wrap}
+  .bk-tab{padding:8px 16px;font-size:12.5px}
+  .bk-grid{grid-template-columns:1fr;gap:10px}
+
+  /* ── PROFIL ── */
+  .prwrap{padding:24px 14px 80px}
+  .pr-hero{padding:24px 18px;border-radius:18px}
+  .pr-av{width:60px;height:60px;font-size:20px;margin-bottom:10px}
+  .pr-name{font-size:18px}
+  .pr-list{border-radius:14px}
+  .pr-row{padding:13px 14px;gap:12px}
+  .pr-row-ic{width:32px;height:32px;border-radius:9px;font-size:15px}
+  .pr-row-label{font-size:13px}
+  .pr-row-sub{font-size:11px}
+
+  /* ── LOGIN / REGISTER ── */
+  .lwrap{padding:24px 14px 80px}
+  .lcard{padding:24px 16px;border-radius:20px}
+  .lhead h2{font-size:19px}
+  .lhead p{font-size:13px}
+  .google-btn{padding:12px;font-size:13px}
+  .btn-full{padding:13px;font-size:14px}
+  .otp-inp{width:38px;height:44px;font-size:18px}
+
+  /* ── CAREER EXPLORER ── */
+  .cewrap{padding:16px 14px 80px}
+  .ce-hero{padding:22px 16px;border-radius:16px}
+  .ce-hero h1{font-size:22px}
+  .ce-hero p{font-size:12.5px}
+  .ce-grid{grid-template-columns:1fr;gap:10px}
+  .cecard-body{padding:14px 14px}
+
+  /* ── DASHBOARD PANITIA & SISWA ── */
+  .dboard-wrap{padding:16px 14px 80px}
+  .dboard-hero{padding:20px 16px;border-radius:16px;margin-bottom:16px}
+  .dboard-hero h2{font-size:18px}
+  .dboard-hero p{font-size:12.5px}
+  .dboard-hero-badge{font-size:10.5px;padding:4px 12px}
+  .db-section{border-radius:14px;margin-bottom:14px}
+  .db-sec-hd{padding:13px 14px;flex-wrap:wrap;gap:8px}
+  .db-sec-title{font-size:14px}
+  .db-sec-body{padding:14px}
+  .db-form-row{grid-template-columns:1fr}
+  .db-inp{padding:9px 12px;font-size:13px;border-radius:8px}
+  .db-table{font-size:12.5px}
+  .db-table th{padding:0 8px 8px;font-size:10px}
+  .db-table td{padding:8px}
+  .db-tbl-actions{flex-direction:column;gap:4px}
+  .btn-edit,.btn-del{padding:5px 10px;font-size:11px}
+  /* Stats siswa */
+  .stu-stat-grid{grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+  .stu-stat{padding:12px 8px;border-radius:12px}
+  .stu-stat-num{font-size:22px}
+  .stu-stat-lbl{font-size:10px}
+
+  /* ── GALAXY PAGE ── */
+  .galaxy-space-header{padding:14px 14px 0}
+  .galaxy-space-header h2{font-size:18px}
+  .galaxy-space-header p{font-size:12px}
+  .galaxy-badge{font-size:10px;padding:4px 10px}
+  .galaxy-below{padding:16px 14px}
+  .galaxy-insight{padding:16px;border-radius:14px;margin-bottom:14px}
+  .galaxy-insight-hd{font-size:14px}
+  .galaxy-insight-text{font-size:13px}
+
+  /* ── BOTTOM NAV ── */
+  .bnav{
+    padding:4px 0 env(safe-area-inset-bottom, 8px);
+    border-radius:0;
+  }
+  .bi{padding:2px 6px;min-width:38px}
+  .bi-ic{font-size:17px}
+  .bi-lbl{font-size:8.5px}
+
+  /* ── TOAST ── */
+  .toast{
+    font-size:12.5px;
+    padding:9px 16px;
+    max-width:calc(100vw - 28px);
+    white-space:normal;
+    text-align:center;
+    bottom:80px;
+  }
+
+  /* ── MODAL ── */
+  .modal-sheet{border-radius:20px 20px 0 0}
+  .modal-title{font-size:18px}
+  .modal-desc{font-size:13.5px}
+  .modal-actions{padding:0 16px;flex-direction:column;gap:8px}
+  .btn-modal-link,.btn-modal-wa{width:100%;justify-content:center}
+
+  /* ── PLANET PANEL ── */
+  .planet-panel{border-radius:20px 20px 0 0}
+  .pp-hero{padding:20px 16px}
+  .pp-body{padding:0 16px 100px}
+  .pp-name{font-size:18px}
+
+  /* ── FOOTER ── */
+  #site-footer > div:first-child{
+    grid-template-columns:1fr!important;
+    gap:28px!important;
+    padding:32px 16px 28px!important;
+  }
+  #site-footer > div:last-child{
+    flex-direction:column!important;
+    align-items:flex-start!important;
+    padding:14px 16px!important;
+    gap:8px!important;
+  }
+}
+</style>
+
 <script>
 /* ===================================================================
    FIRESTORE — LOAD EVS & KOMS
