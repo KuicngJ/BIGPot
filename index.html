@@ -2348,6 +2348,12 @@ function go(id){
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
   if(id==='career'){renderCareers()}
+  // Sembunyikan footer di halaman dashboard agar tidak muncul di atas konten
+  const footer=document.getElementById('site-footer');
+  if(footer){
+    const noFooter=['dashboard-siswa','dashboard-panitia'];
+    footer.style.display = noFooter.includes(id) ? 'none' : '';
+  }
 }
 
 function setNav(k){
