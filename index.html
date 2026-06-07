@@ -3032,22 +3032,10 @@ function onUserLoggedIn(user){
       if(doc.exists && doc.data().galaxyScores){
         galaxyScores = doc.data().galaxyScores;
         updateQuizCTA();
-        // Render konten result tanpa memanggil go() agar tidak loop
-        // _showResultBase() sudah include go('result') di dalamnya,
-        // jadi kita render isinya saja via rwrap langsung
+        // Kalau sedang di halaman result, render ulang dengan data dari Firebase
         const rwrap = document.getElementById('rwrap');
-        if(rwrap && typeof _showResultBase === 'function'){
-          // Simpan page aktif saat ini
-          const wasOnResult = document.getElementById('pg-result') && 
-            document.getElementById('pg-result').classList.contains('on');
-          if(wasOnResult){
-            // Sudah di halaman result, render ulang kontennya saja
-            const sc = galaxyScores;
-            // Panggil showResult tapi skip go() dengan flag
-            window._skipGoResult = true;
-            _showResultBase();
-            window._skipGoResult = false;
-          }
+        if(rwrap && rwrap.innerHTML.trim() === ''){
+          setTimeout(()=>_showResultBase(), 0);
         }
       }
     }).catch(()=>{});
@@ -4057,18 +4045,23 @@ function animateHiddenPotBars(){
    PATCH showResult — append new sections modularly
    =================================================================== */
 function _showResultBase(){
-  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
-  const mp=[
-    ['tech','seni','tulis','sport'],
-    ['seni','seni','tech','tulis'],
-    ['tech','musik','sains','tulis'],
-    ['tech','seni','sport','tulis'],
-    ['tech','foto','sains','sport'],
-    ['tech','sport','seni','sains'],
-  ];
-  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
-  const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]);
-  const top=sorted[0][0];
+  // Kalau galaxyScores sudah ada (dari Firebase/quiz sebelumnya), pakai itu langsung
+  let top;
+  if(galaxyScores && Object.keys(galaxyScores).length > 0){
+    top = Object.entries(galaxyScores).sort((a,b)=>b[1]-a[1])[0][0];
+  } else {
+    const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
+    const mp=[
+      ['tech','seni','tulis','sport'],
+      ['seni','seni','tech','tulis'],
+      ['tech','musik','sains','tulis'],
+      ['tech','seni','sport','tulis'],
+      ['tech','foto','sains','sport'],
+      ['tech','sport','seni','sains'],
+    ];
+    ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
+    top = Object.entries(sc).sort((a,b)=>b[1]-a[1])[0][0];
+  }
   const r=RES[top]||RES['tech'];
   const rWrap=document.getElementById('rwrap');
   if(!rWrap)return;
@@ -4241,7 +4234,9 @@ function _showResultBase(){
       <i class="ti ti-chevron-right go-galaxy-arr"></i>
     </button>`;
 
-  if(!window._skipGoResult){ go('result'); setNav('cari'); launchConfetti(); }
+  go('result');
+  setNav('cari');
+  launchConfetti();
 
   // Animate hidden potential bars after render
   setTimeout(animateHiddenPotBars, 300);
@@ -7070,6 +7065,12 @@ function addGoHook(fn){ _preGoHooks.push(fn); }
 addGoHook(function(page){
   if(page === 'dashboard-panitia') checkPanitiaAccess();
   if(page === 'dashboard-siswa') renderStudentDashboard();
+  if(page === 'result' && galaxyScores){
+    const rwrap = document.getElementById('rwrap');
+    if(rwrap && rwrap.innerHTML.trim() === ''){
+      setTimeout(()=>_showResultBase(), 0);
+    }
+  }
 });
 </script>
 
