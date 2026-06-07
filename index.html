@@ -3143,6 +3143,7 @@ function authSelectRole(role){
   }
 
   document.getElementById('role-overlay').classList.remove('open');
+  go('home'); setNav('home');
   const chip=document.getElementById('user-role-chip-lp');
   if(chip){
     if(role==='panitia'){chip.textContent='📋 Panitia';chip.className='user-role-chip urc-panitia';}
@@ -5986,16 +5987,12 @@ const FOOTER_KONTAK = [
 
   const navHTML = navLinks.map(n=>`
     <a onclick="${n.page==='lomba-scroll' ? "go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)" : `go('${n.page}');setNav('${n.page}')`}" style="${linkStyle}" ${hov}>${n.label}</a>`).join('');
-
-  const timHTML = FOOTER_TIM.map(t=>`
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="width:36px;height:36px;border-radius:50%;background:${t.warna};display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.3)">${t.nama[0].toUpperCase()}</div>
-      <div>
-        <div style="font-size:13.5px;font-weight:700;color:#F0F2FA">${t.nama}</div>
-        <div style="font-size:11px;color:#636A84">${t.peran}</div>
-      </div>
+const timHTML = FOOTER_TIM.map(t=>`
+    <div style="display:flex;align-items:center;gap:8px;opacity:.5;transition:opacity .2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.5'">
+      <div style="width:24px;height:24px;border-radius:50%;background:${t.warna};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${t.nama[0].toUpperCase()}</div>
+      <div style="font-size:11.5px;color:#636A84">${t.nama} · ${t.peran}</div>
     </div>`).join('');
-
+   
   const kontakHTML = FOOTER_KONTAK.map(k=>`
     <a href="${k.url}" style="font-size:13px;color:#A8B0C8;display:flex;align-items:center;gap:7px;text-decoration:none;transition:color .15s" ${hov}>
       <i class="ti ${k.icon}" style="font-size:14px;color:#636A84"></i>${k.label}
