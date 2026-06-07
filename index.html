@@ -1389,6 +1389,15 @@ body::before{
 </style>
 </head>
 <body>
+<script>
+// Fallback paling awal sebelum apapun — kalau DOMContentLoaded pun lambat
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var sp=document.getElementById('splash');
+    if(sp) sp.classList.add('hide');
+  }, 4000);
+});
+</script>
 
 <!-- Splash -->
 <div id="splash">
@@ -5873,6 +5882,13 @@ function initSparkles(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
+  // Safety net paling awal: splash PASTI hilang max 6 detik
+  // Independent dari Firebase, jadi kalau SDK gagal load pun tetap jalan
+  setTimeout(function(){
+    var sp=document.getElementById('splash');
+    if(sp) sp.classList.add('hide');
+  }, 6000);
+
   loadDarkPref();
   loadBookmarks();
   initFirebase();
