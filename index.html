@@ -4907,7 +4907,7 @@ function initGalaxyCanvas(scores){
       if(p.isDominant||isHover){
         ctx2.shadowBlur=12;ctx2.shadowColor=p.color;
       }
-      ctx2.fillStyle=`rgba(255,255,255,${isHover?1:p.isDominant?.95:.75})`;
+      ctx2.fillStyle=`rgba(255,255,255,${isHover?1:(p.isDominant?0.95:0.75)})`;
       ctx2.textAlign='center';ctx2.fillText(p.label,px,lY);
       ctx2.font=`700 11px 'DM Sans',sans-serif`;
       ctx2.fillStyle=isHover||p.isDominant?p.color:'rgba(255,255,255,.45)';
