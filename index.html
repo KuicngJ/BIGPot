@@ -3075,6 +3075,7 @@ async function authLoginGoogle(){
     const provider=new firebase.auth.GoogleAuthProvider();
     await auth.signInWithPopup(provider);
     closeAuthModal();
+    go('home'); setNav('home');  // ← TAMBAH INI
     toast('Berhasil masuk dengan Google!','ti-check');
   }catch(e){ toast('Gagal login Google: '+e.message,'ti-alert-circle'); }
 }
