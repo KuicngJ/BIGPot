@@ -2007,6 +2007,7 @@ function initFirebase() {
       clearTimeout(authTimeout); // cancel fallback kalau sudah fire normal
       u ? onUserLoggedIn(u) : onUserLoggedOut();
     });
+     updateUserCount();
   } catch(e) { firebaseReady = false; checkAuthState(); }
 }
 
@@ -3307,7 +3308,16 @@ function updateStats(){
   if(sl)sl.textContent=EVS.length;
   if(sk)sk.textContent=KOMS.length;
 }
-
+function updateUserCount(){
+  if(!firebaseReady||!db) return;
+  db.collection('users').get().then(snap=>{
+    const count = snap.size;
+    const el = document.getElementById('stat-siswa');
+    if(el) el.textContent = count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count;
+    const tag = document.querySelector('.hero-tag');
+    if(tag) tag.innerHTML = `<span class="live-dot"></span>${count.toLocaleString('id-ID')}+ siswa sudah bergabung`;
+  }).catch(()=>{});
+}
 /* ===================================================================
    MODULE 1 — CAREER EXPLORER DATA
    =================================================================== */
