@@ -4039,9 +4039,7 @@ function animateHiddenPotBars(){
 /* ===================================================================
    PATCH showResult — append new sections modularly
    =================================================================== */
-const _origShowResult = showResult;
-// Override showResult to inject new sections
-function showResult(){
+function _showResultBase(){
   const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
   const mp=[
     ['tech','seni','tulis','sport'],
@@ -5455,30 +5453,7 @@ window._goGalaxyPatch = function(page){
   }
 };
 
-/* ===================================================================
-   PATCH: showResult() to also store scores for galaxy
-   =================================================================== */
-const __origShowResult = showResult;
-window._showResultGalaxyPatch = function(){
-  const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
-  const mp=[
-    ['tech','seni','tulis','sport'],
-    ['seni','seni','tech','tulis'],
-    ['tech','musik','sains','tulis'],
-    ['tech','seni','sport','tulis'],
-    ['tech','foto','sains','sport'],
-    ['tech','sport','seni','sains'],
-  ];
-  ans.forEach((a,i)=>{if(mp[i]&&mp[i][a])sc[mp[i][a]]+=2;});
-  const maxRaw = Math.max(...Object.values(sc));
-  const pctScores = {};
-  Object.keys(sc).forEach(k => {
-    pctScores[k] = maxRaw > 0 ? Math.round((sc[k]/maxRaw)*100) : 10;
-    if(pctScores[k] < 10) pctScores[k] = 10;
-  });
-  galaxyScores = pctScores;
-  __origShowResult();
-};
+
 
 /* ===================================================================
    ANIMATED BACKGROUND — EPIC FILLED SHAPES + GALAXY STARFIELD
@@ -5914,7 +5889,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   };
 
-  const _showOriginal = showResult;
   window.showResult = function(){
     const sc={tech:0,seni:0,sains:0,tulis:0,musik:0,sport:0,robot:0,foto:0};
     const mp=[
@@ -5939,7 +5913,7 @@ document.addEventListener('DOMContentLoaded',function(){
         quizDoneAt: firebase.firestore.FieldValue.serverTimestamp(),
       }, { merge: true }).catch(()=>{});
     }
-    _showOriginal();
+    _showResultBase();
     updateQuizCTA();
   };
 });
