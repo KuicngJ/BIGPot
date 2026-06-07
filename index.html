@@ -2708,8 +2708,16 @@ function toggleBmLomba(id,btn){
 }
 
 function saveBookmarks(){
+  // Tetap simpan ke localStorage (untuk offline/cepat)
   try{localStorage.setItem('lp_bm_k',JSON.stringify([...bookmarks.komunitas]));
       localStorage.setItem('lp_bm_l',JSON.stringify([...bookmarks.lomba]));}catch(e){}
+  // Simpan ke Firestore kalau user sudah login
+  if(firebaseReady && db && currentUser && currentUser.uid){
+    db.collection('users').doc(currentUser.uid).set({
+      bookmarks_lomba: [...bookmarks.lomba],
+      bookmarks_komunitas: [...bookmarks.komunitas],
+    }, { merge: true }).catch(()=>{});
+  }
 }
 function loadBookmarks(){
   try{
@@ -2718,6 +2726,20 @@ function loadBookmarks(){
     bookmarks.komunitas=new Set(k);
     bookmarks.lomba=new Set(l);
   }catch(e){}
+   if(firebaseReady && db && currentUser && currentUser.uid){
+    db.collection('users').doc(currentUser.uid).get().then(doc=>{
+      if(doc.exists){
+        const d = doc.data();
+        if(d.bookmarks_lomba) bookmarks.lomba = new Set(d.bookmarks_lomba);
+        if(d.bookmarks_komunitas) bookmarks.komunitas = new Set(d.bookmarks_komunitas);
+        try{
+          localStorage.setItem('lp_bm_l', JSON.stringify([...bookmarks.lomba]));
+          localStorage.setItem('lp_bm_k', JSON.stringify([...bookmarks.komunitas]));
+        }catch(e){}
+        renderStudentDashboard();
+      }
+    }).catch(()=>{});
+  }
 }
 
 function switchBkTab(tab){
@@ -5873,6 +5895,12 @@ document.addEventListener('DOMContentLoaded',function(){
       if(pctScores[k] < 10) pctScores[k] = 10;
     });
     galaxyScores = pctScores;
+     if(firebaseReady && db && currentUser && currentUser.uid){
+      db.collection('users').doc(currentUser.uid).set({
+        galaxyScores: pctScores,
+        quizDoneAt: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true }).catch(()=>{});
+    }
     _showOriginal();
     updateQuizCTA();
   };
