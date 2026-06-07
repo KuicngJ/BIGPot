@@ -1686,9 +1686,6 @@ window.addEventListener('load', function(){
         <button class="landing-cta-primary" id="btn-landing-daftar">
           <i class="ti ti-user-plus"></i>Daftar Gratis Sekarang
         </button>
-        <button class="landing-cta-sec" id="btn-landing-lihat">
-          <i class="ti ti-eye"></i>Jelajahi Dulu
-        </button>
       </div>
       <div class="landing-trust">
         <i class="ti ti-shield-check"></i>Gratis selamanya · Tanpa kartu kredit · Data aman
@@ -1781,9 +1778,6 @@ window.addEventListener('load', function(){
       <div class="landing-cta-row" style="margin-bottom:0">
         <button class="landing-cta-primary" id="btn-landing-daftar2">
           <i class="ti ti-user-plus"></i>Daftar Gratis — Cuma 10 Detik
-        </button>
-        <button class="landing-cta-sec" id="btn-landing-quiz2">
-          <i class="ti ti-brain"></i>Coba Tes Bakat Dulu
         </button>
       </div>
     </div>
@@ -1886,6 +1880,7 @@ window.addEventListener('load', function(){
 
 <!-- ===================== PAGE: QUIZ ===================== -->
 <div id="pg-quiz" class="page">
+  <button onclick="go('home');setNav('home')" style="position:fixed;top:72px;left:16px;z-index:100;background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow-sm);transition:all .2s ease" onmouseover="this.style.borderColor='var(--ink3)'" onmouseout="this.style.borderColor='var(--surf3)'"><i class="ti ti-arrow-left" style="font-size:14px"></i>Kembali</button>
   <div class="qwrap">
     <div class="qprog-row">
       <div class="qprog"><div class="qbar" id="qbar" style="width:16%"></div></div>
@@ -1906,6 +1901,7 @@ window.addEventListener('load', function(){
 
 <!-- ===================== PAGE: RESULT ===================== -->
 <div id="pg-result" class="page">
+  <button onclick="go('home');setNav('home')" style="position:sticky;top:72px;left:16px;z-index:100;margin:16px 0 0 16px;background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:var(--shadow-sm)" onmouseover="this.style.borderColor='var(--ink3)'" onmouseout="this.style.borderColor='var(--surf3)'"><i class="ti ti-arrow-left" style="font-size:14px"></i>Kembali ke Home</button>
   <div class="rwrap" id="rwrap"></div>
 </div>
 
@@ -2654,9 +2650,9 @@ function go(id){
     const noFooter=['dashboard-siswa','dashboard-panitia'];
     footer.style.display = noFooter.includes(id) ? 'none' : '';
   }
-  // Sembunyikan bottom nav di landing page, tampilkan di halaman lain
+  // Sembunyikan bottom nav di landing page dan saat quiz/result, tampilkan di halaman lain
   var bnav=document.querySelector('.bnav');
-  if(bnav) bnav.style.display = (id==='landing') ? 'none' : '';
+  if(bnav) bnav.style.display = (id==='landing'||id==='quiz'||id==='result') ? 'none' : '';
 }
 
 function setNav(k){
@@ -3383,15 +3379,12 @@ function doLogout(){
   if(firebaseReady&&auth){auth.signOut();}
   try{localStorage.removeItem('lp_demo_user');localStorage.removeItem('role_demo');}catch(e){}
   onUserLoggedOut();
-  go('home');setNav('home');
   toast('Kamu berhasil keluar','ti-logout');
 }
 
 // ---- Modal auth helpers ----
 function openAuthModal(){
   document.getElementById('auth-overlay').classList.add('open');
-  document.getElementById('auth-otp-section').style.display='none';
-  document.getElementById('auth-phone-section').style.display='block';
 }
 function closeAuthModal(){
   document.getElementById('auth-overlay').classList.remove('open');
@@ -3404,15 +3397,24 @@ document.addEventListener('click', function(e){
 // ---- Google login ----
 async function authLoginGoogle(){
   if(!firebaseReady||!auth){
-    toast('Firebase belum dikonfigurasi — aktifkan dulu Firebase','ti-info-circle');
+    toast('Firebase belum dikonfigurasi','ti-info-circle');
     return;
   }
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
+    const result = await auth.signInWithPopup(provider);
     closeAuthModal();
+    // onAuthStateChanged akan handle onUserLoggedIn otomatis
+    // tapi kita panggil manual agar redirect langsung
+    if(result.user){
+      onUserLoggedIn(result.user);
+    }
     toast('Berhasil masuk dengan Google!','ti-check');
-  }catch(e){ toast('Gagal login Google: '+e.message,'ti-alert-circle'); }
+  }catch(e){
+    if(e.code !== 'auth/popup-closed-by-user'){
+      toast('Gagal login: '+e.message,'ti-alert-circle');
+    }
+  }
 }
 
 // ---- Phone OTP ----
@@ -3606,15 +3608,26 @@ function updateStats(){
   const sk=document.getElementById('stat-komunitas');
   if(sl)sl.textContent=EVS.length;
   if(sk)sk.textContent=KOMS.length;
+  // Update landing stats too
+  const ls=document.getElementById('landing-stat-lomba');
+  const lk=document.getElementById('landing-stat-kom');
+  if(ls) ls.textContent=EVS.length;
+  if(lk) lk.textContent=KOMS.length;
 }
 function updateUserCount(){
   if(!firebaseReady||!db) return;
   db.collection('users').get().then(snap=>{
     const count = snap.size;
+    // Update home page stats
     const el = document.getElementById('stat-siswa');
     if(el) el.textContent = count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count;
     const tag = document.querySelector('.hero-tag');
     if(tag) tag.innerHTML = `<span class="live-dot"></span>${count.toLocaleString('id-ID')}+ siswa sudah bergabung`;
+    // Update landing page badge + stat
+    const landingBadge = document.getElementById('landing-user-count');
+    if(landingBadge) landingBadge.textContent = (count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count) + '+';
+    const landingSiswa = document.getElementById('landing-stat-siswa');
+    if(landingSiswa) landingSiswa.textContent = count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count;
   }).catch(()=>{});
 }
 /* ===================================================================
@@ -6190,15 +6203,11 @@ document.addEventListener('DOMContentLoaded',function(){
     go(page); setNav(nav);
   }
   var btnDaftar  = document.getElementById('btn-landing-daftar');
-  var btnLihat   = document.getElementById('btn-landing-lihat');
   var btnQuiz    = document.getElementById('btn-landing-quiz');
   var btnDaftar2 = document.getElementById('btn-landing-daftar2');
-  var btnQuiz2   = document.getElementById('btn-landing-quiz2');
   if(btnDaftar)  btnDaftar.addEventListener('click', function(){ openAuthModal(); });
-  if(btnLihat)   btnLihat.addEventListener('click',  function(){ showBnavAndGo('home','home'); });
-  if(btnQuiz)    btnQuiz.addEventListener('click',   function(){ showBnavAndGo('quiz','cari'); });
+  if(btnQuiz)    btnQuiz.addEventListener('click',   function(){ openAuthModal(); });
   if(btnDaftar2) btnDaftar2.addEventListener('click',function(){ openAuthModal(); });
-  if(btnQuiz2)   btnQuiz2.addEventListener('click',  function(){ showBnavAndGo('quiz','cari'); });
 
   loadDarkPref();
   loadBookmarks();
@@ -6989,6 +6998,7 @@ function loadEvsFromFirestore(){
       saveCacheEvs([...EVS]);
     }
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
+    var _ls=document.getElementById('landing-stat-lomba'); if(_ls) _ls.textContent=EVS.length;
   }, (err)=>{
     // Firestore error — sudah tampil dari cache di atas
     console.warn('Firestore lomba error:', err.message);
@@ -7051,6 +7061,7 @@ function loadKomsFromFirestore(){
     }
     allKoms = [...KOMS];
     renderKoms(); renderDbKomTable();
+    var _lk=document.getElementById('landing-stat-kom'); if(_lk) _lk.textContent=KOMS.length;
   }, (err)=>{
     console.warn('Firestore komunitas error:', err.message);
     renderDbKomTable();
