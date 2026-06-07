@@ -1619,8 +1619,8 @@ window.addEventListener('load', function(){
       <span class="user-role-chip" id="user-role-chip-lp"></span>
       <button class="btn-logout-sm" onclick="doLogout()">Keluar</button>
     </div>
-    <!-- Login button (saat belum login) -->
-    <button class="btn-ghost" onclick="go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)">
+    <!-- Tombol lomba: hidden sebelum login, muncul setelah login -->
+    <button class="btn-ghost" id="nav-btn-lomba" onclick="go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)" style="display:none">
       <i class="ti ti-trophy" aria-hidden="true"></i><span>Lomba</span>
     </button>
     <button class="btn-ghost" id="nav-btn-login" onclick="openAuthModal()">
@@ -1685,6 +1685,9 @@ window.addEventListener('load', function(){
       <div class="landing-cta-row">
         <button class="landing-cta-primary" id="btn-landing-daftar">
           <i class="ti ti-user-plus"></i>Daftar Gratis Sekarang
+        </button>
+        <button class="landing-cta-sec" id="btn-landing-lihat">
+          <i class="ti ti-eye"></i>Jelajahi Dulu
         </button>
       </div>
       <div class="landing-trust">
@@ -1778,6 +1781,9 @@ window.addEventListener('load', function(){
       <div class="landing-cta-row" style="margin-bottom:0">
         <button class="landing-cta-primary" id="btn-landing-daftar2">
           <i class="ti ti-user-plus"></i>Daftar Gratis — Cuma 10 Detik
+        </button>
+        <button class="landing-cta-sec" id="btn-landing-quiz2">
+          <i class="ti ti-brain"></i>Coba Tes Bakat Dulu
         </button>
       </div>
     </div>
@@ -1880,7 +1886,6 @@ window.addEventListener('load', function(){
 
 <!-- ===================== PAGE: QUIZ ===================== -->
 <div id="pg-quiz" class="page">
-  <button onclick="go('home');setNav('home')" style="position:fixed;top:72px;left:16px;z-index:100;background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow-sm);transition:all .2s ease" onmouseover="this.style.borderColor='var(--ink3)'" onmouseout="this.style.borderColor='var(--surf3)'"><i class="ti ti-arrow-left" style="font-size:14px"></i>Kembali</button>
   <div class="qwrap">
     <div class="qprog-row">
       <div class="qprog"><div class="qbar" id="qbar" style="width:16%"></div></div>
@@ -1901,7 +1906,6 @@ window.addEventListener('load', function(){
 
 <!-- ===================== PAGE: RESULT ===================== -->
 <div id="pg-result" class="page">
-  <button onclick="go('home');setNav('home')" style="position:sticky;top:72px;left:16px;z-index:100;margin:16px 0 0 16px;background:var(--surf);border:1.5px solid var(--surf3);border-radius:50px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:var(--shadow-sm)" onmouseover="this.style.borderColor='var(--ink3)'" onmouseout="this.style.borderColor='var(--surf3)'"><i class="ti ti-arrow-left" style="font-size:14px"></i>Kembali ke Home</button>
   <div class="rwrap" id="rwrap"></div>
 </div>
 
@@ -2048,11 +2052,6 @@ window.addEventListener('load', function(){
       <div class="pr-row" onclick="toggleDark()">
         <div class="pr-row-ic" style="background:var(--surf3)"><i class="ti ti-moon" id="pr-dark-ic"></i></div>
         <div class="pr-row-text"><div class="pr-row-label">Tema Gelap</div><div class="pr-row-sub" id="pr-dark-sub">Aktifkan dark mode</div></div>
-        <i class="ti ti-chevron-right chevron"></i>
-      </div>
-      <div class="pr-row" onclick="toast('Notifikasi akan segera hadir!')">
-        <div class="pr-row-ic" style="background:var(--green-l);color:var(--green)"><i class="ti ti-bell"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Notifikasi</div><div class="pr-row-sub">Atur preferensi notifikasimu</div></div>
         <i class="ti ti-chevron-right chevron"></i>
       </div>
     </div>
@@ -2650,9 +2649,9 @@ function go(id){
     const noFooter=['dashboard-siswa','dashboard-panitia'];
     footer.style.display = noFooter.includes(id) ? 'none' : '';
   }
-  // Sembunyikan bottom nav di landing page dan saat quiz/result, tampilkan di halaman lain
+  // Sembunyikan bottom nav di landing page, tampilkan di halaman lain
   var bnav=document.querySelector('.bnav');
-  if(bnav) bnav.style.display = (id==='landing'||id==='quiz'||id==='result') ? 'none' : '';
+  if(bnav) bnav.style.display = (id==='landing') ? 'none' : '';
 }
 
 function setNav(k){
@@ -3229,8 +3228,10 @@ function _applyUserUI(user, role){
 
   const bar = document.getElementById('user-bar-lp');
   const loginBtn = document.getElementById('nav-btn-login');
+  const lombaBtn = document.getElementById('nav-btn-lomba');
   if(bar) bar.classList.add('visible');
   if(loginBtn) loginBtn.style.display = 'none';
+  if(lombaBtn) lombaBtn.style.display = 'flex';
 
   const av = document.getElementById('user-av-lp');
   const nm = document.getElementById('user-nm-lp');
@@ -3334,8 +3335,10 @@ function onUserLoggedOut(){
 
   const bar = document.getElementById('user-bar-lp');
   const loginBtn = document.getElementById('nav-btn-login');
+  const lombaBtn2 = document.getElementById('nav-btn-lomba');
   if(bar) bar.classList.remove('visible');
   if(loginBtn) loginBtn.style.display='flex';
+  if(lombaBtn2) lombaBtn2.style.display='none';
 
   const logoutBtn=document.getElementById('logout-btn');
   const loginCta=document.getElementById('pr-login-cta');
@@ -3379,6 +3382,7 @@ function doLogout(){
   if(firebaseReady&&auth){auth.signOut();}
   try{localStorage.removeItem('lp_demo_user');localStorage.removeItem('role_demo');}catch(e){}
   onUserLoggedOut();
+  go('home');setNav('home');
   toast('Kamu berhasil keluar','ti-logout');
 }
 
@@ -3397,24 +3401,15 @@ document.addEventListener('click', function(e){
 // ---- Google login ----
 async function authLoginGoogle(){
   if(!firebaseReady||!auth){
-    toast('Firebase belum dikonfigurasi','ti-info-circle');
+    toast('Firebase belum dikonfigurasi — aktifkan dulu Firebase','ti-info-circle');
     return;
   }
   try{
     const provider=new firebase.auth.GoogleAuthProvider();
-    const result = await auth.signInWithPopup(provider);
+    await auth.signInWithPopup(provider);
     closeAuthModal();
-    // onAuthStateChanged akan handle onUserLoggedIn otomatis
-    // tapi kita panggil manual agar redirect langsung
-    if(result.user){
-      onUserLoggedIn(result.user);
-    }
     toast('Berhasil masuk dengan Google!','ti-check');
-  }catch(e){
-    if(e.code !== 'auth/popup-closed-by-user'){
-      toast('Gagal login: '+e.message,'ti-alert-circle');
-    }
-  }
+  }catch(e){ toast('Gagal login Google: '+e.message,'ti-alert-circle'); }
 }
 
 // ---- Phone OTP ----
@@ -3608,26 +3603,15 @@ function updateStats(){
   const sk=document.getElementById('stat-komunitas');
   if(sl)sl.textContent=EVS.length;
   if(sk)sk.textContent=KOMS.length;
-  // Update landing stats too
-  const ls=document.getElementById('landing-stat-lomba');
-  const lk=document.getElementById('landing-stat-kom');
-  if(ls) ls.textContent=EVS.length;
-  if(lk) lk.textContent=KOMS.length;
 }
 function updateUserCount(){
   if(!firebaseReady||!db) return;
   db.collection('users').get().then(snap=>{
     const count = snap.size;
-    // Update home page stats
     const el = document.getElementById('stat-siswa');
     if(el) el.textContent = count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count;
     const tag = document.querySelector('.hero-tag');
     if(tag) tag.innerHTML = `<span class="live-dot"></span>${count.toLocaleString('id-ID')}+ siswa sudah bergabung`;
-    // Update landing page badge + stat
-    const landingBadge = document.getElementById('landing-user-count');
-    if(landingBadge) landingBadge.textContent = (count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count) + '+';
-    const landingSiswa = document.getElementById('landing-stat-siswa');
-    if(landingSiswa) landingSiswa.textContent = count >= 1000 ? (count/1000).toFixed(1).replace('.0','')+'K' : count;
   }).catch(()=>{});
 }
 /* ===================================================================
@@ -6203,11 +6187,15 @@ document.addEventListener('DOMContentLoaded',function(){
     go(page); setNav(nav);
   }
   var btnDaftar  = document.getElementById('btn-landing-daftar');
+  var btnLihat   = document.getElementById('btn-landing-lihat');
   var btnQuiz    = document.getElementById('btn-landing-quiz');
   var btnDaftar2 = document.getElementById('btn-landing-daftar2');
+  var btnQuiz2   = document.getElementById('btn-landing-quiz2');
   if(btnDaftar)  btnDaftar.addEventListener('click', function(){ openAuthModal(); });
-  if(btnQuiz)    btnQuiz.addEventListener('click',   function(){ openAuthModal(); });
+  if(btnLihat)   btnLihat.addEventListener('click',  function(){ showBnavAndGo('home','home'); });
+  if(btnQuiz)    btnQuiz.addEventListener('click',   function(){ showBnavAndGo('quiz','cari'); });
   if(btnDaftar2) btnDaftar2.addEventListener('click',function(){ openAuthModal(); });
+  if(btnQuiz2)   btnQuiz2.addEventListener('click',  function(){ showBnavAndGo('quiz','cari'); });
 
   loadDarkPref();
   loadBookmarks();
@@ -6293,8 +6281,6 @@ const FOOTER_SOSMED = [
    warna : warna avatar (gradient CSS)                      */
 const FOOTER_TIM = [
   { nama:'Ahza', peran:'Co-founder · Developer', warna:'linear-gradient(135deg,#1847ED,#7BA2F5)' },
-  { nama:'Wara', peran:'Co-founder · Designer',  warna:'linear-gradient(135deg,#6D28D9,#A78BFA)' },
-  // { nama:'Nama', peran:'Role', warna:'linear-gradient(135deg,#F04E23,#ff6b3d)' },
 ];
 
 /* -- Kontak --
@@ -6311,16 +6297,6 @@ const FOOTER_KONTAK = [
    RENDER FOOTER — tidak perlu diedit
    =================================================================== */
 (function renderFooter(){
-  const navLinks = [
-    { label:'Beranda',          page:'home'      },
-    { label:'Lomba & Kompetisi', page:'lomba-scroll' },
-    { label:'Komunitas',        page:'komunitas' },
-    { label:'Tes Bakat',        page:'quiz'      },
-  ];
-
-  const linkStyle = `font-size:13.5px;color:#A8B0C8;cursor:pointer;transition:color .15s ease;text-decoration:none`;
-  const hov = `onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#A8B0C8'"`;
-
   const SOSMED_META = {
     instagram: { icon:'ti-brand-instagram', color:'#E1306C' },
     tiktok:    { icon:'ti-brand-tiktok',    color:'#FF0050' },
@@ -6330,6 +6306,7 @@ const FOOTER_KONTAK = [
     youtube:   { icon:'ti-brand-youtube',   color:'#FF0000' },
     linkedin:  { icon:'ti-brand-linkedin',  color:'#0A66C2' },
   };
+  const hov = `onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#A8B0C8'"`;
 
   const sosmedHTML = FOOTER_SOSMED.map(s=>{
     const m = SOSMED_META[s.platform] || { icon:'ti-world', color:'#8891AB' };
@@ -6341,21 +6318,19 @@ const FOOTER_KONTAK = [
     </a>`;
   }).join('');
 
-  const navHTML = navLinks.map(n=>`
-    <a onclick="${n.page==='lomba-scroll' ? "go('home');setNav('home');setTimeout(()=>{document.getElementById('ev-list')?.scrollIntoView({behavior:'smooth',block:'start'})},80)" : `go('${n.page}');setNav('${n.page}')`}" style="${linkStyle}" ${hov}>${n.label}</a>`).join('');
-const timHTML = FOOTER_TIM.map(t=>`
+  const timHTML = FOOTER_TIM.map(t=>`
     <div style="display:flex;align-items:center;gap:8px;opacity:.5;transition:opacity .2s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.5'">
       <div style="width:24px;height:24px;border-radius:50%;background:${t.warna};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">${t.nama[0].toUpperCase()}</div>
       <div style="font-size:11.5px;color:#636A84">${t.nama} · ${t.peran}</div>
     </div>`).join('');
-   
+
   const kontakHTML = FOOTER_KONTAK.map(k=>`
     <a href="${k.url}" style="font-size:13px;color:#A8B0C8;display:flex;align-items:center;gap:7px;text-decoration:none;transition:color .15s" ${hov}>
       <i class="ti ${k.icon}" style="font-size:14px;color:#636A84"></i>${k.label}
     </a>`).join('');
 
   document.getElementById('site-footer').innerHTML = `
-    <div style="max-width:1100px;margin:0 auto;padding:52px 28px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px">
+    <div style="max-width:1100px;margin:0 auto;padding:52px 28px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px">
 
       <!-- Brand -->
       <div>
@@ -6367,12 +6342,6 @@ const timHTML = FOOTER_TIM.map(t=>`
         </div>
         <p style="font-size:13.5px;color:#8891AB;line-height:1.7;margin-bottom:20px">Platform bakat pelajar Indonesia.<br>Temukan, kembangkan, dan buktikan<br>potensimu bersama ribuan pelajar lain.</p>
         <div style="display:flex;gap:10px;flex-wrap:wrap">${sosmedHTML}</div>
-      </div>
-
-      <!-- Platform -->
-      <div>
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#636A84;margin-bottom:16px">Platform</div>
-        <div style="display:flex;flex-direction:column;gap:10px">${navHTML}</div>
       </div>
 
       <!-- Tim -->
@@ -6396,12 +6365,8 @@ const timHTML = FOOTER_TIM.map(t=>`
 
     <div style="border-top:1px solid #1C2130;max-width:1100px;margin:0 auto"></div>
 
-    <div style="max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div style="max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:center">
       <div style="font-size:12px;color:#3A3F55">© 2025 LostPotential · All rights reserved · Made with <span style="color:#e05">♥</span> in Indonesia</div>
-      <div style="display:flex;gap:20px">
-        <a href="#" style="font-size:12px;color:#3A3F55;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#636A84'" onmouseout="this.style.color='#3A3F55'">Kebijakan Privasi</a>
-        <a href="#" style="font-size:12px;color:#3A3F55;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#636A84'" onmouseout="this.style.color='#3A3F55'">Syarat & Ketentuan</a>
-      </div>
     </div>`;
 })();
 </script>
@@ -6998,7 +6963,6 @@ function loadEvsFromFirestore(){
       saveCacheEvs([...EVS]);
     }
     renderCats(); filterEvs(); updateStats(); renderDbLombaTable();
-    var _ls=document.getElementById('landing-stat-lomba'); if(_ls) _ls.textContent=EVS.length;
   }, (err)=>{
     // Firestore error — sudah tampil dari cache di atas
     console.warn('Firestore lomba error:', err.message);
@@ -7061,7 +7025,6 @@ function loadKomsFromFirestore(){
     }
     allKoms = [...KOMS];
     renderKoms(); renderDbKomTable();
-    var _lk=document.getElementById('landing-stat-kom'); if(_lk) _lk.textContent=KOMS.length;
   }, (err)=>{
     console.warn('Firestore komunitas error:', err.message);
     renderDbKomTable();
