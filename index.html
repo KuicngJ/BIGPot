@@ -3005,6 +3005,15 @@ function onUserLoggedIn(user){
       }
     }).catch(()=>{}); // Gagal Firestore — tidak apa-apa, sudah pakai localStorage
   }
+   // Load galaxyScores dari Firestore
+  if(firebaseReady && db && user.uid && !user.isDemo){
+    db.collection('users').doc(user.uid).get().then(doc=>{
+      if(doc.exists && doc.data().galaxyScores){
+        galaxyScores = doc.data().galaxyScores;
+        updateQuizCTA();
+      }
+    }).catch(()=>{});
+  }
 }
 
 function onUserLoggedOut(){
@@ -4620,9 +4629,9 @@ function initGalaxyCanvas(scores){
   planets = keys.map((k, i) => {
     const sc = scores[k] || 0;
     const norm = maxScore > 0 ? sc / maxScore : 0;
-    const baseR = 18 + norm * 40;
-    const minOrbit = refSize * 0.14;
-    const maxOrbit = refSize * 0.45;
+    const baseR = 22 + norm * 52;
+    const minOrbit = refSize * 0.16;
+    const maxOrbit = refSize * 0.46;;
     const orbitR = minOrbit + i * ((maxOrbit - minOrbit) / (total - 1 || 1));
     const cfg = PLANET_CONFIG[k];
     const angleOffset = (i / total) * Math.PI * 2;
@@ -4898,12 +4907,12 @@ function initGalaxyCanvas(scores){
       if(p.isDominant||isHover){
         ctx2.shadowBlur=12;ctx2.shadowColor=p.color;
       }
-      ctx2.fillStyle=`rgba(255,255,255,${isHover?1:p.isDominant?.95:.55})`;
+      ctx2.fillStyle=`rgba(255,255,255,${isHover?1:p.isDominant?.95:.75})`;
       ctx2.textAlign='center';ctx2.fillText(p.label,px,lY);
-      if(isHover||p.isDominant){
-        ctx2.font=`700 11px 'DM Sans',sans-serif`;
-        ctx2.fillStyle=p.color;ctx2.shadowColor=p.color;ctx2.shadowBlur=8;
-        ctx2.fillText(p.score+'%',px,lY+15);
+      ctx2.font=`700 11px 'DM Sans',sans-serif`;
+      ctx2.fillStyle=isHover||p.isDominant?p.color:'rgba(255,255,255,.45)';
+      ctx2.shadowColor=p.color;ctx2.shadowBlur=isHover||p.isDominant?8:0;
+      ctx2.fillText(p.score+'%',px,lY+15);
       }
       ctx2.restore();
     });
