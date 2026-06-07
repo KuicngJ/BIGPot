@@ -1356,6 +1356,168 @@ body::before{
   50%{opacity:1;transform:scaleX(1)}
 }
 
+/* ========================================================
+   LANDING PAGE (pre-login)
+   ======================================================== */
+.landing-wrap{max-width:900px;margin:0 auto;padding:0 20px 100px}
+.landing-hero{
+  text-align:center;
+  padding:52px 20px 44px;
+  position:relative;
+}
+.landing-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue-l);color:var(--blue);
+  border:1px solid var(--blue-m);
+  padding:7px 16px;border-radius:50px;
+  font-size:12.5px;font-weight:700;
+  margin-bottom:24px;letter-spacing:.2px;
+}
+.landing-hero h1{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(32px,5vw,58px);font-weight:800;
+  color:var(--ink);letter-spacing:-2px;line-height:1.08;
+  margin-bottom:18px;
+}
+.landing-hero h1 .acc{color:var(--blue)}
+.landing-hero h1 .out{-webkit-text-stroke:2.5px var(--orange);color:transparent}
+.landing-hero-sub{
+  font-size:16px;color:var(--ink3);
+  max-width:500px;margin:0 auto 36px;line-height:1.65;
+}
+.landing-cta-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.landing-cta-primary{
+  background:var(--blue);color:#fff;border:none;
+  padding:15px 30px;border-radius:50px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:inline-flex;align-items:center;gap:9px;
+  letter-spacing:-.2px;
+  box-shadow:0 4px 18px rgba(24,71,237,.32);
+}
+.landing-cta-primary:hover{background:var(--blue-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(24,71,237,.4)}
+.landing-cta-sec{
+  background:var(--surf);color:var(--ink);
+  border:1.5px solid var(--surf4);
+  padding:14px 24px;border-radius:50px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+  display:inline-flex;align-items:center;gap:7px;
+}
+.landing-cta-sec:hover{border-color:var(--ink3);background:var(--surf2)}
+.landing-trust{font-size:12.5px;color:var(--ink4);display:flex;align-items:center;justify-content:center;gap:6px}
+.landing-trust i{color:var(--green);font-size:13px}
+
+/* Feature cards row */
+.landing-features{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;margin:44px 0;
+}
+.landing-feat{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);padding:22px 20px;
+  box-shadow:var(--shadow-sm);
+  transition:all var(--dur) var(--ease);
+}
+.landing-feat:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.landing-feat-ic{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:14px;
+}
+.landing-feat h3{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:15px;font-weight:700;color:var(--ink);
+  margin-bottom:6px;
+}
+.landing-feat p{font-size:13px;color:var(--ink3);line-height:1.6}
+
+/* Stats strip */
+.landing-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-bottom:44px;
+}
+.landing-stat{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);padding:20px 18px;
+  text-align:center;box-shadow:var(--shadow-sm);
+}
+.landing-stat-n{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:28px;font-weight:800;color:var(--ink);
+  letter-spacing:-1px;margin-bottom:4px;
+}
+.landing-stat-l{font-size:12px;color:var(--ink3)}
+
+/* Testimonial / hook banner */
+.landing-hook{
+  background:linear-gradient(135deg,#0A0F1E 0%,#1847ED 100%);
+  border-radius:var(--r-xl);padding:28px 28px;
+  margin-bottom:44px;position:relative;overflow:hidden;
+}
+.landing-hook::before{
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:200px;height:200px;
+  background:rgba(255,255,255,.05);border-radius:50%;
+}
+.landing-hook-q{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:18px;font-weight:700;color:#fff;
+  line-height:1.4;letter-spacing:-.3px;
+  max-width:520px;margin-bottom:10px;
+}
+.landing-hook-sub{font-size:13.5px;color:rgba(255,255,255,.6)}
+.landing-hook-cta{
+  margin-top:20px;
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.15);color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  padding:10px 20px;border-radius:50px;
+  font-size:13.5px;font-weight:700;cursor:pointer;
+  transition:all var(--dur) var(--ease);
+}
+.landing-hook-cta:hover{background:rgba(255,255,255,.25)}
+
+/* How it works */
+.landing-how{margin-bottom:44px}
+.landing-how h2{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:22px;font-weight:800;color:var(--ink);
+  letter-spacing:-.4px;margin-bottom:16px;
+  text-align:center;
+}
+.landing-steps{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:14px;
+}
+.landing-step{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-lg);padding:20px 18px;
+  box-shadow:var(--shadow-sm);position:relative;
+}
+.landing-step-num{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:28px;font-weight:800;
+  color:var(--surf3);letter-spacing:-1px;
+  margin-bottom:10px;
+}
+.landing-step h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.landing-step p{font-size:12.5px;color:var(--ink3);line-height:1.55}
+
+/* Bottom CTA */
+.landing-bottom-cta{
+  background:var(--surf);border:1px solid var(--surf3);
+  border-radius:var(--r-xl);padding:36px 28px;
+  text-align:center;box-shadow:var(--shadow-sm);
+  margin-bottom:24px;
+}
+.landing-bottom-cta h2{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:22px;font-weight:800;color:var(--ink);
+  margin-bottom:8px;letter-spacing:-.4px;
+}
+.landing-bottom-cta p{font-size:14px;color:var(--ink3);margin-bottom:24px}
+
 /* ── AURORA BAND ── */
 .lp-aurora{
   position:fixed;
@@ -1512,8 +1674,124 @@ window.addEventListener('load', function(){
   </div>
 </div>
 
+<!-- ===================== PAGE: LANDING (pre-login) ===================== -->
+<div id="pg-landing" class="page on">
+  <div class="landing-wrap">
+    <!-- HERO -->
+    <div class="landing-hero">
+      <div class="landing-badge"><span class="live-dot"></span><span id="landing-user-count">12.400+</span> siswa sudah bergabung</div>
+      <h1>Temukan <span class="acc">arah hidupmu</span><br>sebelum kamu<br><span class="out">menyesalinya.</span></h1>
+      <p class="landing-hero-sub">Platform bakat pertama di Indonesia yang membantu pelajar menemukan potensi, bergabung komunitas, dan menang lomba — gratis, 3 menit.</p>
+      <div class="landing-cta-row">
+        <button class="landing-cta-primary" onclick="openAuthModal()">
+          <i class="ti ti-user-plus"></i>Daftar Gratis Sekarang
+        </button>
+        <button class="landing-cta-sec" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('home');setNav('home')">
+          <i class="ti ti-eye"></i>Lihat Dulu
+        </button>
+      </div>
+      <div class="landing-trust">
+        <i class="ti ti-shield-check"></i>Gratis selamanya · Tanpa kartu kredit · Data aman
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="landing-stats">
+      <div class="landing-stat">
+        <div class="landing-stat-n" style="color:var(--blue)" id="landing-stat-siswa">12.4K</div>
+        <div class="landing-stat-l">Siswa aktif</div>
+      </div>
+      <div class="landing-stat">
+        <div class="landing-stat-n" style="color:var(--orange)" id="landing-stat-lomba">0</div>
+        <div class="landing-stat-l">Lomba & event</div>
+      </div>
+      <div class="landing-stat">
+        <div class="landing-stat-n" style="color:var(--green)" id="landing-stat-kom">0</div>
+        <div class="landing-stat-l">Komunitas bakat</div>
+      </div>
+    </div>
+
+    <!-- HOOK BANNER -->
+    <div class="landing-hook">
+      <div style="width:40px;height:40px;background:rgba(255,255,255,.12);border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+        <i class="ti ti-quote" style="color:#fff;font-size:18px"></i>
+      </div>
+      <div class="landing-hook-q">"Banyak siswa pintar gagal bukan karena kurang kemampuan — tapi karena tidak pernah menemukan arah mereka."</div>
+      <div class="landing-hook-sub">LostPotential hadir agar kamu tidak jadi salah satunya.</div>
+      <button class="landing-hook-cta" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('quiz');setNav('cari')">
+        <i class="ti ti-brain"></i>Mulai Tes Bakat Sekarang — Gratis & 3 Menit
+      </button>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="landing-features">
+      <div class="landing-feat">
+        <div class="landing-feat-ic" style="background:var(--blue-l)"><i class="ti ti-brain" style="color:var(--blue)"></i></div>
+        <h3>Tes Bakat Cerdas</h3>
+        <p>3 menit untuk tahu potensi domananmu. Hasilnya personal, mendalam, dan bisa jadi kompas hidupmu.</p>
+      </div>
+      <div class="landing-feat">
+        <div class="landing-feat-ic" style="background:var(--orange-l)"><i class="ti ti-trophy" style="color:var(--orange)"></i></div>
+        <h3>Lomba & Kompetisi</h3>
+        <p>Ratusan lomba dikurasi khusus untuk pelajar Indonesia — teknologi, seni, sains, olahraga, dan lebih banyak lagi.</p>
+      </div>
+      <div class="landing-feat">
+        <div class="landing-feat-ic" style="background:var(--green-l)"><i class="ti ti-users" style="color:var(--green)"></i></div>
+        <h3>Komunitas Bakat</h3>
+        <p>Bergabung dengan ribuan pelajar sevisi. Komunitas nyata, bukan teori — siap mendukung perjalananmu.</p>
+      </div>
+      <div class="landing-feat">
+        <div class="landing-feat-ic" style="background:var(--purple-l)"><i class="ti ti-map-2" style="color:var(--purple)"></i></div>
+        <h3>Career Explorer</h3>
+        <p>Jelajahi 11+ jalur karir. Lihat skill yang dibutuhkan, prospek masa depan, dan simulasi perjalananmu.</p>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="landing-how">
+      <h2>Mulai dalam 4 langkah</h2>
+      <div class="landing-steps">
+        <div class="landing-step">
+          <div class="landing-step-num">01</div>
+          <h4>Daftar Gratis</h4>
+          <p>Login dengan Google dalam hitungan detik. Tidak perlu data kartu.</p>
+        </div>
+        <div class="landing-step">
+          <div class="landing-step-num">02</div>
+          <h4>Tes Bakat</h4>
+          <p>Jawab 6 pertanyaan dan dapatkan profil bakat personalmu.</p>
+        </div>
+        <div class="landing-step">
+          <div class="landing-step-num">03</div>
+          <h4>Eksplorasi</h4>
+          <p>Temukan lomba, komunitas, dan karir yang cocok dengan bakatmu.</p>
+        </div>
+        <div class="landing-step">
+          <div class="landing-step-num">04</div>
+          <h4>Action</h4>
+          <p>Jalankan 7-day challenge dan mulai bangun portofoliomu.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="landing-bottom-cta">
+      <h2>Siap menemukan potensimu? 🚀</h2>
+      <p>Bergabung dengan 12.400+ pelajar yang sudah memulai perjalanannya.</p>
+      <div class="landing-cta-row" style="margin-bottom:0">
+        <button class="landing-cta-primary" onclick="openAuthModal()">
+          <i class="ti ti-user-plus"></i>Daftar Gratis — Cuma 10 Detik
+        </button>
+        <button class="landing-cta-sec" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('quiz');setNav('cari')">
+          <i class="ti ti-brain"></i>Coba Tes Bakat Dulu
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== PAGE: HOME ===================== -->
-<div id="pg-home" class="page on">
+<div id="pg-home" class="page">
   <div class="hero">
     <div class="hero-tag"><span class="live-dot"></span>12.400+ siswa sudah bergabung</div>
 
@@ -1942,7 +2220,7 @@ window.addEventListener('load', function(){
 </div>
 
 <!-- BOTTOM NAV -->
-<div class="bnav">
+<div class="bnav" style="display:none">
   <div class="bi on" id="nav-home" onclick="go('home');setNav('home')">
     <div class="bi-ic"><i class="ti ti-home"></i></div>
     <div class="bi-lbl">Home</div>
@@ -2376,6 +2654,9 @@ function go(id){
     const noFooter=['dashboard-siswa','dashboard-panitia'];
     footer.style.display = noFooter.includes(id) ? 'none' : '';
   }
+  // Sembunyikan bottom nav di landing page
+  const bnav=document.querySelector('.bnav');
+  if(bnav) bnav.style.display = id==='landing' ? 'none' : (currentUser ? '' : bnav.style.display);
 }
 
 function setNav(k){
@@ -2993,10 +3274,16 @@ function _applyUserUI(user, role){
   if(loginCta)loginCta.style.display='none';
 
   loadBookmarks();
+  // Tampilkan bottom nav & arahkan ke home setelah login
+  const bnav = document.querySelector('.bnav');
+  if(bnav) bnav.style.display = '';
+  // Hanya redirect kalau sedang di landing page
+  const landingPg = document.getElementById('pg-landing');
+  if(landingPg && landingPg.classList.contains('on')){
+    go('home'); setNav('home');
+  }
   setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
 }
-
-function onUserLoggedIn(user){
   currentUser=user;
   const isDev = user.email && user.email === firebaseConfig.developerEmail;
 
@@ -3063,6 +3350,17 @@ function onUserLoggedOut(){
   const rowPanitia2 = document.getElementById('pr-row-panitia');
   if(rowSiswa2) rowSiswa2.style.display = 'none';
   if(rowPanitia2) rowPanitia2.style.display = 'none';
+
+  // Arahkan ke landing page & sembunyikan bottom nav
+  go('landing');
+  const bnav = document.querySelector('.bnav');
+  if(bnav) bnav.style.display = 'none';
+  // Update landing stats
+  const ls = document.getElementById('landing-stat-lomba');
+  const lk = document.getElementById('landing-stat-kom');
+  if(ls) ls.textContent = EVS.length || '0';
+  if(lk) lk.textContent = KOMS.length || '0';
+
   setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
 }
 
@@ -3111,7 +3409,6 @@ async function authLoginGoogle(){
     const provider=new firebase.auth.GoogleAuthProvider();
     await auth.signInWithPopup(provider);
     closeAuthModal();
-    go('home'); setNav('home');  // ← TAMBAH INI
     toast('Berhasil masuk dengan Google!','ti-check');
   }catch(e){ toast('Gagal login Google: '+e.message,'ti-alert-circle'); }
 }
