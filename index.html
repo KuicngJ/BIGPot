@@ -1683,11 +1683,11 @@ window.addEventListener('load', function(){
       <h1>Temukan <span class="acc">arah hidupmu</span><br>sebelum kamu<br><span class="out">menyesalinya.</span></h1>
       <p class="landing-hero-sub">Platform bakat pertama di Indonesia yang membantu pelajar menemukan potensi, bergabung komunitas, dan menang lomba — gratis, 3 menit.</p>
       <div class="landing-cta-row">
-        <button class="landing-cta-primary" onclick="openAuthModal()">
+        <button class="landing-cta-primary" id="btn-landing-daftar">
           <i class="ti ti-user-plus"></i>Daftar Gratis Sekarang
         </button>
-        <button class="landing-cta-sec" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('home');setNav('home')">
-          <i class="ti ti-eye"></i>Lihat Dulu
+        <button class="landing-cta-sec" id="btn-landing-lihat">
+          <i class="ti ti-eye"></i>Jelajahi Dulu
         </button>
       </div>
       <div class="landing-trust">
@@ -1718,7 +1718,7 @@ window.addEventListener('load', function(){
       </div>
       <div class="landing-hook-q">"Banyak siswa pintar gagal bukan karena kurang kemampuan — tapi karena tidak pernah menemukan arah mereka."</div>
       <div class="landing-hook-sub">LostPotential hadir agar kamu tidak jadi salah satunya.</div>
-      <button class="landing-hook-cta" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('quiz');setNav('cari')">
+      <button class="landing-hook-cta" id="btn-landing-quiz">
         <i class="ti ti-brain"></i>Mulai Tes Bakat Sekarang — Gratis & 3 Menit
       </button>
     </div>
@@ -1728,7 +1728,7 @@ window.addEventListener('load', function(){
       <div class="landing-feat">
         <div class="landing-feat-ic" style="background:var(--blue-l)"><i class="ti ti-brain" style="color:var(--blue)"></i></div>
         <h3>Tes Bakat Cerdas</h3>
-        <p>3 menit untuk tahu potensi domananmu. Hasilnya personal, mendalam, dan bisa jadi kompas hidupmu.</p>
+        <p>3 menit untuk tahu potensi dominanmu. Hasilnya personal, mendalam, dan bisa jadi kompas hidupmu.</p>
       </div>
       <div class="landing-feat">
         <div class="landing-feat-ic" style="background:var(--orange-l)"><i class="ti ti-trophy" style="color:var(--orange)"></i></div>
@@ -1779,10 +1779,10 @@ window.addEventListener('load', function(){
       <h2>Siap menemukan potensimu? 🚀</h2>
       <p>Bergabung dengan 12.400+ pelajar yang sudah memulai perjalanannya.</p>
       <div class="landing-cta-row" style="margin-bottom:0">
-        <button class="landing-cta-primary" onclick="openAuthModal()">
+        <button class="landing-cta-primary" id="btn-landing-daftar2">
           <i class="ti ti-user-plus"></i>Daftar Gratis — Cuma 10 Detik
         </button>
-        <button class="landing-cta-sec" onclick="const bn=document.querySelector('.bnav');if(bn)bn.style.display='';go('quiz');setNav('cari')">
+        <button class="landing-cta-sec" id="btn-landing-quiz2">
           <i class="ti ti-brain"></i>Coba Tes Bakat Dulu
         </button>
       </div>
@@ -2654,9 +2654,9 @@ function go(id){
     const noFooter=['dashboard-siswa','dashboard-panitia'];
     footer.style.display = noFooter.includes(id) ? 'none' : '';
   }
-  // Sembunyikan bottom nav di landing page
-  const bnav=document.querySelector('.bnav');
-  if(bnav) bnav.style.display = id==='landing' ? 'none' : (currentUser ? '' : bnav.style.display);
+  // Sembunyikan bottom nav di landing page, tampilkan di halaman lain
+  var bnav=document.querySelector('.bnav');
+  if(bnav) bnav.style.display = (id==='landing') ? 'none' : '';
 }
 
 function setNav(k){
@@ -3284,6 +3284,8 @@ function _applyUserUI(user, role){
   }
   setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
 }
+
+function onUserLoggedIn(user){
   currentUser=user;
   const isDev = user.email && user.email === firebaseConfig.developerEmail;
 
@@ -3346,20 +3348,20 @@ function onUserLoggedOut(){
 
   loadBookmarks();
   // Hide dashboard rows on logout
-  const rowSiswa2 = document.getElementById('pr-row-siswa');
-  const rowPanitia2 = document.getElementById('pr-row-panitia');
+  var rowSiswa2 = document.getElementById('pr-row-siswa');
+  var rowPanitia2 = document.getElementById('pr-row-panitia');
   if(rowSiswa2) rowSiswa2.style.display = 'none';
   if(rowPanitia2) rowPanitia2.style.display = 'none';
 
-  // Arahkan ke landing page & sembunyikan bottom nav
+  // Arahkan ke landing page (go() akan otomatis sembunyikan bnav)
   go('landing');
-  const bnav = document.querySelector('.bnav');
-  if(bnav) bnav.style.display = 'none';
-  // Update landing stats
-  const ls = document.getElementById('landing-stat-lomba');
-  const lk = document.getElementById('landing-stat-kom');
-  if(ls) ls.textContent = EVS.length || '0';
-  if(lk) lk.textContent = KOMS.length || '0';
+  // Update landing stats saat data sudah ada
+  setTimeout(function(){
+    var ls = document.getElementById('landing-stat-lomba');
+    var lk = document.getElementById('landing-stat-kom');
+    if(ls) ls.textContent = EVS.length || '0';
+    if(lk) lk.textContent = KOMS.length || '0';
+  }, 500);
 
   setTimeout(()=>document.getElementById('splash')?.classList.add('hide'),600);
 }
@@ -6180,6 +6182,23 @@ document.addEventListener('DOMContentLoaded',function(){
     var sp=document.getElementById('splash');
     if(sp) sp.classList.add('hide');
   }, 6000);
+
+  // ── Landing page button listeners ──
+  function showBnavAndGo(page, nav){
+    var bn = document.querySelector('.bnav');
+    if(bn) bn.style.display = '';
+    go(page); setNav(nav);
+  }
+  var btnDaftar  = document.getElementById('btn-landing-daftar');
+  var btnLihat   = document.getElementById('btn-landing-lihat');
+  var btnQuiz    = document.getElementById('btn-landing-quiz');
+  var btnDaftar2 = document.getElementById('btn-landing-daftar2');
+  var btnQuiz2   = document.getElementById('btn-landing-quiz2');
+  if(btnDaftar)  btnDaftar.addEventListener('click', function(){ openAuthModal(); });
+  if(btnLihat)   btnLihat.addEventListener('click',  function(){ showBnavAndGo('home','home'); });
+  if(btnQuiz)    btnQuiz.addEventListener('click',   function(){ showBnavAndGo('quiz','cari'); });
+  if(btnDaftar2) btnDaftar2.addEventListener('click',function(){ openAuthModal(); });
+  if(btnQuiz2)   btnQuiz2.addEventListener('click',  function(){ showBnavAndGo('quiz','cari'); });
 
   loadDarkPref();
   loadBookmarks();
