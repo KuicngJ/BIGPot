@@ -2369,6 +2369,7 @@ function go(id){
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
   if(id==='career'){renderCareers()}
+  if(id==='result' && galaxyScores){ _showResultBase(); }
   // Sembunyikan footer di halaman dashboard agar tidak muncul di atas konten
   const footer=document.getElementById('site-footer');
   if(footer){
@@ -3032,6 +3033,11 @@ function onUserLoggedIn(user){
       if(doc.exists && doc.data().galaxyScores){
         galaxyScores = doc.data().galaxyScores;
         updateQuizCTA();
+        // Kalau user refresh di halaman result, render ulang hasilnya
+        const resultPage = document.getElementById('page-result');
+        if(resultPage && resultPage.classList.contains('on')){
+          _showResultBase();
+        }
       }
     }).catch(()=>{});
   }
