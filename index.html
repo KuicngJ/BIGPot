@@ -2369,7 +2369,6 @@ function go(id){
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
   if(id==='career'){renderCareers()}
-  if(id==='result' && galaxyScores){ _showResultBase(); }
   // Sembunyikan footer di halaman dashboard agar tidak muncul di atas konten
   const footer=document.getElementById('site-footer');
   if(footer){
@@ -3033,10 +3032,22 @@ function onUserLoggedIn(user){
       if(doc.exists && doc.data().galaxyScores){
         galaxyScores = doc.data().galaxyScores;
         updateQuizCTA();
-        // Kalau user refresh di halaman result, render ulang hasilnya
-        const resultPage = document.getElementById('page-result');
-        if(resultPage && resultPage.classList.contains('on')){
-          _showResultBase();
+        // Render konten result tanpa memanggil go() agar tidak loop
+        // _showResultBase() sudah include go('result') di dalamnya,
+        // jadi kita render isinya saja via rwrap langsung
+        const rwrap = document.getElementById('rwrap');
+        if(rwrap && typeof _showResultBase === 'function'){
+          // Simpan page aktif saat ini
+          const wasOnResult = document.getElementById('pg-result') && 
+            document.getElementById('pg-result').classList.contains('on');
+          if(wasOnResult){
+            // Sudah di halaman result, render ulang kontennya saja
+            const sc = galaxyScores;
+            // Panggil showResult tapi skip go() dengan flag
+            window._skipGoResult = true;
+            _showResultBase();
+            window._skipGoResult = false;
+          }
         }
       }
     }).catch(()=>{});
@@ -4230,9 +4241,7 @@ function _showResultBase(){
       <i class="ti ti-chevron-right go-galaxy-arr"></i>
     </button>`;
 
-  go('result');
-  setNav('cari');
-  launchConfetti();
+  if(!window._skipGoResult){ go('result'); setNav('cari'); launchConfetti(); }
 
   // Animate hidden potential bars after render
   setTimeout(animateHiddenPotBars, 300);
