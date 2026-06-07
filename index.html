@@ -1978,6 +1978,9 @@ const firebaseConfig = {
 let app, auth, db, firebaseReady = false;
 
 function initFirebase() {
+  // Safety net: pastikan splash pasti hilang maksimal 5 detik
+  setTimeout(() => document.getElementById('splash')?.classList.add('hide'), 5000);
+
   try {
     if (firebaseConfig.apiKey === 'YOUR_API_KEY') {
       firebaseReady = false; checkAuthState(); return;
@@ -1985,7 +1988,16 @@ function initFirebase() {
     app = firebase.initializeApp(firebaseConfig);
     auth = firebase.auth(); db = firebase.firestore();
     firebaseReady = true;
-    auth.onAuthStateChanged(u => u ? onUserLoggedIn(u) : onUserLoggedOut());
+
+    // Fallback: kalau onAuthStateChanged tidak fire dalam 4 detik (koneksi lambat/blocked)
+    const authTimeout = setTimeout(() => {
+      checkAuthState(); // fallback ke localStorage
+    }, 4000);
+
+    auth.onAuthStateChanged(u => {
+      clearTimeout(authTimeout); // cancel fallback kalau sudah fire normal
+      u ? onUserLoggedIn(u) : onUserLoggedOut();
+    });
   } catch(e) { firebaseReady = false; checkAuthState(); }
 }
 
@@ -4913,7 +4925,6 @@ function initGalaxyCanvas(scores){
       ctx2.fillStyle=isHover||p.isDominant?p.color:'rgba(255,255,255,.45)';
       ctx2.shadowColor=p.color;ctx2.shadowBlur=isHover||p.isDominant?8:0;
       ctx2.fillText(p.score+'%',px,lY+15);
-      }
       ctx2.restore();
     });
 
