@@ -1424,7 +1424,9 @@ body::before{
   width:44px;height:44px;border-radius:12px;
   display:flex;align-items:center;justify-content:center;
   font-size:20px;margin-bottom:14px;
+  transition:transform .3s var(--ease);
 }
+.landing-feat:hover .landing-feat-ic{transform:scale(1.08) rotate(-4deg)}
 .landing-feat h3{
   font-family:'Bricolage Grotesque',sans-serif;
   font-size:15px;font-weight:700;color:var(--ink);
@@ -2314,7 +2316,62 @@ const CATS = [
 let EVS = [];
 /* ── seed data bawaan (dipakai jika Firestore kosong / belum ada data) ── */
 const EVS_SEED = [
-
+  {
+    nama: 'Kompetisi Sains Nasional (KSN) Tingkat SMA',
+    kategori: 'sains',
+    link: 'https://ksn.kemdikbud.go.id',
+    deskripsi: 'Ajang olimpiade sains resmi Kemendikbud untuk siswa SMA/MA se-Indonesia, mencakup bidang Matematika, Fisika, Kimia, Biologi, dan Astronomi. Pemenang berkesempatan mewakili Indonesia di ajang internasional.',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Beasiswa', dl: '30 Agustus 2026'
+  },
+  {
+    nama: 'Garuda Hacks — National Student Hackathon',
+    kategori: 'tech',
+    link: 'https://wa.me/6281234567890',
+    deskripsi: 'Hackathon 48 jam untuk pelajar SMP-SMA membangun aplikasi atau website yang menyelesaikan masalah nyata di sekitar. Tim terbaik dapat mentoring langsung dari praktisi startup.',
+    loc: 'Jakarta (Hybrid)', prize: 'Rp 15.000.000', dl: '12 Juli 2026'
+  },
+  {
+    nama: 'Lomba Cipta Puisi & Cerpen Pelajar Nusantara',
+    kategori: 'tulis',
+    link: 'https://wa.me/6281234567891',
+    deskripsi: 'Kompetisi menulis untuk pelajar yang gemar bercerita lewat kata. Karya terbaik akan diterbitkan dalam antologi nasional dan diulas oleh penulis profesional.',
+    loc: 'Daring (Online)', prize: 'Rp 5.000.000 + Penerbitan', dl: '5 Agustus 2026'
+  },
+  {
+    nama: 'Festival Band & Vokal Pelajar Se-Jawa Timur',
+    kategori: 'musik',
+    link: 'https://wa.me/6281234567892',
+    deskripsi: 'Panggung unjuk bakat musik untuk siswa SMP-SMA se-Jawa Timur. Kategori band, vokal solo, dan akustik. Disaksikan langsung oleh musisi dan A&R label rekaman.',
+    loc: 'Malang, Jawa Timur', prize: 'Rp 10.000.000 + Rekaman', dl: '20 Juli 2026'
+  },
+  {
+    nama: 'Olimpiade Robotika Indonesia (ORI) 2026',
+    kategori: 'robot',
+    link: 'https://wa.me/6281234567893',
+    deskripsi: 'Kompetisi merancang dan memprogram robot line-tracer dan robot soccer untuk pelajar. Terbuka untuk tim sekolah maupun individu yang baru mulai belajar robotika.',
+    loc: 'Surabaya, Jawa Timur', prize: 'Trofi + Rp 8.000.000', dl: '15 September 2026'
+  },
+  {
+    nama: 'Liga Futsal Pelajar Antar SMA',
+    kategori: 'sport',
+    link: 'https://wa.me/6281234567894',
+    deskripsi: 'Turnamen futsal tahunan antar tim SMA/SMK dengan sistem gugur. Talenta terbaik berpeluang dipantau scout klub futsal profesional Indonesia.',
+    loc: 'Malang, Jawa Timur', prize: 'Piala Bergilir + Rp 6.000.000', dl: '1 Agustus 2026'
+  },
+  {
+    nama: 'Lomba Fotografi "Cerita dari Kampung Halaman"',
+    kategori: 'foto',
+    link: 'https://wa.me/6281234567895',
+    deskripsi: 'Kompetisi foto bertema kehidupan sehari-hari di daerah masing-masing peserta. Terbuka untuk fotografi smartphone maupun kamera, dinilai juri fotografer profesional.',
+    loc: 'Daring (Online)', prize: 'Rp 4.000.000 + Pameran', dl: '25 Agustus 2026'
+  },
+  {
+    nama: 'Kompetisi Desain Poster Digital Anti-Bullying',
+    kategori: 'seni',
+    link: 'https://wa.me/6281234567896',
+    deskripsi: 'Ajang kreativitas desain grafis dengan tema kampanye sosial. Karya terpilih akan dipakai sebagai materi edukasi resmi di sekolah-sekolah mitra.',
+    loc: 'Daring (Online)', prize: 'Rp 3.500.000', dl: '10 Agustus 2026'
+  },
 ];
 /* ===================================================================
    DATA: KOMUNITAS
@@ -2330,7 +2387,62 @@ const EVS_SEED = [
 // KOMS sekarang dimuat dari Firestore
 let KOMS = [];
 const KOMS_SEED = [
-  
+  {
+    nama: 'Komunitas Coding Pelajar Indonesia',
+    kategori: 'tech',
+    link: 'https://wa.me/6281234567897',
+    desc: 'Wadah belajar bareng coding, project bareng, dan info lomba teknologi buat pelajar SMP-SMA seluruh Indonesia.',
+    mem: '2.100+ anggota'
+  },
+  {
+    nama: 'Sketsa — Komunitas Seni & Desain Pelajar',
+    kategori: 'seni',
+    link: 'https://wa.me/6281234567898',
+    desc: 'Tempat berbagi karya, kritik membangun, dan tips desain visual dari sesama pelajar yang suka menggambar dan berkreasi.',
+    mem: '1.450+ anggota'
+  },
+  {
+    nama: 'Klub Riset Muda Nusantara',
+    kategori: 'sains',
+    link: 'https://wa.me/6281234567899',
+    desc: 'Komunitas pelajar yang suka eksperimen dan riset sains. Sering kolaborasi proyek penelitian sederhana dan persiapan olimpiade.',
+    mem: '980+ anggota'
+  },
+  {
+    nama: 'Pena Pelajar — Komunitas Menulis',
+    kategori: 'tulis',
+    link: 'https://wa.me/6281234567800',
+    desc: 'Ruang aman untuk berbagi tulisan, puisi, dan cerpen. Ada sesi review naskah mingguan dari penulis senior komunitas.',
+    mem: '1.760+ anggota'
+  },
+  {
+    nama: 'Harmoni — Komunitas Musik Pelajar',
+    kategori: 'musik',
+    link: 'https://wa.me/6281234567801',
+    desc: 'Buat pelajar yang suka main musik, nyanyi, atau produksi lagu. Sering bikin open mic dan kolaborasi cover bareng.',
+    mem: '1.320+ anggota'
+  },
+  {
+    nama: 'Sportclass — Komunitas Olahraga Pelajar',
+    kategori: 'sport',
+    link: 'https://wa.me/6281234567802',
+    desc: 'Komunitas buat pelajar yang aktif olahraga, sharing latihan, jadwal sparring, dan info turnamen antar sekolah.',
+    mem: '2.480+ anggota'
+  },
+  {
+    nama: 'RoboClub Indonesia',
+    kategori: 'robot',
+    link: 'https://wa.me/6281234567803',
+    desc: 'Komunitas pelajar pecinta robotika dan AI. Tutorial dari nol, diskusi project, dan info kompetisi robotika tiap bulan.',
+    mem: '760+ anggota'
+  },
+  {
+    nama: 'Frame — Komunitas Fotografi & Film Pelajar',
+    kategori: 'foto',
+    link: 'https://wa.me/6281234567804',
+    desc: 'Komunitas buat pelajar yang suka motret dan bikin video pendek. Ada hunting foto bareng dan kelas editing gratis.',
+    mem: '1.090+ anggota'
+  },
 ];
 
 /* ===================================================================
@@ -2875,7 +2987,7 @@ function filterEvs(){
   if(cl)cl.classList.toggle('vis',q.length>0);
   if(EVS.length===0){
     const el=document.getElementById('ev-list');
-    if(el)el.innerHTML='<p style="color:var(--ink3);font-size:14px;grid-column:1/-1;padding:32px 0;text-align:center"><i class="ti ti-trophy" style="display:block;font-size:32px;margin-bottom:8px;opacity:.3"></i>Lomba belum ditambahkan.<br>Isi array EVS di kode untuk menampilkan lomba.</p>';
+    if(el)el.innerHTML='<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-trophy" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Belum ada lomba tersedia</div><div style="color:var(--ink3);font-size:13.5px">Lomba baru biasanya muncul setiap minggu — balik lagi nanti ya!</div></div>';
     return;
   }
   const filtered=EVS.map((e,i)=>({e,i})).filter(({e,i})=>{
@@ -2885,7 +2997,7 @@ function filterEvs(){
     return matchCat&&matchQ;
   });
   const el=document.getElementById('ev-list');
-  if(el)el.innerHTML=filtered.length?filtered.map(({e,i})=>renderEvCard(e,i)).join(''):'<p style="color:var(--ink3);font-size:14px;grid-column:1/-1">Tidak ada lomba yang cocok dengan pencarianmu.</p>';
+  if(el)el.innerHTML=filtered.length?filtered.map(({e,i})=>renderEvCard(e,i)).join(''):'<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-search-off" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Tidak ada lomba ditemukan</div><div style="color:var(--ink3);font-size:13.5px">Coba kata kunci lain atau pilih kategori berbeda.</div></div>';
 }
 
 function clearEvSearch(){
@@ -2918,13 +3030,17 @@ function renderKoms(){
   const el=document.getElementById('k-list');
   if(!el)return;
   if(KOMS.length===0){
-    el.innerHTML='<p style="color:var(--ink3);font-size:14px;grid-column:1/-1;padding:32px 0;text-align:center"><i class="ti ti-users" style="display:block;font-size:32px;margin-bottom:8px;opacity:.3"></i>Komunitas belum ditambahkan.<br>Isi array KOMS di kode untuk menampilkan komunitas.</p>';
+    el.innerHTML='<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-users" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Belum ada komunitas tersedia</div><div style="color:var(--ink3);font-size:13.5px">Komunitas baru akan ditambahkan secara berkala — balik lagi nanti ya!</div></div>';
     return;
   }
   const filtered=allKoms.filter((k,i)=>{
     const nk=normKom(k,i);
     return !q||nk.name.toLowerCase().includes(q)||nk.tags.some(t=>t.toLowerCase().includes(q));
   });
+  if(filtered.length===0){
+    el.innerHTML='<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-search-off" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Tidak ada komunitas ditemukan</div><div style="color:var(--ink3);font-size:13.5px">Coba kata kunci lain ya.</div></div>';
+    return;
+  }
   el.innerHTML=filtered.map((k,i)=>{
     const nk=normKom(k,i);
     const saved=bookmarks.komunitas.has(nk.id);
@@ -6429,10 +6545,11 @@ select.db-inp{cursor:pointer}
 .inline-edit-card h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--ink);margin-bottom:18px}
 
 /* ── Access denied card ── */
-.access-denied{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
-.access-denied i{font-size:48px;color:var(--ink4);margin-bottom:16px}
+.access-denied{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 24px;text-align:center}
+.access-denied-ic{width:72px;height:72px;border-radius:50%;background:var(--blue-l);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.access-denied i{font-size:32px;color:var(--blue)}
 .access-denied h3{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--ink);margin-bottom:8px}
-.access-denied p{font-size:14px;color:var(--ink3);max-width:320px}
+.access-denied p{font-size:14px;color:var(--ink3);max-width:320px;line-height:1.6}
 </style>
 
 <!-- ===================== PAGE: DASHBOARD PANITIA ===================== -->
@@ -6449,7 +6566,7 @@ select.db-inp{cursor:pointer}
     <div id="panitia-gate">
       <div class="db-section">
         <div class="access-denied">
-          <i class="ti ti-lock"></i>
+          <div class="access-denied-ic"><i class="ti ti-lock"></i></div>
           <h3>Akses Terbatas</h3>
           <p>Halaman ini hanya untuk Panitia / Developer. Silakan login dan pilih peran "Panitia" untuk mengakses.</p>
           <button class="btn-save" style="margin-top:18px" onclick="go('login');setNav('profil')"><i class="ti ti-login"></i>Login Sekarang</button>
@@ -6564,7 +6681,7 @@ select.db-inp{cursor:pointer}
     <div id="stu-gate">
       <div class="db-section">
         <div class="access-denied">
-          <i class="ti ti-user-x"></i>
+          <div class="access-denied-ic"><i class="ti ti-user-x"></i></div>
           <h3>Belum Login</h3>
           <p>Login terlebih dahulu untuk melihat dashboard siswa kamu.</p>
           <button class="btn-save" style="margin-top:18px" onclick="go('login');setNav('profil')"><i class="ti ti-login"></i>Login Sekarang</button>
