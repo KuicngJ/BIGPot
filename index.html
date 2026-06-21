@@ -2317,60 +2317,46 @@ let EVS = [];
 /* ── seed data bawaan (dipakai jika Firestore kosong / belum ada data) ── */
 const EVS_SEED = [
   {
-    nama: 'Kompetisi Sains Nasional (KSN) Tingkat SMA',
+    nama: 'OSN / KSN — Olimpiade Sains Nasional',
     kategori: 'sains',
-    link: 'https://ksn.kemdikbud.go.id',
-    deskripsi: 'Ajang olimpiade sains resmi Kemendikbud untuk siswa SMA/MA se-Indonesia, mencakup bidang Matematika, Fisika, Kimia, Biologi, dan Astronomi. Pemenang berkesempatan mewakili Indonesia di ajang internasional.',
-    loc: 'Seluruh Indonesia', prize: 'Medali + Beasiswa', dl: '30 Agustus 2026'
+    link: 'https://pusatprestasinasional.kemendikdasmen.go.id/jenjang/sma',
+    deskripsi: 'Ajang olimpiade sains resmi Kemendikdasmen melalui Pusat Prestasi Nasional (Puspresnas) untuk siswa SD, SMP, dan SMA se-Indonesia, mencakup bidang Matematika, Fisika, Kimia, Biologi, Informatika, dan lainnya. Seleksi berjenjang dari tingkat sekolah hingga nasional.',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Jalur PTN Prestasi', dl: 'Cek jadwal di Puspresnas'
   },
   {
-    nama: 'Garuda Hacks — National Student Hackathon',
-    kategori: 'tech',
-    link: 'https://wa.me/6281234567890',
-    deskripsi: 'Hackathon 48 jam untuk pelajar SMP-SMA membangun aplikasi atau website yang menyelesaikan masalah nyata di sekitar. Tim terbaik dapat mentoring langsung dari praktisi startup.',
-    loc: 'Jakarta (Hybrid)', prize: 'Rp 15.000.000', dl: '12 Juli 2026'
+    nama: 'OPSI — Olimpiade Penelitian Siswa Indonesia',
+    kategori: 'sains',
+    link: 'https://pusatprestasinasional.kemendikdasmen.go.id/jenjang/sma',
+    deskripsi: 'Ajang riset resmi Puspresnas untuk siswa SMP dan SMA yang ingin mengembangkan karya ilmiah berbasis pendekatan STEM. Peserta menyusun proposal penelitian dan dinilai melalui tahapan seleksi berjenjang.',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Pembinaan Riset', dl: 'Cek jadwal di Puspresnas'
   },
   {
-    nama: 'Lomba Cipta Puisi & Cerpen Pelajar Nusantara',
-    kategori: 'tulis',
-    link: 'https://wa.me/6281234567891',
-    deskripsi: 'Kompetisi menulis untuk pelajar yang gemar bercerita lewat kata. Karya terbaik akan diterbitkan dalam antologi nasional dan diulas oleh penulis profesional.',
-    loc: 'Daring (Online)', prize: 'Rp 5.000.000 + Penerbitan', dl: '5 Agustus 2026'
-  },
-  {
-    nama: 'Festival Band & Vokal Pelajar Se-Jawa Timur',
-    kategori: 'musik',
-    link: 'https://wa.me/6281234567892',
-    deskripsi: 'Panggung unjuk bakat musik untuk siswa SMP-SMA se-Jawa Timur. Kategori band, vokal solo, dan akustik. Disaksikan langsung oleh musisi dan A&R label rekaman.',
-    loc: 'Malang, Jawa Timur', prize: 'Rp 10.000.000 + Rekaman', dl: '20 Juli 2026'
-  },
-  {
-    nama: 'Olimpiade Robotika Indonesia (ORI) 2026',
-    kategori: 'robot',
-    link: 'https://wa.me/6281234567893',
-    deskripsi: 'Kompetisi merancang dan memprogram robot line-tracer dan robot soccer untuk pelajar. Terbuka untuk tim sekolah maupun individu yang baru mulai belajar robotika.',
-    loc: 'Surabaya, Jawa Timur', prize: 'Trofi + Rp 8.000.000', dl: '15 September 2026'
-  },
-  {
-    nama: 'Liga Futsal Pelajar Antar SMA',
+    nama: 'O2SN — Olimpiade Olahraga Siswa Nasional',
     kategori: 'sport',
-    link: 'https://wa.me/6281234567894',
-    deskripsi: 'Turnamen futsal tahunan antar tim SMA/SMK dengan sistem gugur. Talenta terbaik berpeluang dipantau scout klub futsal profesional Indonesia.',
-    loc: 'Malang, Jawa Timur', prize: 'Piala Bergilir + Rp 6.000.000', dl: '1 Agustus 2026'
+    link: 'https://pusatprestasinasional.kemendikdasmen.go.id/jenjang/sma',
+    deskripsi: 'Kompetisi olahraga resmi Puspresnas untuk pelajar SD, SMP, dan SMA se-Indonesia. Bagian dari pembinaan olahraga pendidikan berjenjang yang mendukung Desain Besar Olahraga Nasional (DBON).',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Jalur PTN Prestasi', dl: 'Cek jadwal di Puspresnas'
   },
   {
-    nama: 'Lomba Fotografi "Cerita dari Kampung Halaman"',
-    kategori: 'foto',
-    link: 'https://wa.me/6281234567895',
-    deskripsi: 'Kompetisi foto bertema kehidupan sehari-hari di daerah masing-masing peserta. Terbuka untuk fotografi smartphone maupun kamera, dinilai juri fotografer profesional.',
-    loc: 'Daring (Online)', prize: 'Rp 4.000.000 + Pameran', dl: '25 Agustus 2026'
-  },
-  {
-    nama: 'Kompetisi Desain Poster Digital Anti-Bullying',
+    nama: 'FLS2N / FLS3N — Festival Lomba Seni Siswa Nasional',
     kategori: 'seni',
-    link: 'https://wa.me/6281234567896',
-    deskripsi: 'Ajang kreativitas desain grafis dengan tema kampanye sosial. Karya terpilih akan dipakai sebagai materi edukasi resmi di sekolah-sekolah mitra.',
-    loc: 'Daring (Online)', prize: 'Rp 3.500.000', dl: '10 Agustus 2026'
+    link: 'https://pusatprestasinasional.kemendikdasmen.go.id/jenjang/sma',
+    deskripsi: 'Festival seni resmi Puspresnas untuk pelajar SD hingga SMA, mencakup cabang seni rupa, tari, teater, dan lainnya. Wadah resmi untuk menyalurkan dan mengembangkan bakat seni budaya.',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Jalur PTN Prestasi', dl: 'Cek jadwal di Puspresnas'
+  },
+  {
+    nama: 'FLS2N / FLS3N — Cabang Musik & Vokal',
+    kategori: 'musik',
+    link: 'https://pusatprestasinasional.kemendikdasmen.go.id/jenjang/sma',
+    deskripsi: 'Cabang menyanyi solo dan ansambel musik dalam Festival Lomba Seni Siswa Nasional, ajang resmi Puspresnas untuk menjaring talenta musik pelajar dari tingkat sekolah hingga nasional.',
+    loc: 'Seluruh Indonesia', prize: 'Medali + Jalur PTN Prestasi', dl: 'Cek jadwal di Puspresnas'
+  },
+  {
+    nama: 'Essay Competition SIGMA 3.0 — TSA UNDIP',
+    kategori: 'tulis',
+    link: 'http://bit.ly/FormulirSIGMA2026',
+    deskripsi: 'Kompetisi esai nasional gratis untuk siswa SMA/SMK se-Indonesia bertema inovasi berkelanjutan, diselenggarakan oleh TSA UNDIP. Pendaftaran individu langsung lewat formulir, tanpa biaya.',
+    loc: 'Daring (Final luring di Semarang)', prize: 'Uang Pembinaan + Sertifikat', dl: '27 Juni 2026'
   },
 ];
 /* ===================================================================
@@ -2387,62 +2373,7 @@ const EVS_SEED = [
 // KOMS sekarang dimuat dari Firestore
 let KOMS = [];
 const KOMS_SEED = [
-  {
-    nama: 'Komunitas Coding Pelajar Indonesia',
-    kategori: 'tech',
-    link: 'https://wa.me/6281234567897',
-    desc: 'Wadah belajar bareng coding, project bareng, dan info lomba teknologi buat pelajar SMP-SMA seluruh Indonesia.',
-    mem: '2.100+ anggota'
-  },
-  {
-    nama: 'Sketsa — Komunitas Seni & Desain Pelajar',
-    kategori: 'seni',
-    link: 'https://wa.me/6281234567898',
-    desc: 'Tempat berbagi karya, kritik membangun, dan tips desain visual dari sesama pelajar yang suka menggambar dan berkreasi.',
-    mem: '1.450+ anggota'
-  },
-  {
-    nama: 'Klub Riset Muda Nusantara',
-    kategori: 'sains',
-    link: 'https://wa.me/6281234567899',
-    desc: 'Komunitas pelajar yang suka eksperimen dan riset sains. Sering kolaborasi proyek penelitian sederhana dan persiapan olimpiade.',
-    mem: '980+ anggota'
-  },
-  {
-    nama: 'Pena Pelajar — Komunitas Menulis',
-    kategori: 'tulis',
-    link: 'https://wa.me/6281234567800',
-    desc: 'Ruang aman untuk berbagi tulisan, puisi, dan cerpen. Ada sesi review naskah mingguan dari penulis senior komunitas.',
-    mem: '1.760+ anggota'
-  },
-  {
-    nama: 'Harmoni — Komunitas Musik Pelajar',
-    kategori: 'musik',
-    link: 'https://wa.me/6281234567801',
-    desc: 'Buat pelajar yang suka main musik, nyanyi, atau produksi lagu. Sering bikin open mic dan kolaborasi cover bareng.',
-    mem: '1.320+ anggota'
-  },
-  {
-    nama: 'Sportclass — Komunitas Olahraga Pelajar',
-    kategori: 'sport',
-    link: 'https://wa.me/6281234567802',
-    desc: 'Komunitas buat pelajar yang aktif olahraga, sharing latihan, jadwal sparring, dan info turnamen antar sekolah.',
-    mem: '2.480+ anggota'
-  },
-  {
-    nama: 'RoboClub Indonesia',
-    kategori: 'robot',
-    link: 'https://wa.me/6281234567803',
-    desc: 'Komunitas pelajar pecinta robotika dan AI. Tutorial dari nol, diskusi project, dan info kompetisi robotika tiap bulan.',
-    mem: '760+ anggota'
-  },
-  {
-    nama: 'Frame — Komunitas Fotografi & Film Pelajar',
-    kategori: 'foto',
-    link: 'https://wa.me/6281234567804',
-    desc: 'Komunitas buat pelajar yang suka motret dan bikin video pendek. Ada hunting foto bareng dan kelas editing gratis.',
-    mem: '1.090+ anggota'
-  },
+
 ];
 
 /* ===================================================================
