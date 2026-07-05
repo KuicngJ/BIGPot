@@ -1669,8 +1669,8 @@ window.addEventListener('load', function(){
       </div>
       <div class="role-card2" onclick="authSelectRole('panitia')">
         <div class="role-card2-ic">📋</div>
-        <div class="role-card2-name">Guru / Panitia</div>
-        <div class="role-card2-desc">Tambahkan lomba & komunitas untuk ditinjau.</div>
+        <div class="role-card2-name">Guru</div>
+        <div class="role-card2-desc">Tambahkan lomba, komunitas & kursus untuk siswa.</div>
       </div>
     </div>
   </div>
@@ -2048,7 +2048,7 @@ window.addEventListener('load', function(){
       <!-- Dashboard Panitia (only for panitia/dev) -->
       <div class="pr-row" id="pr-row-panitia" onclick="go('dashboard-panitia');setNav('profil')" style="display:none">
         <div class="pr-row-ic" style="background:var(--purple-l);color:var(--purple)"><i class="ti ti-clipboard-list"></i></div>
-        <div class="pr-row-text"><div class="pr-row-label">Dashboard Panitia</div><div class="pr-row-sub">Kelola lomba & komunitas</div></div>
+        <div class="pr-row-text"><div class="pr-row-label">Dashboard Guru</div><div class="pr-row-sub">Kelola lomba, komunitas & kursus</div></div>
         <i class="ti ti-chevron-right chevron"></i>
       </div>
       <div class="pr-row" onclick="toggleDark()">
@@ -2088,6 +2088,33 @@ window.addEventListener('load', function(){
 
     <!-- Career grid -->
     <div class="ce-grid" id="ce-grid"></div>
+  </div>
+</div>
+
+<!-- ===================== PAGE: KURSUS & PELATIHAN ===================== -->
+<div id="pg-courses" class="page">
+  <div class="cewrap">
+    <div class="ce-hero" style="background:linear-gradient(135deg,#052E22 0%,#00966A 100%)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="width:42px;height:42px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="ti ti-certificate" style="color:#fff;font-size:20px"></i></div>
+        <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase">Kursus & Pelatihan</span>
+      </div>
+      <h1>Asah Bakatmu Lewat<br>Kursus Pilihan</h1>
+      <p>Kursus dan pelatihan yang dikurasi berdasarkan hasil tes bakatmu — dari teknologi, seni, sains, sampai olahraga.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap" style="margin-bottom:16px">
+      <i class="ti ti-search search-ic"></i>
+      <input class="search-inp" id="crs-search" type="text" placeholder="Cari kursus, penyelenggara, atau bidang…" oninput="filterKursus()" autocomplete="off"/>
+      <button class="search-clear" id="crs-search-clear" onclick="clearCrsSearch()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="ce-filters" id="crs-filters" style="margin-bottom:16px"></div>
+
+    <!-- Course grid -->
+    <div class="evts" id="crs-list"></div>
   </div>
 </div>
 
@@ -2229,6 +2256,10 @@ window.addEventListener('load', function(){
   <div class="bi" id="nav-career" onclick="go('career');setNav('career')">
     <div class="bi-ic"><i class="ti ti-map-2"></i></div>
     <div class="bi-lbl">Karir</div>
+  </div>
+  <div class="bi" id="nav-courses" onclick="go('courses');setNav('courses')">
+    <div class="bi-ic"><i class="ti ti-certificate"></i></div>
+    <div class="bi-lbl">Kursus</div>
   </div>
   <div class="bi" id="nav-galaxy" onclick="go('galaxy');setNav('galaxy')">
     <div class="bi-ic" style="position:relative"><i class="ti ti-planet"></i><span style="position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:var(--purple);border-radius:50%;border:2px solid var(--surf2)"></span></div>
@@ -2677,6 +2708,7 @@ function go(id){
   if(id==='profil'){renderProfile()}
   if(id==='komunitas'){renderKoms()}
   if(id==='career'){renderCareers()}
+  if(id==='courses'){renderKursus()}
   // Sembunyikan footer di halaman dashboard agar tidak muncul di atas konten
   const footer=document.getElementById('site-footer');
   if(footer){
@@ -3283,7 +3315,7 @@ function _applyUserUI(user, role){
   }
   if(chip){
     if(isDev){chip.textContent='👑 Dev';chip.className='user-role-chip urc-dev';}
-    else if(authCurrentRole==='panitia'){chip.textContent='📋 Panitia';chip.className='user-role-chip urc-panitia';}
+    else if(authCurrentRole==='panitia'){chip.textContent='📋 Guru';chip.className='user-role-chip urc-panitia';}
     else if(authCurrentRole){chip.textContent='🎓 Murid';chip.className='user-role-chip urc-murid';}
     else{chip.textContent='';chip.className='user-role-chip';}
   }
@@ -3340,7 +3372,7 @@ function onUserLoggedIn(user){
           authCurrentRole = fsRole;
           const chip = document.getElementById('user-role-chip-lp');
           if(chip){
-            if(fsRole==='panitia'){chip.textContent='📋 Panitia';chip.className='user-role-chip urc-panitia';}
+            if(fsRole==='panitia'){chip.textContent='📋 Guru';chip.className='user-role-chip urc-panitia';}
             else{chip.textContent='🎓 Murid';chip.className='user-role-chip urc-murid';}
           }
           const rowPan = document.getElementById('pr-row-panitia');
@@ -3517,10 +3549,10 @@ function authSelectRole(role){
   go('home'); setNav('home');
   const chip=document.getElementById('user-role-chip-lp');
   if(chip){
-    if(role==='panitia'){chip.textContent='📋 Panitia';chip.className='user-role-chip urc-panitia';}
+    if(role==='panitia'){chip.textContent='📋 Guru';chip.className='user-role-chip urc-panitia';}
     else{chip.textContent='🎓 Murid';chip.className='user-role-chip urc-murid';}
   }
-  toast('Masuk sebagai '+(role==='panitia'?'Guru/Panitia':'Murid')+'!','ti-check');
+  toast('Masuk sebagai '+(role==='panitia'?'Guru':'Murid')+'!','ti-check');
   const rowPan = document.getElementById('pr-row-panitia');
   if(rowPan) rowPan.style.display = role==='panitia'?'flex':'none';
   const rowSiswa = document.getElementById('pr-row-siswa');
@@ -3889,6 +3921,217 @@ function clearCeSearch(){
   const inp = document.getElementById('ce-search');
   if(inp) inp.value='';
   filterCareers();
+}
+
+/* ===================================================================
+   DATA: KURSUS & PELATIHAN
+   -------------------------------------------------------------------
+   Tambahkan kursus di sini, atau lewat Dashboard Guru (tanpa edit kode).
+   Kolom yang tersedia:
+     nama          → nama kursus (string)
+     kategori      → salah satu dari: 'tech' | 'seni' | 'sains' | 'tulis' | 'musik' | 'sport' | 'robot' | 'foto'
+     penyelenggara → nama platform/lembaga penyelenggara (string)
+     level         → 'Pemula' | 'Menengah' | 'Lanjutan'
+     durasi        → contoh: '4 minggu'
+     harga         → 'Gratis' atau contoh 'Rp150.000'
+     link          → link pendaftaran/kelas (string URL)
+     thumbnail     → URL gambar thumbnail (opsional)
+     deskripsi     → penjelasan singkat kursus (opsional)
+   =================================================================== */
+// KURSUS sekarang dimuat dari Firestore (lihat loadKursusFromFirestore)
+let KURSUS = [];
+const KURSUS_SEED = [
+  {
+    nama:'Belajar Dasar Pemrograman Python',
+    kategori:'tech',
+    penyelenggara:'Dicoding',
+    level:'Pemula',
+    durasi:'6 minggu',
+    harga:'Gratis',
+    link:'https://www.dicoding.com/academies',
+    deskripsi:'Kursus dasar logika pemrograman menggunakan Python — cocok untuk pemula yang bakat dominannya di bidang teknologi.',
+  },
+  {
+    nama:'Dasar Desain Grafis untuk Pemula',
+    kategori:'seni',
+    penyelenggara:'Skill Academy',
+    level:'Pemula',
+    durasi:'4 minggu',
+    harga:'Rp99.000',
+    link:'https://www.skillacademy.com/',
+    deskripsi:'Belajar prinsip desain, warna, dan tipografi menggunakan tools desain populer untuk membangun portofolio kreatif.',
+  },
+  {
+    nama:'Metode Penelitian Ilmiah Remaja',
+    kategori:'sains',
+    penyelenggara:'Puspresnas Talent DNA',
+    level:'Menengah',
+    durasi:'3 minggu',
+    harga:'Gratis',
+    link:'https://talentdna.kemendikdasmen.go.id/',
+    deskripsi:'Pelatihan menyusun proposal dan metode riset ilmiah — bekal untuk ikut OPSI dan kompetisi riset lainnya.',
+  },
+  {
+    nama:'Kelas Menulis Kreatif & Esai',
+    kategori:'tulis',
+    penyelenggara:'Kelas Menulis Indonesia',
+    level:'Pemula',
+    durasi:'4 minggu',
+    harga:'Rp75.000',
+    link:'#',
+    deskripsi:'Latihan menulis esai, cerpen, dan opini secara terstruktur bersama mentor penulis berpengalaman.',
+  },
+  {
+    nama:'Produksi Musik Digital Dasar',
+    kategori:'musik',
+    penyelenggara:'Skill Academy',
+    level:'Pemula',
+    durasi:'5 minggu',
+    harga:'Rp149.000',
+    link:'https://www.skillacademy.com/',
+    deskripsi:'Belajar aransemen dan produksi musik digital menggunakan software DAW gratis, dari nol sampai rilis karya pertama.',
+  },
+  {
+    nama:'Pelatihan Fisik & Nutrisi Atlet Pelajar',
+    kategori:'sport',
+    penyelenggara:'DBON Puspresnas',
+    level:'Menengah',
+    durasi:'8 minggu',
+    harga:'Gratis',
+    link:'https://pusatprestasinasional.kemendikdasmen.go.id/',
+    deskripsi:'Program latihan fisik dan panduan nutrisi untuk pelajar yang ingin serius menekuni jalur olahraga prestasi.',
+  },
+  {
+    nama:'Robotika & Pemrograman Mikrokontroler',
+    kategori:'robot',
+    penyelenggara:'Robotika Pelajar ID',
+    level:'Menengah',
+    durasi:'6 minggu',
+    harga:'Rp199.000',
+    link:'#',
+    deskripsi:'Belajar merakit dan memprogram robot sederhana berbasis Arduino, persiapan untuk kompetisi robotika seperti WRO.',
+  },
+  {
+    nama:'Fotografi & Videografi Smartphone',
+    kategori:'foto',
+    penyelenggara:'Skill Academy',
+    level:'Pemula',
+    durasi:'3 minggu',
+    harga:'Rp59.000',
+    link:'https://www.skillacademy.com/',
+    deskripsi:'Teknik dasar komposisi foto dan video hanya bermodalkan smartphone, cocok untuk mulai jadi content creator.',
+  },
+];
+
+const CRS_CATEGORIES = [
+  {id:'', label:'Semua'},
+  {id:'tech', label:'💻 Teknologi'},
+  {id:'seni', label:'🎨 Seni'},
+  {id:'sains', label:'🔬 Sains'},
+  {id:'tulis', label:'✍️ Menulis'},
+  {id:'musik', label:'🎵 Musik'},
+  {id:'sport', label:'⚽ Olahraga'},
+  {id:'robot', label:'🤖 Robotika'},
+  {id:'foto', label:'📸 Fotografi'},
+];
+
+let activeCatKrs = '';
+
+function normKursus(k, idx){
+  // Support format Firestore guru (nama/kategori) dan legacy (title/cat)
+  const m = CAT_META[k.kategori || k.cat] || CAT_META['tech'];
+  return {
+    id: k._id || 'crs'+idx,
+    ic: m.ic, ibg: m.ibg, ic2: m.ic2,
+    tag: m.tag, tc: m.tc, bc: m.bc,
+    title: k.nama || k.title || '—',
+    provider: k.penyelenggara || k.provider || '',
+    level: k.level || '',
+    durasi: k.durasi || '',
+    harga: k.harga || '',
+    deskripsi: k.deskripsi || k.desc || '',
+    thumbnail: k.thumbnail || '',
+    cat: k.kategori || k.cat || 'tech',
+    link: k.link && k.link !== '#' ? k.link : null,
+    _raw: k,
+  };
+}
+
+function renderKursusCard(k, idx){
+  const nk = normKursus(k, idx);
+  const safeTitle = nk.title.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const isFree = /gratis/i.test(nk.harga||'');
+  return `<div class="ecard" ${nk.link?`onclick="window.open('${nk.link}','_blank','noopener')"`:''} style="${nk.link?'':'cursor:default'}">
+    <div class="ecard-top" style="background:${nk.ibg};overflow:hidden;padding:0">
+      ${nk.thumbnail
+        ? `<img src="${nk.thumbnail}" alt="${safeTitle}" style="width:100%;height:106px;object-fit:cover;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div style="width:100%;height:106px;display:${nk.thumbnail?'none':'flex'};align-items:center;justify-content:center">
+        <i class="ti ${nk.ic}" style="color:${nk.ic2};font-size:38px"></i>
+      </div>
+      <span class="ecard-chip ${nk.bc}" style="position:absolute;top:12px;left:12px">${nk.tag}</span>
+      ${nk.level ? `<span class="ecard-chip" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.92);color:var(--ink2)">${nk.level}</span>` : ''}
+    </div>
+    <div class="ecard-body">
+      <div class="ecard-title">${nk.title}</div>
+      ${nk.provider ? `<div style="font-size:11.5px;color:var(--ink3);margin-bottom:6px;display:flex;align-items:center;gap:4px"><i class="ti ti-school" style="font-size:12px"></i>${nk.provider}</div>` : ''}
+      ${nk.deskripsi ? `<div style="font-size:12px;color:var(--ink3);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${nk.deskripsi}</div>` : ''}
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">
+        ${nk.durasi ? `<span class="chip ch-b"><i class="ti ti-clock" style="font-size:10px;margin-right:3px"></i>${nk.durasi}</span>` : ''}
+        ${nk.harga ? `<span class="chip ${isFree?'ch-g':'ch-o'}"><i class="ti ti-${isFree?'gift':'coin'}" style="font-size:10px;margin-right:3px"></i>${nk.harga}</span>` : ''}
+      </div>
+      <div class="ecard-foot">
+        <span class="chip ${nk.tc}">${nk.tag}</span>
+        ${nk.link ? `<span style="font-size:11px;color:var(--blue);font-weight:600;display:flex;align-items:center;gap:3px"><i class="ti ti-external-link" style="font-size:11px"></i>Mulai</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCrsFilters(){
+  const el = document.getElementById('crs-filters');
+  if(!el) return;
+  el.innerHTML = CRS_CATEGORIES.map(c=>`
+    <button class="ce-filter-btn${activeCatKrs===c.id?' active':''}" onclick="setCrsCat('${c.id}')">${c.label}</button>
+  `).join('');
+}
+
+function setCrsCat(id){
+  activeCatKrs = id;
+  renderCrsFilters();
+  filterKursus();
+}
+
+function filterKursus(){
+  const q = (document.getElementById('crs-search')?.value||'').toLowerCase();
+  const cl = document.getElementById('crs-search-clear');
+  if(cl) cl.classList.toggle('vis', q.length>0);
+  const el = document.getElementById('crs-list');
+  if(!el) return;
+  if(KURSUS.length===0){
+    el.innerHTML = '<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-certificate" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Belum ada kursus tersedia</div><div style="color:var(--ink3);font-size:13.5px">Kursus baru akan ditambahkan guru secara berkala — balik lagi nanti ya!</div></div>';
+    return;
+  }
+  const filtered = KURSUS.map((k,i)=>({k,i})).filter(({k,i})=>{
+    const nk = normKursus(k,i);
+    const matchCat = !activeCatKrs || nk.cat===activeCatKrs;
+    const matchQ = !q || nk.title.toLowerCase().includes(q) || (nk.provider||'').toLowerCase().includes(q) || (nk.tag||'').toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  el.innerHTML = filtered.length
+    ? filtered.map(({k,i})=>renderKursusCard(k,i)).join('')
+    : '<div style="grid-column:1/-1;padding:48px 20px;text-align:center"><i class="ti ti-search-off" style="display:block;font-size:36px;margin-bottom:12px;color:var(--ink4)"></i><div style="font-weight:700;color:var(--ink2);margin-bottom:4px;font-size:15px">Tidak ada kursus ditemukan</div><div style="color:var(--ink3);font-size:13.5px">Coba kata kunci atau kategori lain.</div></div>';
+}
+
+function clearCrsSearch(){
+  const inp = document.getElementById('crs-search');
+  if(inp) inp.value='';
+  filterKursus();
+}
+
+function renderKursus(){
+  renderCrsFilters();
+  filterKursus();
 }
 
 /* ===================================================================
@@ -4529,6 +4772,28 @@ function _showResultBase(){
           <i class="ti ti-chevron-right" style="color:var(--ink4);font-size:14px;flex-shrink:0"></i>
         </div>`).join('');
 
+      // Kursus rekomendasi dari data KURSUS — kategori sama persis dengan kategori bakat
+      const matchedCourses = KURSUS.filter(k=>(k.kategori||k.cat||'')===relevantCat).slice(0,3);
+      const crsHTML = matchedCourses.length > 0
+        ? matchedCourses.map(k=>{
+            const nk = normKursus(k, KURSUS.indexOf(k));
+            return `<div class="res-career-card" onclick="go('courses');setNav('courses')">
+              <div style="width:38px;height:38px;border-radius:10px;background:${nk.ibg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <i class="ti ${nk.ic}" style="color:${nk.ic2};font-size:18px"></i>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);margin-bottom:2px">${nk.title}</div>
+                <div style="font-size:12px;color:var(--ink3);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nk.provider?nk.provider+' · ':''}${nk.harga||''}</div>
+              </div>
+              <i class="ti ti-chevron-right" style="color:var(--ink4);font-size:14px;flex-shrink:0"></i>
+            </div>`;
+          }).join('')
+        : `<div style="text-align:center;padding:20px 0;color:var(--ink3)">
+            <i class="ti ti-certificate" style="font-size:28px;display:block;margin-bottom:8px;opacity:.3"></i>
+            <div style="font-size:13px;font-weight:600">Kursus belum tersedia</div>
+            <div style="font-size:12px;margin-top:4px">Guru belum menambahkan kursus untuk bidang ini</div>
+          </div>`;
+
       return `
       <div class="rgrid">
         <div class="rcard">
@@ -4544,6 +4809,11 @@ function _showResultBase(){
         <div class="rcard-hd"><i class="ti ti-map-2" style="color:var(--blue)"></i>Rekomendasi Karir Untukmu</div>
         <div style="font-size:12.5px;color:var(--ink3);margin-bottom:14px">Berdasarkan bakat dan minatmu — klik untuk eksplorasi lebih lanjut</div>
         ${kariHTML}
+      </div>
+      <div class="rcard" style="margin-bottom:16px">
+        <div class="rcard-hd"><i class="ti ti-certificate" style="color:var(--green)"></i>Kursus & Pelatihan Untukmu</div>
+        <div style="font-size:12.5px;color:var(--ink3);margin-bottom:14px">Asah bakatmu lebih jauh lewat kursus yang relevan</div>
+        ${crsHTML}
       </div>`;
     })()}
 
@@ -6239,7 +6509,7 @@ document.addEventListener('DOMContentLoaded',function(){
   loadBookmarks();
   initFirebase();
   // Load data from Firestore (will call renderCats, filterEvs, updateStats internally)
-  setTimeout(()=>{ loadEvsFromFirestore(); loadKomsFromFirestore(); }, 200);
+  setTimeout(()=>{ loadEvsFromFirestore(); loadKomsFromFirestore(); loadKursusFromFirestore(); }, 200);
   initSparkles();
   updateQuizCTA();
 
@@ -6488,9 +6758,9 @@ select.db-inp{cursor:pointer}
   <div class="dboard-wrap">
     <!-- hero -->
     <div class="dboard-hero">
-      <div class="dboard-hero-badge"><i class="ti ti-clipboard-list"></i>Dashboard Panitia</div>
-      <h2>Kelola Lomba & Komunitas</h2>
-      <p>Tambah, edit, atau hapus lomba dan komunitas langsung di sini — tanpa edit kode.</p>
+      <div class="dboard-hero-badge"><i class="ti ti-clipboard-list"></i>Dashboard Guru</div>
+      <h2>Kelola Lomba, Komunitas & Kursus</h2>
+      <p>Tambah, edit, atau hapus lomba, komunitas, dan kursus langsung di sini — tanpa edit kode.</p>
     </div>
 
     <!-- access gate (shown when not panitia/dev) -->
@@ -6499,7 +6769,7 @@ select.db-inp{cursor:pointer}
         <div class="access-denied">
           <div class="access-denied-ic"><i class="ti ti-lock"></i></div>
           <h3>Akses Terbatas</h3>
-          <p>Halaman ini hanya untuk Panitia / Developer. Silakan login dan pilih peran "Panitia" untuk mengakses.</p>
+          <p>Halaman ini hanya untuk Guru / Developer. Silakan login dan pilih peran "Guru" untuk mengakses.</p>
           <button class="btn-save" style="margin-top:18px" onclick="go('login');setNav('profil')"><i class="ti ti-login"></i>Login Sekarang</button>
         </div>
       </div>
@@ -6592,6 +6862,68 @@ select.db-inp{cursor:pointer}
           </div>
           <div id="db-kom-table">
             <div class="db-loading"><i class="ti ti-loader-2" style="font-size:20px;display:block;margin-bottom:8px;animation:spin 1s linear infinite"></i>Memuat komunitas…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KURSUS SECTION -->
+      <div class="db-section">
+        <div class="db-sec-hd">
+          <div class="db-sec-title"><i class="ti ti-certificate"></i>Daftar Kursus <span class="db-count-badge" id="db-kursus-count">0</span></div>
+          <button class="btn-save" onclick="openAddForm('kursus')"><i class="ti ti-plus"></i>Tambah Kursus</button>
+        </div>
+        <div class="db-sec-body">
+          <!-- Add/Edit form (hidden by default) -->
+          <div id="kursus-form-wrap" style="display:none;margin-bottom:20px;padding:18px;background:var(--surf2);border-radius:14px;border:1.5px dashed var(--blue-m)">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px" id="kursus-form-title">Tambah Kursus Baru</div>
+            <div class="db-form">
+              <div class="db-form-row">
+                <div><label class="db-label">Nama Kursus *</label><input class="db-inp" id="crf-nama" type="text" placeholder="Nama kursus/pelatihan"/></div>
+                <div>
+                  <label class="db-label">Kategori Bakat *</label>
+                  <select class="db-inp" id="crf-kat">
+                    <option value="">Pilih kategori</option>
+                    <option value="tech">💻 Teknologi & IT</option>
+                    <option value="seni">🎨 Seni & Desain</option>
+                    <option value="sains">🔬 Sains & Riset</option>
+                    <option value="tulis">✍️ Menulis & Sastra</option>
+                    <option value="musik">🎵 Musik & Pertunjukan</option>
+                    <option value="sport">⚽ Olahraga</option>
+                    <option value="robot">🤖 Robotika & AI</option>
+                    <option value="foto">📸 Fotografi & Film</option>
+                  </select>
+                </div>
+              </div>
+              <div class="db-form-row">
+                <div><label class="db-label">Penyelenggara</label><input class="db-inp" id="crf-penyelenggara" type="text" placeholder="Nama platform/lembaga"/></div>
+                <div>
+                  <label class="db-label">Level</label>
+                  <select class="db-inp" id="crf-level">
+                    <option value="">Pilih level</option>
+                    <option value="Pemula">Pemula</option>
+                    <option value="Menengah">Menengah</option>
+                    <option value="Lanjutan">Lanjutan</option>
+                  </select>
+                </div>
+              </div>
+              <div class="db-form-row">
+                <div><label class="db-label">Durasi</label><input class="db-inp" id="crf-durasi" type="text" placeholder="contoh: 4 minggu"/></div>
+                <div><label class="db-label">Harga</label><input class="db-inp" id="crf-harga" type="text" placeholder="Gratis atau Rp150.000"/></div>
+              </div>
+              <div><label class="db-label">Link Pendaftaran / Kelas</label><input class="db-inp" id="crf-link" type="url" placeholder="https://..."/></div>
+              <div><label class="db-label">Thumbnail (URL gambar)</label><input class="db-inp" id="crf-thumb" type="url" placeholder="https://i.imgur.com/..."/></div>
+              <div><label class="db-label">Deskripsi Singkat</label><input class="db-inp" id="crf-desc" type="text" placeholder="Penjelasan singkat kursus"/></div>
+              <input type="hidden" id="crf-edit-id"/>
+              <div class="db-form-actions">
+                <button class="btn-cancel-form" onclick="closeAddForm('kursus')">Batal</button>
+                <button class="btn-save" onclick="saveKursus()"><i class="ti ti-device-floppy"></i>Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div id="db-kursus-table">
+            <div class="db-loading"><i class="ti ti-loader-2" style="font-size:20px;display:block;margin-bottom:8px;animation:spin 1s linear infinite"></i>Memuat kursus…</div>
           </div>
         </div>
       </div>
@@ -6874,9 +7206,9 @@ select.db-inp{cursor:pointer}
     padding:4px 0 env(safe-area-inset-bottom, 8px);
     border-radius:0;
   }
-  .bi{padding:2px 6px;min-width:38px}
-  .bi-ic{font-size:17px}
-  .bi-lbl{font-size:8.5px}
+  .bi{padding:2px 4px;min-width:34px}
+  .bi-ic{font-size:16px}
+  .bi-lbl{font-size:8px}
 
   /* ── TOAST ── */
   .toast{
@@ -6926,17 +7258,21 @@ select.db-inp{cursor:pointer}
    =================================================================== */
 const CACHE_KEY_EVS  = 'lp_cache_evs';
 const CACHE_KEY_KOMS = 'lp_cache_koms';
+const CACHE_KEY_KURSUS = 'lp_cache_kursus';
 
 // Guard flag: seed otomatis HANYA boleh berjalan SEKALI per sesi
 // Mencegah onSnapshot "empty" palsu (akibat reconnect / pending writes)
-// dari menimpa data yang sudah diisi panitia
+// dari menimpa data yang sudah diisi guru
 let _evsSeedDone  = false;
 let _komsSeedDone = false;
+let _kursusSeedDone = false;
 
 function saveCacheEvs(data){ try{ localStorage.setItem(CACHE_KEY_EVS, JSON.stringify(data)); }catch(e){} }
 function saveCacheKoms(data){ try{ localStorage.setItem(CACHE_KEY_KOMS, JSON.stringify(data)); }catch(e){} }
+function saveCacheKursus(data){ try{ localStorage.setItem(CACHE_KEY_KURSUS, JSON.stringify(data)); }catch(e){} }
 function loadCacheEvs(){ try{ const d=localStorage.getItem(CACHE_KEY_EVS); return d?JSON.parse(d):null; }catch(e){return null;} }
 function loadCacheKoms(){ try{ const d=localStorage.getItem(CACHE_KEY_KOMS); return d?JSON.parse(d):null; }catch(e){return null;} }
+function loadCacheKursus(){ try{ const d=localStorage.getItem(CACHE_KEY_KURSUS); return d?JSON.parse(d):null; }catch(e){return null;} }
 
 /* ===================================================================
    LOAD LOMBA — localStorage cache → Firestore realtime
@@ -7072,6 +7408,64 @@ function loadKomsFromFirestore(){
 }
 
 /* ===================================================================
+   LOAD KURSUS — sama, localStorage cache → Firestore realtime
+   =================================================================== */
+function loadKursusFromFirestore(){
+  // LANGKAH 1: Cache dulu
+  const cached = loadCacheKursus();
+  if(cached && cached.length > 0){
+    KURSUS.length = 0;
+    cached.forEach(k => KURSUS.push(k));
+    renderKursus(); renderDbKursusTable();
+  } else {
+    KURSUS.length = 0;
+    KURSUS_SEED.forEach(k => KURSUS.push(k));
+    renderKursus();
+  }
+
+  // LANGKAH 2: Firestore background sync
+  if(!firebaseReady||!db){
+    if(!cached || cached.length === 0) saveCacheKursus(KURSUS_SEED);
+    renderDbKursusTable();
+    return;
+  }
+
+  db.collection('kursus').onSnapshot(snap=>{
+    if(snap.empty){
+      // Seed HANYA SEKALI per sesi — sama seperti lomba & komunitas
+      if(!_kursusSeedDone){
+        _kursusSeedDone = true;
+        const batch = db.batch();
+        KURSUS_SEED.forEach(k=>{
+          const ref = db.collection('kursus').doc();
+          batch.set(ref, {...k, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        });
+        batch.commit().catch(()=>{});
+        KURSUS.length = 0;
+        KURSUS_SEED.forEach(k => KURSUS.push(k));
+        saveCacheKursus([...KURSUS]);
+      }
+    } else {
+      _kursusSeedDone = true;
+      const docs = [];
+      snap.forEach(d => docs.push({...d.data(), _id: d.id}));
+      docs.sort((a,b)=>{
+        const ta = a.createdAt?.seconds ?? a.createdAt?.toMillis?.() ?? 0;
+        const tb = b.createdAt?.seconds ?? b.createdAt?.toMillis?.() ?? 0;
+        return tb - ta;
+      });
+      KURSUS.length = 0;
+      docs.forEach(d => KURSUS.push(d));
+      saveCacheKursus([...KURSUS]);
+    }
+    renderKursus(); renderDbKursusTable();
+  }, (err)=>{
+    console.warn('Firestore kursus error:', err.message);
+    renderDbKursusTable();
+  });
+}
+
+/* ===================================================================
    PANITIA DASHBOARD — RENDER TABLES
    =================================================================== */
 
@@ -7132,8 +7526,42 @@ function renderDbKomTable(){
     </tbody></table></div>`;
 }
 
+function renderDbKursusTable(){
+  const el = document.getElementById('db-kursus-table');
+  const cnt = document.getElementById('db-kursus-count');
+  if(!el) return;
+  if(cnt) cnt.textContent = KURSUS.length;
+  if(KURSUS.length === 0){
+    el.innerHTML = '<div class="db-empty"><i class="ti ti-certificate"></i>Belum ada kursus. Klik "Tambah Kursus" untuk mulai.</div>';
+    return;
+  }
+  const catLabel = {tech:'💻 Teknologi',seni:'🎨 Seni',sains:'🔬 Sains',tulis:'✍️ Menulis',musik:'🎵 Musik',sport:'⚽ Olahraga',robot:'🤖 Robotika',foto:'📸 Foto'};
+  el.innerHTML = `<div style="overflow-x:auto"><table class="db-table">
+    <thead><tr>
+      <th>Nama Kursus</th>
+      <th>Kategori</th>
+      <th>Penyelenggara</th>
+      <th>Harga</th>
+      <th>Link</th>
+      <th>Aksi</th>
+    </tr></thead>
+    <tbody>
+    ${KURSUS.map((k,i)=>`<tr>
+      <td style="font-weight:600;max-width:200px;word-break:break-word">${k.nama||k.title||'—'}</td>
+      <td><span class="chip ch-b" style="white-space:nowrap">${catLabel[k.kategori||k.cat]||k.kategori||'—'}</span></td>
+      <td>${k.penyelenggara||k.provider||'—'}</td>
+      <td>${k.harga||'—'}</td>
+      <td>${k.link&&k.link!=='#'?`<a href="${k.link}" target="_blank" style="color:var(--blue);font-size:12px;display:flex;align-items:center;gap:4px"><i class="ti ti-external-link" style="font-size:11px"></i>Buka</a>`:'<span style="color:var(--ink4)">—</span>'}</td>
+      <td><div class="db-tbl-actions">
+        <button class="btn-edit" onclick="editKursus(${i})"><i class="ti ti-pencil" style="font-size:11px"></i>Edit</button>
+        <button class="btn-del" onclick="deleteKursus(${i})"><i class="ti ti-trash" style="font-size:11px"></i>Hapus</button>
+      </div></td>
+    </tr>`).join('')}
+    </tbody></table></div>`;
+}
+
 /* ===================================================================
-   PANITIA — FORM OPEN/CLOSE
+   GURU — FORM OPEN/CLOSE
    =================================================================== */
 function openAddForm(type){
   if(type==='lomba'){
@@ -7146,7 +7574,7 @@ function openAddForm(type){
     document.getElementById('lomba-form-title').textContent='Tambah Lomba Baru';
     document.getElementById('lomba-form-wrap').style.display='block';
     document.getElementById('lf-nama').focus();
-  } else {
+  } else if(type==='kom'){
     document.getElementById('kf-nama').value='';
     document.getElementById('kf-kat').value='';
     document.getElementById('kf-link').value='';
@@ -7155,11 +7583,26 @@ function openAddForm(type){
     document.getElementById('kom-form-title').textContent='Tambah Komunitas Baru';
     document.getElementById('kom-form-wrap').style.display='block';
     document.getElementById('kf-nama').focus();
+  } else if(type==='kursus'){
+    document.getElementById('crf-nama').value='';
+    document.getElementById('crf-kat').value='';
+    document.getElementById('crf-penyelenggara').value='';
+    document.getElementById('crf-level').value='';
+    document.getElementById('crf-durasi').value='';
+    document.getElementById('crf-harga').value='';
+    document.getElementById('crf-link').value='';
+    document.getElementById('crf-thumb').value='';
+    document.getElementById('crf-desc').value='';
+    document.getElementById('crf-edit-id').value='';
+    document.getElementById('kursus-form-title').textContent='Tambah Kursus Baru';
+    document.getElementById('kursus-form-wrap').style.display='block';
+    document.getElementById('crf-nama').focus();
   }
 }
 function closeAddForm(type){
   if(type==='lomba') document.getElementById('lomba-form-wrap').style.display='none';
-  else document.getElementById('kom-form-wrap').style.display='none';
+  else if(type==='kom') document.getElementById('kom-form-wrap').style.display='none';
+  else if(type==='kursus') document.getElementById('kursus-form-wrap').style.display='none';
 }
 
 /* ===================================================================
@@ -7296,6 +7739,82 @@ async function deleteKom(idx){
 }
 
 /* ===================================================================
+   GURU — SAVE/EDIT/DELETE KURSUS
+   =================================================================== */
+async function saveKursus(){
+  const nama = document.getElementById('crf-nama').value.trim();
+  const kat  = document.getElementById('crf-kat').value;
+  const penyelenggara = document.getElementById('crf-penyelenggara').value.trim();
+  const level = document.getElementById('crf-level').value;
+  const durasi = document.getElementById('crf-durasi').value.trim();
+  const harga = document.getElementById('crf-harga').value.trim();
+  const link = document.getElementById('crf-link').value.trim();
+  const thumb= document.getElementById('crf-thumb').value.trim();
+  const desc = document.getElementById('crf-desc').value.trim();
+  const editId = document.getElementById('crf-edit-id').value;
+  if(!nama){ toast('Nama kursus wajib diisi!','ti-alert-circle'); return; }
+  if(!kat){ toast('Pilih kategori dulu!','ti-alert-circle'); return; }
+
+  const data = { nama, kategori:kat, penyelenggara, level, durasi, harga, link, thumbnail:thumb, deskripsi:desc };
+
+  if(firebaseReady && db){
+    try{
+      if(editId){
+        await db.collection('kursus').doc(editId).update(data);
+        toast('Kursus diperbarui!','ti-check');
+      } else {
+        await db.collection('kursus').add({...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        toast('Kursus berhasil ditambahkan!','ti-check');
+      }
+    }catch(e){ toast('Gagal simpan: '+e.message,'ti-alert-circle'); return; }
+  } else {
+    // local-only fallback
+    if(editId){
+      const idx = parseInt(editId);
+      if(!isNaN(idx)) KURSUS[idx] = data;
+    } else {
+      KURSUS.unshift(data);
+    }
+    saveCacheKursus([...KURSUS]);
+    renderKursus(); renderDbKursusTable();
+    toast('Kursus ditambahkan (mode lokal)!','ti-check');
+  }
+  closeAddForm('kursus');
+}
+
+function editKursus(idx){
+  const k = KURSUS[idx]; if(!k) return;
+  document.getElementById('crf-nama').value = k.nama||k.title||'';
+  document.getElementById('crf-kat').value  = k.kategori||k.cat||'';
+  document.getElementById('crf-penyelenggara').value = k.penyelenggara||k.provider||'';
+  document.getElementById('crf-level').value = k.level||'';
+  document.getElementById('crf-durasi').value = k.durasi||'';
+  document.getElementById('crf-harga').value = k.harga||'';
+  document.getElementById('crf-link').value = k.link||'';
+  document.getElementById('crf-thumb').value= k.thumbnail||'';
+  document.getElementById('crf-desc').value = k.deskripsi||k.desc||'';
+  document.getElementById('crf-edit-id').value = k._id || String(idx);
+  document.getElementById('kursus-form-title').textContent='Edit Kursus';
+  document.getElementById('kursus-form-wrap').style.display='block';
+  document.getElementById('crf-nama').focus();
+  document.getElementById('kursus-form-wrap').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+async function deleteKursus(idx){
+  const k = KURSUS[idx]; if(!k) return;
+  if(!confirm('Hapus kursus "'+(k.nama||k.title)+'"?')) return;
+  if(firebaseReady && db && k._id){
+    try{ await db.collection('kursus').doc(k._id).delete(); toast('Kursus dihapus!','ti-trash'); }
+    catch(er){ toast('Gagal hapus: '+er.message,'ti-alert-circle'); }
+  } else {
+    KURSUS.splice(idx,1);
+    saveCacheKursus([...KURSUS]);
+    renderKursus(); renderDbKursusTable();
+    toast('Kursus dihapus!','ti-trash');
+  }
+}
+
+/* ===================================================================
    PANITIA GATE — CHECK ACCESS
    =================================================================== */
 function checkPanitiaAccess(){
@@ -7303,7 +7822,7 @@ function checkPanitiaAccess(){
     (currentUser && currentUser.email && currentUser.email === firebaseConfig.developerEmail);
   document.getElementById('panitia-gate').style.display = isPanitia ? 'none' : 'block';
   document.getElementById('panitia-content').style.display = isPanitia ? 'block' : 'none';
-  if(isPanitia){ renderDbLombaTable(); renderDbKomTable(); }
+  if(isPanitia){ renderDbLombaTable(); renderDbKomTable(); renderDbKursusTable(); }
 }
 
 /* ===================================================================
